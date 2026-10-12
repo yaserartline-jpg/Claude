@@ -3,17 +3,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: drawing-sheet profile — title block header, ruled sections, specs in a mono utility face */
+/* Layout: drawing-sheet profile. Black title band with line-art, ruled sections keyed A-01…, specs in a mono utility face */
 :root {
   /* Artline house palette */
   --ink: #000000;        /* primary text / headers */
   --graphite: #4D4D4D;   /* secondary headers / borders */
-  --steel: #808080;      /* subheadings / shading */
+  --steel: #808080;      /* subheadings / table shading */
   --mist: #D9D9D9;       /* backgrounds / alt rows */
   --maroon: #800000;     /* titles, highlights, chart series */
   --paper: #FFFFFF;
-  --tint: #F2F2F2;
-  --ph-bg: #F7EDED;      /* placeholder marker */
+  --tint: #F3F3F3;
+  --band: #000000;       /* title band */
+  --band-fg: #FFFFFF;
+  --band-line: #4D4D4D;
+  --th-bg: #808080;
+  --th-fg: #FFFFFF;
 
   --f-display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
@@ -21,212 +25,402 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --ink: #F2F2F2; --graphite: #B3B3B3; --steel: #8C8C8C; --mist: #333333;
-  --maroon: #D46A6A; --paper: #121212; --tint: #1C1C1C; --ph-bg: #2E1A1A; color-scheme: dark } }
+  --maroon: #D46A6A; --paper: #121212; --tint: #1B1B1B;
+  --band: #000000; --band-fg: #FFFFFF; --band-line: #3A3A3A; --th-bg: #4D4D4D; --th-fg: #FFFFFF;
+  color-scheme: dark } }
 :root[data-theme="dark"] {
   --ink: #F2F2F2; --graphite: #B3B3B3; --steel: #8C8C8C; --mist: #333333;
-  --maroon: #D46A6A; --paper: #121212; --tint: #1C1C1C; --ph-bg: #2E1A1A; color-scheme: dark }
+  --maroon: #D46A6A; --paper: #121212; --tint: #1B1B1B;
+  --band: #000000; --band-fg: #FFFFFF; --band-line: #3A3A3A; --th-bg: #4D4D4D; --th-fg: #FFFFFF;
+  color-scheme: dark }
 
 * { box-sizing: border-box; }
 body { background: var(--paper); color: var(--ink); font: 400 1rem/1.6 var(--f-body); padding-inline: 16px; padding-block: 0 48px; }
-.sheet { max-width: 1040px; margin-inline: auto; }
+.sheet { max-width: 1080px; margin-inline: auto; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.1; }
 p { margin: 0; max-width: 65ch; }
-.ph { background: var(--ph-bg); color: var(--maroon); font-family: var(--f-mono); font-size: .85em; padding: 0 .3em; border-radius: 2px; }
+.mono { font-family: var(--f-mono); }
 
-/* Title block */
-.titleblock { display: grid; grid-template-columns: 1fr auto; border: 2px solid var(--ink); margin-block: 32px 0; }
-.tb-main { padding: 28px 28px 24px; border-right: 1px solid var(--graphite); display: grid; gap: 10px; min-width: 0; }
-.tb-main .eyebrow { font: 500 .75rem/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--steel); }
-.tb-main h1 { font-size: clamp(2.4rem, 7vw, 4.2rem); font-weight: 700; color: var(--maroon); letter-spacing: .01em; text-transform: uppercase; }
-.tb-main .tag { font-size: 1.15rem; color: var(--graphite); }
-.tb-meta { display: grid; grid-template-rows: repeat(4, auto); font-family: var(--f-mono); font-size: .78rem; min-width: 200px; }
-.tb-meta div { padding: 10px 16px; border-bottom: 1px solid var(--graphite); display: grid; gap: 2px; }
-.tb-meta div:last-child { border-bottom: 0; }
-.tb-meta span { color: var(--steel); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; }
-
-.notice { margin-top: 16px; padding: 12px 16px; border-left: 3px solid var(--maroon); background: var(--tint); font-size: .92rem; color: var(--graphite); }
+/* Title band */
+.band { position: relative; overflow: hidden; background: var(--band); color: var(--band-fg); margin-top: 24px; display: grid; grid-template-columns: 1fr auto; }
+.band svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.band-main { position: relative; padding: 40px 32px 32px; display: grid; gap: 12px; min-width: 0; }
+.mark { width: 64px; height: 64px; }
+.band .eyebrow { font: 500 .75rem/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: #BFBFBF; }
+.band h1 { font-size: clamp(2.6rem, 8vw, 4.6rem); font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.band h1 span { color: #D46A6A; }
+.band .tag { font: 500 1rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: #D9D9D9; }
+.band-meta { position: relative; display: grid; font-family: var(--f-mono); font-size: .8rem; min-width: 230px; border-left: 1px solid var(--band-line); background: rgba(0,0,0,.6); }
+.band-meta div { padding: 12px 18px; border-bottom: 1px solid var(--band-line); display: grid; gap: 2px; }
+.band-meta div:last-child { border-bottom: 0; }
+.band-meta span { color: #A6A6A6; text-transform: uppercase; letter-spacing: .1em; font-size: .66rem; }
 
 section { margin-top: 56px; display: grid; gap: 20px; }
-.sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
+.sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 8px; flex-wrap: wrap; }
 .sec-head .ref { font: 500 .78rem var(--f-mono); color: var(--maroon); letter-spacing: .08em; }
 .sec-head h2 { font-size: 1.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
+.sec-head .aside { margin-left: auto; font: .75rem var(--f-mono); color: var(--steel); }
+
+/* About */
+.about { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; }
+.about .lead { font-size: 1.2rem; line-height: 1.55; }
+.vm { display: grid; gap: 14px; }
+.vm h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; color: var(--maroon); font-weight: 600; }
+.vm ul { margin: 4px 0 0; padding-left: 1.1em; color: var(--graphite); font-size: .95rem; display: grid; gap: 4px; }
 
 /* Stats */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--graphite); }
-.stat { padding: 18px 20px; border-right: 1px solid var(--mist); display: grid; gap: 4px; }
+.stat { padding: 18px 20px; border-right: 1px solid var(--mist); display: grid; gap: 4px; align-content: start; }
 .stat:last-child { border-right: 0; }
-.stat b { font: 700 2.4rem/1 var(--f-display); color: var(--maroon); font-variant-numeric: tabular-nums; }
-.stat span { font-size: .85rem; color: var(--graphite); }
+.stat b { font: 700 2.6rem/1 var(--f-display); color: var(--maroon); font-variant-numeric: tabular-nums; }
+.stat span { font-size: .88rem; color: var(--graphite); }
+.stat small { font: .68rem var(--f-mono); color: var(--steel); }
 
-.chart-wrap { border: 1px solid var(--mist); padding: 16px; display: grid; gap: 8px; }
-.chart-wrap h3 { font-size: 1.15rem; font-weight: 600; color: var(--graphite); text-transform: uppercase; letter-spacing: .04em; }
+.charts { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+.chart-wrap { border: 1px solid var(--mist); padding: 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.chart-wrap h3 { font-size: 1.1rem; font-weight: 600; color: var(--graphite); text-transform: uppercase; letter-spacing: .04em; }
 .chart-wrap svg { width: 100%; height: auto; display: block; }
-.chart-wrap svg text { fill: var(--steel); font: 11px var(--f-mono); }
-.chart-wrap .cap { font: .75rem var(--f-mono); color: var(--steel); }
+.chart-wrap .cap { font: .72rem var(--f-mono); color: var(--steel); }
+.sectors { display: grid; gap: 10px; }
+.sector { display: grid; grid-template-columns: 110px 1fr 28px; gap: 10px; align-items: center; font-size: .9rem; }
+.sector .track { height: 12px; background: var(--tint); }
+.sector .fill { height: 100%; background: var(--maroon); }
+.sector .n { font: .8rem var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
 
 /* Services */
-.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0; border-top: 1px solid var(--graphite); }
-.svc { padding: 18px 18px 20px 0; border-bottom: 1px solid var(--mist); display: grid; gap: 6px; align-content: start; min-width: 0; }
-.svc h3 { font-size: 1.3rem; font-weight: 600; }
+.services { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--graphite); }
+.svc { padding: 18px 20px 20px 0; border-bottom: 1px solid var(--mist); display: grid; gap: 6px; align-content: start; min-width: 0; }
+.svc .code { font: .7rem var(--f-mono); color: var(--steel); letter-spacing: .06em; }
+.svc h3 { font-size: 1.35rem; font-weight: 600; }
 .svc p { color: var(--graphite); font-size: .95rem; }
 
+/* Gallery */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.gallery figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
+.gallery img { width: 100%; max-width: 100%; aspect-ratio: 3 / 1; object-fit: cover; display: block; background: var(--mist); }
+.gallery figcaption { font-size: .88rem; color: var(--graphite); display: flex; justify-content: space-between; gap: 8px; }
+.gallery figcaption b { color: var(--ink); font-weight: 600; }
+.gallery figure.wide { grid-column: 1 / -1; }
+
 /* Projects table */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filters button { font: 500 .8rem var(--f-mono); padding: 6px 12px; border: 1px solid var(--graphite); background: var(--paper); color: var(--ink); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--maroon); border-color: var(--maroon); color: #fff; }
+.filters button:focus-visible, a:focus-visible { outline: 2px solid var(--maroon); outline-offset: 2px; }
 .tbl { overflow-x: auto; border: 1px solid var(--graphite); }
-table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: .93rem; }
-th { background: var(--steel); color: #fff; font: 600 .78rem var(--f-mono); text-transform: uppercase; letter-spacing: .08em; text-align: left; padding: 10px 14px; }
-td { padding: 10px 14px; border-top: 1px solid var(--mist); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .92rem; }
+th { background: var(--th-bg); color: var(--th-fg); font: 600 .74rem var(--f-mono); text-transform: uppercase; letter-spacing: .08em; text-align: left; padding: 10px 14px; }
+td { padding: 9px 14px; border-top: 1px solid var(--mist); }
 tbody tr:nth-child(even) td { background: var(--tint); }
-td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--graphite); }
+td.proj { font-weight: 600; }
+.chip { display: inline-block; font: .7rem var(--f-mono); padding: 1px 7px; border: 1px solid var(--steel); color: var(--graphite); white-space: nowrap; }
+.note { font: .75rem var(--f-mono); color: var(--steel); }
+
+/* Clients */
+.client-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.cg h3 { font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.cg p { font-size: .9rem; color: var(--graphite); }
+.clients { columns: 4 200px; column-gap: 24px; margin: 0; padding: 0; list-style: none; font-size: .92rem; }
+.clients li { break-inside: avoid; padding: 6px 0; border-bottom: 1px solid var(--mist); }
 
 /* Team & contact */
 .split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; }
-.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px 16px; align-content: start; }
 .person { border-top: 3px solid var(--maroon); padding-top: 10px; display: grid; gap: 2px; }
-.person b { font: 600 1.15rem var(--f-display); }
+.person b { font: 600 1.2rem var(--f-display); }
 .person span { color: var(--graphite); font-size: .9rem; }
-dl.contact { margin: 0; display: grid; grid-template-columns: auto 1fr; border: 1px solid var(--graphite); }
+dl.contact { margin: 0; display: grid; grid-template-columns: auto 1fr; border: 1px solid var(--graphite); align-self: start; }
 dl.contact dt, dl.contact dd { padding: 10px 14px; border-bottom: 1px solid var(--mist); margin: 0; }
-dl.contact dt { font: 500 .72rem var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); background: var(--tint); }
-dl.contact dd { min-width: 0; overflow-wrap: anywhere; }
+dl.contact dt { font: 500 .7rem var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); background: var(--tint); }
+dl.contact dd { min-width: 0; overflow-wrap: anywhere; user-select: all; }
 dl.contact dt:last-of-type, dl.contact dd:last-of-type { border-bottom: 0; }
 a { color: var(--maroon); }
-a:focus-visible { outline: 2px solid var(--maroon); outline-offset: 2px; }
 
-footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphite); font: .75rem var(--f-mono); color: var(--steel); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphite); font: .72rem var(--f-mono); color: var(--steel); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
-@media (max-width: 720px) {
-  .titleblock { grid-template-columns: 1fr; }
-  .tb-main { border-right: 0; border-bottom: 1px solid var(--graphite); padding: 20px; }
-  .tb-meta { min-width: 0; grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-  .tb-meta div:nth-child(odd) { border-right: 1px solid var(--graphite); }
-  .tb-meta div:nth-last-child(-n+2) { border-bottom: 0; }
+@media (max-width: 820px) {
+  .band { grid-template-columns: 1fr; }
+  .band-meta { border-left: 0; border-top: 1px solid var(--band-line); grid-template-columns: 1fr 1fr; min-width: 0; }
+  .band-meta div:nth-child(odd) { border-right: 1px solid var(--band-line); }
+  .band-meta div:nth-last-child(-n+2) { border-bottom: 0; }
+  .about, .charts, .split { grid-template-columns: 1fr; }
+  .services, .client-groups { grid-template-columns: 1fr 1fr; }
   .stats { grid-template-columns: 1fr 1fr; }
   .stat:nth-child(2) { border-right: 0; }
   .stat:nth-child(-n+2) { border-bottom: 1px solid var(--mist); }
-  .split { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .band-main { padding: 28px 20px 24px; }
+  .services, .client-groups, .gallery { grid-template-columns: 1fr; }
+  .gallery img { aspect-ratio: 2 / 1; }
+  .sector { grid-template-columns: 90px 1fr 24px; }
 }
 </style>
 
 <div class="sheet">
-  <header class="titleblock">
-    <div class="tb-main">
-      <div class="eyebrow">Company Profile · United Arab Emirates</div>
-      <h1>Art Line Engineering</h1>
-      <p class="tag">Engineering &amp; construction services <span class="ph">[tagline]</span></p>
+  <header class="band">
+    <svg class="lines" viewBox="0 0 1000 320" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#FFFFFF" stroke-opacity=".22" stroke-width="1.2">
+        <polyline points="560,-10 760,120 640,330"/>
+        <polyline points="610,-10 930,90 700,330"/>
+        <polyline points="700,-10 1010,210 860,330"/>
+        <polyline points="520,330 800,40 1010,60"/>
+        <polygon points="760,120 930,90 860,250"/>
+      </g>
+    </svg>
+    <div class="band-main">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+        <g fill="none" stroke="#FFFFFF" stroke-width="3">
+          <polyline points="22,6 6,6 6,58 58,58 58,6 34,6"/>
+          <polyline points="22,6 26,14 30,6"/>
+          <line x1="42" y1="26" x2="58" y2="26"/>
+        </g>
+      </svg>
+      <div class="eyebrow">Company Profile · Fujairah, United Arab Emirates</div>
+      <h1>Artline <span>Engineering</span></h1>
+      <div class="tag">Contracting · Construction · Fit-out</div>
     </div>
-    <div class="tb-meta">
-      <div><span>Entity</span>Art Line Engineering LLC</div>
-      <div><span>Established</span><span class="ph">[year]</span></div>
-      <div><span>Head office</span><span class="ph">[city, UAE]</span></div>
-      <div><span>Licence no.</span><span class="ph">[trade licence]</span></div>
+    <div class="band-meta">
+      <div><span>Legal entity</span>Art Line Engineering LLC (SPC)</div>
+      <div><span>Established</span>Nov 2009</div>
+      <div><span>Commercial licence</span>No. 93772 · Fujairah Municipality</div>
+      <div><span>Chamber reg.</span>COC 13589</div>
     </div>
   </header>
 
-  <p class="notice">Draft layout. Items in <span class="ph">[brackets]</span> are placeholders waiting for confirmed company details from artline-uae.com and the company's Instagram.</p>
-
   <section id="about">
     <div class="sec-head"><span class="ref">A-01</span><h2>About</h2></div>
-    <p><span class="ph">[Two to three sentences: who the company is, what it delivers, which sectors it serves across the UAE, and what sets it apart.]</span></p>
+    <div class="about">
+      <p class="lead">Artline Engineering is a construction and fit-out company based in Fujairah. Our team of experienced professionals delivers interiors for retail, food and beverage, healthcare, government and residential clients, with an in-house carpentry and furniture workshop and an aluminium and glazing division.</p>
+      <div class="vm">
+        <div><h3>Vision</h3>
+          <ul>
+            <li>To be recognised as a leading provider of high-quality construction and fit-out services in the UAE.</li>
+            <li>To lead the market by offering superior quality at competitive prices.</li>
+          </ul></div>
+        <div><h3>Mission</h3>
+          <ul>
+            <li>To deliver exceptional workmanship that surpasses market standards.</li>
+            <li>To exceed clients' expectations and support our employees' expertise.</li>
+          </ul></div>
+      </div>
+    </div>
   </section>
 
   <section id="stats">
     <div class="sec-head"><span class="ref">A-02</span><h2>At a glance</h2></div>
     <div class="stats">
-      <div class="stat"><b class="ph">[n]</b><span>Years in operation</span></div>
-      <div class="stat"><b class="ph">[n]</b><span>Projects completed</span></div>
-      <div class="stat"><b class="ph">[n]</b><span>Engineers &amp; staff</span></div>
-      <div class="stat"><b class="ph">[n]</b><span>Emirates served</span></div>
+      <div class="stat"><b>15+</b><span>Years in operation</span><small>Licensed since 2009</small></div>
+      <div class="stat"><b>44</b><span>Certified fit-outs</span><small>Jun 2021 – May 2025</small></div>
+      <div class="stat"><b>32</b><span>Key clients</span><small>Government &amp; private</small></div>
+      <div class="stat"><b>30</b><span>Staff on payroll</span><small>Workshop, site &amp; office</small></div>
     </div>
-    <div class="chart-wrap">
-      <h3>Projects completed per year</h3>
-      <svg id="chart" viewBox="0 0 640 220" role="img" aria-label="Bar chart of projects completed per year"></svg>
-      <div class="cap" id="chart-cap"></div>
+    <div class="charts">
+      <div class="chart-wrap">
+        <h3>Completion certificates per year</h3>
+        <svg id="chart" viewBox="0 0 560 220" role="img" aria-label="Completion certificates per year: 2021 seven, 2022 eleven, 2023 ten, 2024 thirteen, 2025 three to May"></svg>
+        <div class="cap">Source: Fujairah Municipality completion certificates. 2025 covers January to May.</div>
+      </div>
+      <div class="chart-wrap">
+        <h3>Certified work by sector</h3>
+        <div class="sectors" id="sectors"></div>
+        <div class="cap">Same 44 certificates, grouped by end use.</div>
+      </div>
     </div>
   </section>
 
   <section id="services">
     <div class="sec-head"><span class="ref">A-03</span><h2>Services</h2></div>
     <div class="services">
-      <div class="svc"><h3><span class="ph">[Service 1]</span></h3><p><span class="ph">[One-line description]</span></p></div>
-      <div class="svc"><h3><span class="ph">[Service 2]</span></h3><p><span class="ph">[One-line description]</span></p></div>
-      <div class="svc"><h3><span class="ph">[Service 3]</span></h3><p><span class="ph">[One-line description]</span></p></div>
-      <div class="svc"><h3><span class="ph">[Service 4]</span></h3><p><span class="ph">[One-line description]</span></p></div>
+      <div class="svc"><span class="code">ACTIVITY 4100002-4</span><h3>Building contracting</h3><p>All kinds of building projects, licensed for fourth-degree contracting in Fujairah.</p></div>
+      <div class="svc"><span class="code">ACTIVITY 4330015</span><h3>Interior fit-out &amp; decor</h3><p>Turnkey shop, restaurant, clinic and office interiors inside malls and standalone buildings.</p></div>
+      <div class="svc"><span class="code">ACTIVITY 1622007</span><h3>Carpentry &amp; furniture</h3><p>In-house joinery workshop producing counters, display units, wall cladding and loose furniture.</p></div>
+      <div class="svc"><span class="code">DIVISION</span><h3>Aluminium &amp; glazing</h3><p>Shopfronts, glass partitions and framed glazing for retail and office spaces.</p></div>
+      <div class="svc"><span class="code">DIVISION</span><h3>Technical office</h3><p>Design development, shop drawings and authority approvals led by our architects.</p></div>
+      <div class="svc"><span class="code">SERVICE</span><h3>Maintenance &amp; renovation</h3><p>Unit re-partitioning, merges and refurbishment of occupied commercial spaces.</p></div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="sec-head"><span class="ref">A-04</span><h2>Selected work</h2></div>
+    <div class="gallery">
+      <figure class="wide"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park interior with colourful padded zones" loading="lazy"><figcaption><b>Sparkys Land</b><span>Leisure · Fujairah</span></figcaption></figure>
+      <figure><img src="artline-img/penti.jpg" alt="Penti and adjacent fashion shopfronts" loading="lazy"><figcaption><b>Penti &amp; Little Shop</b><span>Retail · Al Tayf Mall</span></figcaption></figure>
+      <figure><img src="artline-img/mia.jpg" alt="Mia Cosmetics store with illuminated display walls" loading="lazy"><figcaption><b>Mia Cosmetics</b><span>Retail · Al Tayf Mall</span></figcaption></figure>
+      <figure><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><figcaption><b>911 Games Station</b><span>Leisure</span></figcaption></figure>
+      <figure><img src="artline-img/manahil.jpg" alt="Manahil showroom with timber shelving and marble counter" loading="lazy"><figcaption><b>Manahil Fujairah</b><span>Retail</span></figcaption></figure>
+      <figure><img src="artline-img/service-centre.jpg" alt="Customer service centre with green seating and service counters" loading="lazy"><figcaption><b>Customer service centre</b><span>Government</span></figcaption></figure>
+      <figure><img src="artline-img/scratch.jpg" alt="Scratch café interior with booth seating and timber cladding" loading="lazy"><figcaption><b>Scratch café</b><span>F&amp;B · Fujairah</span></figcaption></figure>
+      <figure><img src="artline-img/boardroom.jpg" alt="Executive boardroom and lounge office interior" loading="lazy"><figcaption><b>Executive offices</b><span>Corporate</span></figcaption></figure>
+      <figure><img src="artline-img/lobby.jpg" alt="Building lobby with timber slat walls and reception desk" loading="lazy"><figcaption><b>Residential lobby</b><span>Residential</span></figcaption></figure>
+      <figure class="wide"><img src="artline-img/residence.jpg" alt="Private majlis with botanical wall mural and sculptural ceiling light" loading="lazy"><figcaption><b>Private residence</b><span>Residential</span></figcaption></figure>
     </div>
   </section>
 
   <section id="projects">
-    <div class="sec-head"><span class="ref">A-04</span><h2>Key projects</h2></div>
+    <div class="sec-head"><span class="ref">A-05</span><h2>Certified project register</h2><span class="aside" id="count"></span></div>
+    <div class="filters" id="filters" role="group" aria-label="Filter by year"></div>
     <div class="tbl">
       <table>
-        <thead><tr><th>Project</th><th>Location</th><th>Type</th><th>Client</th><th>Year</th></tr></thead>
-        <tbody>
-          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
-          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
-          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
-          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
-        </tbody>
+        <thead><tr><th>Completed</th><th>Project</th><th>Location</th><th>Sector</th><th>Permit</th></tr></thead>
+        <tbody id="rows"></tbody>
       </table>
     </div>
+    <p class="note">Each row is a Fujairah Municipality completion certificate (100% completion) naming Art Line Engineering as contractor.</p>
+  </section>
+
+  <section id="clients">
+    <div class="sec-head"><span class="ref">A-06</span><h2>Clients</h2></div>
+    <div class="client-groups">
+      <div class="cg"><h3>Residential</h3><p>Homeowners seeking bespoke design and construction solutions.</p></div>
+      <div class="cg"><h3>Commercial</h3><p>Businesses requiring modern office spaces, retail fit-outs and hospitality projects.</p></div>
+      <div class="cg"><h3>Industrial</h3><p>Companies needing robust and efficient industrial facilities.</p></div>
+    </div>
+    <ul class="clients">
+      <li>Government of Fujairah</li><li>Fujairah Police</li><li>Fujairah International Airport</li><li>Ministry of Human Resources &amp; Emiratisation</li>
+      <li>Federal Authority for Identity &amp; Citizenship</li><li>Fujairah Environment Authority</li><li>Fujairah Foundation for Region Development</li><li>Fujairah Natural Resources Corporation</li>
+      <li>Fujairah Holding</li><li>Fujairah Adventures</li><li>National Bank of Fujairah</li><li>Al Fujairah National Insurance Co.</li>
+      <li>Majid Al Futtaim</li><li>City Centre Fujairah</li><li>Burjeel Hospital</li><li>VPS Healthcare</li>
+      <li>Al Sharq Medical Centre</li><li>BANOBAGI</li><li>Ajman University</li><li>GEMS Winchester School</li>
+      <li>Diyar International Private School</li><li>FNCT</li><li>Tasheel</li><li>Tadbeer</li>
+      <li>Tawjeeh</li><li>SEPHORA</li><li>Splash</li><li>Magic Planet</li>
+      <li>911 Games Station</li><li>Jovial</li><li>HYSSNA International LLC</li><li>AFMG</li>
+    </ul>
   </section>
 
   <section id="team">
-    <div class="sec-head"><span class="ref">A-05</span><h2>Team &amp; contact</h2></div>
+    <div class="sec-head"><span class="ref">A-07</span><h2>Team &amp; contact</h2></div>
     <div class="split">
       <div class="team">
-        <div class="person"><b class="ph">[Name]</b><span class="ph">[Title]</span></div>
-        <div class="person"><b class="ph">[Name]</b><span class="ph">[Title]</span></div>
-        <div class="person"><b class="ph">[Name]</b><span class="ph">[Title]</span></div>
+        <div class="person"><b>Abdul Hamid Tayfor</b><span>Managing Director</span></div>
+        <div class="person"><b>Yaser Alassaf</b><span>Executive Manager</span></div>
+        <div class="person"><b>Ashok Kumar</b><span>Operation Manager</span></div>
+        <div class="person"><b>Zuhair Abdul Daim</b><span>Business Development Manager</span></div>
+        <div class="person"><b>Ryan Carl</b><span>Lead Architect</span></div>
+        <div class="person"><b>Mhd. Iyad Rajob</b><span>Project Manager</span></div>
       </div>
       <dl class="contact">
-        <dt>Web</dt><dd><a href="https://artline-uae.com/" target="_blank" rel="noopener">artline-uae.com</a></dd>
+        <dt>Office</dt><dd>Fujairah Tower, Office 806, Fujairah, UAE</dd>
+        <dt>P.O. Box</dt><dd class="mono">8946</dd>
+        <dt>Phone</dt><dd class="mono">+971 9 277 1997</dd>
+        <dt>Mobile</dt><dd class="mono">+971 50 299 0358</dd>
+        <dt>Email</dt><dd class="mono">info@artline-uae.com</dd>
+        <dt>Web</dt><dd><a href="https://www.artline-uae.com/" target="_blank" rel="noopener">artline-uae.com</a></dd>
         <dt>Instagram</dt><dd><a href="https://www.instagram.com/artline_engineering/" target="_blank" rel="noopener">@artline_engineering</a></dd>
-        <dt>Phone</dt><dd class="ph">[+971 …]</dd>
-        <dt>Email</dt><dd class="ph">[info@…]</dd>
-        <dt>Address</dt><dd class="ph">[Office address]</dd>
       </dl>
     </div>
   </section>
 
-  <footer><span>Art Line Engineering LLC · Company Profile</span><span>Rev. 0 · Draft</span></footer>
+  <footer><span>Art Line Engineering LLC · Company Profile</span><span>Licence 93772 · Rev. 1</span></footer>
 </div>
 
 <script>
-// Fill with confirmed figures: [[year, projects], ...]. Empty = outline only.
-const PROJECTS_PER_YEAR = [];
+// [completed yyyy-mm, project, location, sector, building permit no.]
+const PROJECTS = [
+  ["2025-05","Pappa Roti","Fujairah City Centre","F&B","38602"],
+  ["2025-04","Diyar Property Management office","City Centre district","Office","38580"],
+  ["2025-03","Retail store, unit G040","Fujairah City Centre","Retail","38583"],
+  ["2024-12","Baskin Robbins","Fujairah City Centre","F&B","37717"],
+  ["2024-12","La Senza","Fujairah City Centre","Retail","37859"],
+  ["2024-08","Eyewa","Fujairah City Centre","Retail","37179"],
+  ["2024-07","IKEA","Fujairah City Centre","Retail","36504"],
+  ["2024-07","Sparkys Land","City Centre district","Leisure","37019"],
+  ["2024-06","McDonald's","Fujairah City Centre","F&B","36264"],
+  ["2024-06","Little Shop","Al Tayf Mall","Retail","34699"],
+  ["2024-06","Penti","Al Tayf Mall","Retail","34710"],
+  ["2024-06","Mia Cosmetics","Al Tayf Mall","Retail","34697"],
+  ["2024-05","Ibn Sina Pharmacy","Fujairah City Centre","Healthcare","36496"],
+  ["2024-05","Crown Farms","City Centre district","Retail","36583"],
+  ["2024-03","Al Majed Oud","Fujairah City Centre","Retail","36158"],
+  ["2024-01","Platora","Fujairah City Centre","Retail","35717"],
+  ["2023-11","du store","Fujairah City Centre","Retail","35232"],
+  ["2023-10","Retail store","Fujairah City Centre","Retail","35534"],
+  ["2023-09","Subway","Masafi","F&B","35255"],
+  ["2023-09","Scratch café, unit 9","City Centre district","F&B","34972"],
+  ["2023-07","STREAT hotel corner","City Centre district","F&B","34795"],
+  ["2023-06","Elegance Style","Fujairah City Centre","Retail","34678"],
+  ["2023-03","Be Dashing salon","City Centre district","Retail","34043"],
+  ["2023-03","Domino's Pizza","City Centre district","F&B","34520"],
+  ["2023-02","Life Pharmacy","Fujairah City Centre","Healthcare","34253"],
+  ["2023-02","Louzan","Fujairah City Centre","Retail","34256"],
+  ["2022-12","Mzallah, Al Hilal Tower","Al Hilal City","Retail","33836"],
+  ["2022-11","Papa John's","Al Faseel","F&B","33563"],
+  ["2022-11","Ibn Sina Pharmacy, unit RG3","City Centre district","Healthcare","32902"],
+  ["2022-08","Feathers Café","Fujairah City Centre","F&B","33068"],
+  ["2022-05","Under Armour","Fujairah City Centre","Retail","33001"],
+  ["2022-04","Fashion store","Fujairah City Centre","Retail","32852"],
+  ["2022-02","Dr. Nutrition","Fujairah City Centre","Retail","32837"],
+  ["2022-02","Dubai Optical","Fujairah City Centre","Retail","32386"],
+  ["2022-01","Unit re-partition G-073 / G-074","Fujairah City Centre","Retail","32711"],
+  ["2022-01","Unit merge G-001 / G-002","Fujairah City Centre","Retail","32742"],
+  ["2022-01","Sephora","Fujairah City Centre","Retail","32712"],
+  ["2021-12","Mumuso","Fujairah City Centre","Retail","32624"],
+  ["2021-11","Ocumed clinic","City Centre district","Healthcare","32558"],
+  ["2021-10","Duozoulu","Fujairah City Centre","Retail","32215"],
+  ["2021-08","Mashreq Bank","Mreishid","Banking","31637"],
+  ["2021-08","Office interior & maintenance","City Centre district","Office","31859"],
+  ["2021-08","Al Hajis Perfumes","Fujairah City Centre","Retail","31830"],
+  ["2021-06","New Era","Fujairah City Centre","Retail","32032"]
+];
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmt = d => MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4);
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
-(function drawChart() {
-  const svg = document.getElementById('chart');
-  const cap = document.getElementById('chart-cap');
-  const NS = 'http://www.w3.org/2000/svg';
-  const W = 640, H = 220, L = 40, R = 12, T = 12, B = 28;
-  const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+// Register + year filter
+const years = [...new Set(PROJECTS.map(p => p[0].slice(0, 4)))];
+const filters = document.getElementById("filters");
+const rows = document.getElementById("rows");
+const count = document.getElementById("count");
+function render(year) {
+  const list = year === "All" ? PROJECTS : PROJECTS.filter(p => p[0].startsWith(year));
+  rows.innerHTML = list.map(p => `<tr><td class="num">${fmt(p[0])}</td><td class="proj">${esc(p[1])}</td><td>${esc(p[2])}</td><td><span class="chip">${esc(p[3])}</span></td><td class="num">${p[4]}</td></tr>`).join("");
+  count.textContent = `${list.length} of ${PROJECTS.length} certificates`;
+  filters.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.y === year)));
+}
+["All", ...years].forEach(y => {
+  const b = document.createElement("button");
+  b.type = "button"; b.id = "f-" + y; b.dataset.y = y; b.textContent = y;
+  b.addEventListener("click", () => render(y));
+  filters.appendChild(b);
+});
+render("All");
+
+// Sector bars
+const bySector = {};
+PROJECTS.forEach(p => bySector[p[3]] = (bySector[p[3]] || 0) + 1);
+const sorted = Object.entries(bySector).sort((a, b) => b[1] - a[1]);
+const maxS = sorted[0][1];
+document.getElementById("sectors").innerHTML = sorted.map(([k, v]) =>
+  `<div class="sector"><span>${esc(k)}</span><div class="track"><div class="fill" style="width:${(v / maxS * 100).toFixed(1)}%"></div></div><span class="n">${v}</span></div>`).join("");
+
+// Year chart
+function drawChart() {
+  const svg = document.getElementById("chart");
+  svg.innerHTML = "";
+  const NS = "http://www.w3.org/2000/svg";
   const css = getComputedStyle(document.documentElement);
   const c = v => css.getPropertyValue(v).trim();
-  const data = PROJECTS_PER_YEAR;
-  const max = data.length ? Math.max(...data.map(d => d[1])) : 4;
-  const step = Math.max(1, Math.ceil(max / 4));
-  const top = step * 4;
+  const el = (n, a, t) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (t != null) e.textContent = t; svg.appendChild(e); return e; };
+  const yrs = [...years].sort();
+  const data = yrs.map(y => [y, PROJECTS.filter(p => p[0].startsWith(y)).length]);
+  const W = 560, H = 220, L = 34, R = 10, T = 18, B = 28, top = 15;
   const y = v => T + (H - T - B) * (1 - v / top);
-  for (let i = 0; i <= 4; i++) {
-    const v = step * i;
-    el('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: c('--mist'), 'stroke-width': 1 });
-    if (data.length) el('text', { x: L - 8, y: y(v) + 4, 'text-anchor': 'end' }).textContent = v;
-  }
-  if (!data.length) {
-    const n = 6, slot = (W - L - R) / n;
-    for (let i = 0; i < n; i++) {
-      el('rect', { x: L + i * slot + slot * .2, y: T + 20, width: slot * .6, height: H - T - B - 20, fill: 'none', stroke: c('--steel'), 'stroke-dasharray': '4 4' });
-    }
-    cap.textContent = 'Awaiting yearly project figures.';
-    return;
+  const font = { "font-family": "IBM Plex Mono, monospace", "font-size": 11 };
+  for (let v = 0; v <= top; v += 5) {
+    el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: c("--mist"), "stroke-width": 1 });
+    el("text", { ...font, x: L - 8, y: y(v) + 4, "text-anchor": "end", fill: c("--steel") }, v);
   }
   const slot = (W - L - R) / data.length;
-  data.forEach(([yr, v]) => {
-    const i = data.findIndex(d => d[0] === yr);
-    const x = L + i * slot + slot * .2;
-    el('rect', { x, y: y(v), width: slot * .6, height: y(0) - y(v), fill: c('--maroon') });
-    el('text', { x: x + slot * .3, y: H - 8, 'text-anchor': 'middle' }).textContent = yr;
+  data.forEach(([yr, v], i) => {
+    const x = L + i * slot + slot * .22, w = slot * .56;
+    const partial = yr === "2025";
+    el("rect", { x, y: y(v), width: w, height: y(0) - y(v), fill: c("--maroon"), "fill-opacity": partial ? .45 : 1 });
+    el("text", { ...font, x: x + w / 2, y: y(v) - 6, "text-anchor": "middle", fill: c("--ink"), "font-weight": 500 }, v);
+    el("text", { ...font, x: x + w / 2, y: H - 8, "text-anchor": "middle", fill: c("--graphite") }, partial ? "2025*" : yr);
   });
-  cap.textContent = 'Source: company records.';
-})();
+}
+drawChart();
+try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawChart); } catch (e) {}
+new MutationObserver(drawChart).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 </script>
