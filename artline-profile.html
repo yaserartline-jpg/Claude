@@ -122,6 +122,21 @@ section.block { padding-block: 72px 0; }
 .gallery figcaption b { color: var(--ink); font-weight: 600; }
 .gallery .wide { grid-column: 1 / -1; }
 
+/* Current projects */
+.live { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.job { border: 1px solid var(--mist); border-top: 3px solid var(--graphite); padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.job:has(.on) { border-top-color: var(--maroon); }
+.job h3 { font-size: 1.35rem; font-weight: 600; }
+.job dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: .9rem; }
+.job dt { font: 500 .68rem/1.9 var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); }
+.job dd { margin: 0; color: var(--graphite); min-width: 0; }
+.status { justify-self: start; font: 500 .7rem var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border: 1px solid var(--steel); color: var(--graphite); }
+.status.on { background: var(--maroon); border-color: var(--maroon); color: #fff; }
+.status.on::before { content: "● "; }
+.job.more { background: var(--tint); border-top-color: var(--mist); }
+.job.more p { color: var(--graphite); font-size: .95rem; }
+.job.more .btn { justify-self: start; margin-top: 4px; }
+
 /* Track record */
 .record { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
 .panel { border: 1px solid var(--mist); padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
@@ -211,6 +226,7 @@ footer img { height: 34px; width: auto; display: block; }
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .about, .record, .cert-detail, .cta .wrap { grid-template-columns: 1fr; }
+  .live { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .services { grid-template-columns: repeat(2, 1fr); }
   .proof .wrap { grid-template-columns: 1fr 1fr; }
   .proof div.item { padding-left: 0; }
@@ -220,7 +236,7 @@ footer img { height: 34px; width: auto; display: block; }
 }
 @media (max-width: 600px) {
   .hero .wrap { padding-block: 56px 48px; }
-  .services, .certs, .segments, .team, .gallery { grid-template-columns: 1fr; }
+  .services, .certs, .segments, .team, .gallery, .live { grid-template-columns: 1fr; }
   .cert { border-right: 0; border-bottom: 1px solid var(--mist); }
   .cert:last-child { border-bottom: 0; }
   .logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -245,6 +261,7 @@ footer img { height: 34px; width: auto; display: block; }
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#current">Current</a></li>
       <li><a href="#certifications">Certifications</a></li>
       <li><a href="#clients">Clients</a></li>
       <li><a href="#team">Team</a></li>
@@ -322,6 +339,42 @@ footer img { height: 34px; width: auto; display: block; }
       <figure><img src="artline-img/mia.jpg" alt="Mia Cosmetics store with illuminated display walls" loading="lazy"><figcaption><b>Mia Cosmetics</b><span>Retail · Al Tayf Mall · 2024</span></figcaption></figure>
       <figure><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><figcaption><b>911 Games Station</b><span>Leisure</span></figcaption></figure>
       <figure><img src="artline-img/scratch.jpg" alt="Scratch café with booth seating and timber cladding" loading="lazy"><figcaption><b>Scratch café</b><span>F&amp;B · 2023</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="block" id="current">
+    <div class="head"><span class="kicker">Current projects</span><h2>On site now</h2><p>Recent awards and works in progress across Fujairah, Dibba and Abu Dhabi.</p></div>
+    <div class="live">
+      <article class="job">
+        <span class="status on">In progress</span>
+        <h3>VPTC Camel Farm building</h3>
+        <dl><dt>Location</dt><dd>Fujairah</dd><dt>Scope</dt><dd>Building construction, main contract</dd><dt>Consultant</dt><dd>EDMAC</dd></dl>
+      </article>
+      <article class="job">
+        <span class="status on">In progress</span>
+        <h3>School of Calligraphy &amp; Ornamentation, Dibba branch</h3>
+        <dl><dt>Location</dt><dd>Dibba Al Fujairah</dd><dt>Scope</dt><dd>Fit-out with HVAC and MEP coordination</dd><dt>Client</dt><dd>SOCO Fujairah</dd></dl>
+      </article>
+      <article class="job">
+        <span class="status">2025 – 2026</span>
+        <h3>SOCO Kids &amp; SOCO Young</h3>
+        <dl><dt>Location</dt><dd>Al Taif Business Tower, Fujairah</dd><dt>Scope</dt><dd>Interior fit-out, admin office, VRF air-conditioning</dd><dt>Client</dt><dd>SOCO Fujairah</dd></dl>
+      </article>
+      <article class="job">
+        <span class="status">2026</span>
+        <h3>Kayak mounting pontoons, Jubail Island</h3>
+        <dl><dt>Location</dt><dd>Nad Al Dhabi, Seef Al Jubail &amp; Ain Al Maha, Abu Dhabi</dd><dt>Scope</dt><dd>Design, supply and installation of floating pontoons</dd><dt>With</dt><dd>Premier Marine Solutions for Lead Development</dd></dl>
+      </article>
+      <article class="job">
+        <span class="status">2026</span>
+        <h3>BANOBAGI Clinic</h3>
+        <dl><dt>Location</dt><dd>Fujairah</dd><dt>Scope</dt><dd>Clinic fit-out</dd><dt>Consultant</dt><dd>EDMAC</dd></dl>
+      </article>
+      <article class="job more">
+        <h3>Tendering now</h3>
+        <p>Marine and waterfront works in Dubai and Abu Dhabi, including pedestrian bridges, beach structures and marina maintenance.</p>
+        <a class="btn btn-primary" href="#contact">Invite us to tender</a>
+      </article>
     </div>
   </section>
 
