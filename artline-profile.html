@@ -94,6 +94,22 @@ section { margin-top: 56px; display: grid; gap: 20px; }
 .svc h3 { font-size: 1.35rem; font-weight: 600; }
 .svc p { color: var(--graphite); font-size: .95rem; }
 
+/* Certifications */
+.certs { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--graphite); }
+.cert { padding: 18px 20px; border-right: 1px solid var(--mist); display: grid; gap: 4px; align-content: start; min-width: 0; }
+.cert:last-child { border-right: 0; }
+.cert .std { font: 700 1.7rem/1 var(--f-display); color: var(--maroon); }
+.cert h3 { font-size: 1.15rem; font-weight: 600; }
+.cert .no { font: .72rem var(--f-mono); color: var(--steel); overflow-wrap: anywhere; }
+.cert-detail { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: center; }
+.cert-text { display: grid; gap: 14px; min-width: 0; }
+.cert-text p { color: var(--graphite); }
+.cert-meta { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: .9rem; }
+.cert-meta dt { font: 500 .7rem/1.9 var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); }
+.cert-meta dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.cert-mark { background: #FFFFFF; border: 1px solid var(--mist); padding: 16px; }
+.cert-mark img { display: block; width: 100%; max-width: 420px; height: auto; margin-inline: auto; }
+
 /* Gallery */
 .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 .gallery figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
@@ -146,13 +162,16 @@ footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphi
   .band-meta div:nth-last-child(-n+2) { border-bottom: 0; }
   .about, .charts, .split { grid-template-columns: 1fr; }
   .services, .client-groups { grid-template-columns: 1fr 1fr; }
+  .cert-detail { grid-template-columns: 1fr; }
   .stats { grid-template-columns: 1fr 1fr; }
   .stat:nth-child(2) { border-right: 0; }
   .stat:nth-child(-n+2) { border-bottom: 1px solid var(--mist); }
 }
 @media (max-width: 540px) {
   .band-main { padding: 28px 20px 24px; }
-  .services, .client-groups, .gallery { grid-template-columns: 1fr; }
+  .services, .client-groups, .gallery, .certs { grid-template-columns: 1fr; }
+  .cert { border-right: 0; border-bottom: 1px solid var(--mist); }
+  .cert:last-child { border-bottom: 0; }
   .gallery img { aspect-ratio: 2 / 1; }
   .sector { grid-template-columns: 90px 1fr 24px; }
 }
@@ -180,6 +199,7 @@ footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphi
       <div class="eyebrow">Company Profile · Fujairah, United Arab Emirates</div>
       <h1>Artline <span>Engineering</span></h1>
       <div class="tag">Contracting · Construction · Fit-out</div>
+      <div class="tag" style="color:#D46A6A">ISO 9001 · ISO 14001 · ISO 45001 certified</div>
     </div>
     <div class="band-meta">
       <div><span>Legal entity</span>Art Line Engineering LLC (SPC)</div>
@@ -242,8 +262,30 @@ footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphi
     </div>
   </section>
 
+  <section id="certifications">
+    <div class="sec-head"><span class="ref">A-04</span><h2>Certifications</h2><span class="aside">Integrated management system</span></div>
+    <div class="certs">
+      <div class="cert"><span class="std">ISO 9001:2015</span><h3>Quality management</h3><span class="no">VSQC099-421264353</span></div>
+      <div class="cert"><span class="std">ISO 14001:2015</span><h3>Environmental management</h3><span class="no">VSQC099-421264354</span></div>
+      <div class="cert"><span class="std">ISO 45001:2018</span><h3>Occupational health &amp; safety</h3><span class="no">VSQC099-421264355</span></div>
+    </div>
+    <div class="cert-detail">
+      <div class="cert-text">
+        <p>Artline's management system is assessed and registered by Veritas System Quality Certificates (VSQC), accredited by the Emirates International Accreditation Centre. Scope: building projects contracting, interior decoration and fit-out works, aluminium works and carpentry works.</p>
+        <dl class="cert-meta">
+          <dt>Registered site</dt><dd>Fujairah, UAE</dd>
+          <dt>IAF / EA-NACE</dt><dd>28 · 41.20 / 43.32</dd>
+          <dt>Certified</dt><dd>15 Sep 2026</dd>
+          <dt>Next surveillance</dt><dd>by 14 Sep 2027</dd>
+          <dt>Verify</dt><dd><a href="https://www.veritasassurance.com/verifycert.php" target="_blank" rel="noopener">veritasassurance.com/verifycert</a></dd>
+        </dl>
+      </div>
+      <div class="cert-mark"><img src="artline-img/iso-vsqc-eiac.png" width="617" height="212" alt="EIAC accreditation symbol, reference CB-QMS-EMS-OHSMS-099, with the Veritas Assurance ISO 9001, ISO 14001 and ISO 45001 certification mark"></div>
+    </div>
+  </section>
+
   <section id="gallery">
-    <div class="sec-head"><span class="ref">A-04</span><h2>Selected work</h2></div>
+    <div class="sec-head"><span class="ref">A-05</span><h2>Selected work</h2></div>
     <div class="gallery">
       <figure class="wide"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park interior with colourful padded zones" loading="lazy"><figcaption><b>Sparkys Land</b><span>Leisure · Fujairah</span></figcaption></figure>
       <figure><img src="artline-img/penti.jpg" alt="Penti and adjacent fashion shopfronts" loading="lazy"><figcaption><b>Penti &amp; Little Shop</b><span>Retail · Al Tayf Mall</span></figcaption></figure>
@@ -259,7 +301,7 @@ footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphi
   </section>
 
   <section id="projects">
-    <div class="sec-head"><span class="ref">A-05</span><h2>Certified project register</h2><span class="aside" id="count"></span></div>
+    <div class="sec-head"><span class="ref">A-06</span><h2>Certified project register</h2><span class="aside" id="count"></span></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by year"></div>
     <div class="tbl">
       <table>
@@ -271,7 +313,7 @@ footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphi
   </section>
 
   <section id="clients">
-    <div class="sec-head"><span class="ref">A-06</span><h2>Clients</h2></div>
+    <div class="sec-head"><span class="ref">A-07</span><h2>Clients</h2></div>
     <div class="client-groups">
       <div class="cg"><h3>Residential</h3><p>Homeowners seeking bespoke design and construction solutions.</p></div>
       <div class="cg"><h3>Commercial</h3><p>Businesses requiring modern office spaces, retail fit-outs and hospitality projects.</p></div>
@@ -290,7 +332,7 @@ footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphi
   </section>
 
   <section id="team">
-    <div class="sec-head"><span class="ref">A-07</span><h2>Team &amp; contact</h2></div>
+    <div class="sec-head"><span class="ref">A-08</span><h2>Team &amp; contact</h2></div>
     <div class="split">
       <div class="team">
         <div class="person"><b>Abdul Hamid Tayfor</b><span>Managing Director</span></div>
