@@ -1,0 +1,232 @@
+<title>Artline Engineering Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: drawing-sheet profile — title block header, ruled sections, specs in a mono utility face */
+:root {
+  /* Artline house palette */
+  --ink: #000000;        /* primary text / headers */
+  --graphite: #4D4D4D;   /* secondary headers / borders */
+  --steel: #808080;      /* subheadings / shading */
+  --mist: #D9D9D9;       /* backgrounds / alt rows */
+  --maroon: #800000;     /* titles, highlights, chart series */
+  --paper: #FFFFFF;
+  --tint: #F2F2F2;
+  --ph-bg: #F7EDED;      /* placeholder marker */
+
+  --f-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --ink: #F2F2F2; --graphite: #B3B3B3; --steel: #8C8C8C; --mist: #333333;
+  --maroon: #D46A6A; --paper: #121212; --tint: #1C1C1C; --ph-bg: #2E1A1A; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --ink: #F2F2F2; --graphite: #B3B3B3; --steel: #8C8C8C; --mist: #333333;
+  --maroon: #D46A6A; --paper: #121212; --tint: #1C1C1C; --ph-bg: #2E1A1A; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 400 1rem/1.6 var(--f-body); padding-inline: 16px; padding-block: 0 48px; }
+.sheet { max-width: 1040px; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+p { margin: 0; max-width: 65ch; }
+.ph { background: var(--ph-bg); color: var(--maroon); font-family: var(--f-mono); font-size: .85em; padding: 0 .3em; border-radius: 2px; }
+
+/* Title block */
+.titleblock { display: grid; grid-template-columns: 1fr auto; border: 2px solid var(--ink); margin-block: 32px 0; }
+.tb-main { padding: 28px 28px 24px; border-right: 1px solid var(--graphite); display: grid; gap: 10px; min-width: 0; }
+.tb-main .eyebrow { font: 500 .75rem/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--steel); }
+.tb-main h1 { font-size: clamp(2.4rem, 7vw, 4.2rem); font-weight: 700; color: var(--maroon); letter-spacing: .01em; text-transform: uppercase; }
+.tb-main .tag { font-size: 1.15rem; color: var(--graphite); }
+.tb-meta { display: grid; grid-template-rows: repeat(4, auto); font-family: var(--f-mono); font-size: .78rem; min-width: 200px; }
+.tb-meta div { padding: 10px 16px; border-bottom: 1px solid var(--graphite); display: grid; gap: 2px; }
+.tb-meta div:last-child { border-bottom: 0; }
+.tb-meta span { color: var(--steel); text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; }
+
+.notice { margin-top: 16px; padding: 12px 16px; border-left: 3px solid var(--maroon); background: var(--tint); font-size: .92rem; color: var(--graphite); }
+
+section { margin-top: 56px; display: grid; gap: 20px; }
+.sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
+.sec-head .ref { font: 500 .78rem var(--f-mono); color: var(--maroon); letter-spacing: .08em; }
+.sec-head h2 { font-size: 1.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--graphite); }
+.stat { padding: 18px 20px; border-right: 1px solid var(--mist); display: grid; gap: 4px; }
+.stat:last-child { border-right: 0; }
+.stat b { font: 700 2.4rem/1 var(--f-display); color: var(--maroon); font-variant-numeric: tabular-nums; }
+.stat span { font-size: .85rem; color: var(--graphite); }
+
+.chart-wrap { border: 1px solid var(--mist); padding: 16px; display: grid; gap: 8px; }
+.chart-wrap h3 { font-size: 1.15rem; font-weight: 600; color: var(--graphite); text-transform: uppercase; letter-spacing: .04em; }
+.chart-wrap svg { width: 100%; height: auto; display: block; }
+.chart-wrap svg text { fill: var(--steel); font: 11px var(--f-mono); }
+.chart-wrap .cap { font: .75rem var(--f-mono); color: var(--steel); }
+
+/* Services */
+.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0; border-top: 1px solid var(--graphite); }
+.svc { padding: 18px 18px 20px 0; border-bottom: 1px solid var(--mist); display: grid; gap: 6px; align-content: start; min-width: 0; }
+.svc h3 { font-size: 1.3rem; font-weight: 600; }
+.svc p { color: var(--graphite); font-size: .95rem; }
+
+/* Projects table */
+.tbl { overflow-x: auto; border: 1px solid var(--graphite); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: .93rem; }
+th { background: var(--steel); color: #fff; font: 600 .78rem var(--f-mono); text-transform: uppercase; letter-spacing: .08em; text-align: left; padding: 10px 14px; }
+td { padding: 10px 14px; border-top: 1px solid var(--mist); }
+tbody tr:nth-child(even) td { background: var(--tint); }
+td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+/* Team & contact */
+.split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; }
+.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.person { border-top: 3px solid var(--maroon); padding-top: 10px; display: grid; gap: 2px; }
+.person b { font: 600 1.15rem var(--f-display); }
+.person span { color: var(--graphite); font-size: .9rem; }
+dl.contact { margin: 0; display: grid; grid-template-columns: auto 1fr; border: 1px solid var(--graphite); }
+dl.contact dt, dl.contact dd { padding: 10px 14px; border-bottom: 1px solid var(--mist); margin: 0; }
+dl.contact dt { font: 500 .72rem var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); background: var(--tint); }
+dl.contact dd { min-width: 0; overflow-wrap: anywhere; }
+dl.contact dt:last-of-type, dl.contact dd:last-of-type { border-bottom: 0; }
+a { color: var(--maroon); }
+a:focus-visible { outline: 2px solid var(--maroon); outline-offset: 2px; }
+
+footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphite); font: .75rem var(--f-mono); color: var(--steel); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 720px) {
+  .titleblock { grid-template-columns: 1fr; }
+  .tb-main { border-right: 0; border-bottom: 1px solid var(--graphite); padding: 20px; }
+  .tb-meta { min-width: 0; grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .tb-meta div:nth-child(odd) { border-right: 1px solid var(--graphite); }
+  .tb-meta div:nth-last-child(-n+2) { border-bottom: 0; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat:nth-child(2) { border-right: 0; }
+  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--mist); }
+  .split { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="sheet">
+  <header class="titleblock">
+    <div class="tb-main">
+      <div class="eyebrow">Company Profile · United Arab Emirates</div>
+      <h1>Art Line Engineering</h1>
+      <p class="tag">Engineering &amp; construction services <span class="ph">[tagline]</span></p>
+    </div>
+    <div class="tb-meta">
+      <div><span>Entity</span>Art Line Engineering LLC</div>
+      <div><span>Established</span><span class="ph">[year]</span></div>
+      <div><span>Head office</span><span class="ph">[city, UAE]</span></div>
+      <div><span>Licence no.</span><span class="ph">[trade licence]</span></div>
+    </div>
+  </header>
+
+  <p class="notice">Draft layout. Items in <span class="ph">[brackets]</span> are placeholders waiting for confirmed company details from artline-uae.com and the company's Instagram.</p>
+
+  <section id="about">
+    <div class="sec-head"><span class="ref">A-01</span><h2>About</h2></div>
+    <p><span class="ph">[Two to three sentences: who the company is, what it delivers, which sectors it serves across the UAE, and what sets it apart.]</span></p>
+  </section>
+
+  <section id="stats">
+    <div class="sec-head"><span class="ref">A-02</span><h2>At a glance</h2></div>
+    <div class="stats">
+      <div class="stat"><b class="ph">[n]</b><span>Years in operation</span></div>
+      <div class="stat"><b class="ph">[n]</b><span>Projects completed</span></div>
+      <div class="stat"><b class="ph">[n]</b><span>Engineers &amp; staff</span></div>
+      <div class="stat"><b class="ph">[n]</b><span>Emirates served</span></div>
+    </div>
+    <div class="chart-wrap">
+      <h3>Projects completed per year</h3>
+      <svg id="chart" viewBox="0 0 640 220" role="img" aria-label="Bar chart of projects completed per year"></svg>
+      <div class="cap" id="chart-cap"></div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="sec-head"><span class="ref">A-03</span><h2>Services</h2></div>
+    <div class="services">
+      <div class="svc"><h3><span class="ph">[Service 1]</span></h3><p><span class="ph">[One-line description]</span></p></div>
+      <div class="svc"><h3><span class="ph">[Service 2]</span></h3><p><span class="ph">[One-line description]</span></p></div>
+      <div class="svc"><h3><span class="ph">[Service 3]</span></h3><p><span class="ph">[One-line description]</span></p></div>
+      <div class="svc"><h3><span class="ph">[Service 4]</span></h3><p><span class="ph">[One-line description]</span></p></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-head"><span class="ref">A-04</span><h2>Key projects</h2></div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Project</th><th>Location</th><th>Type</th><th>Client</th><th>Year</th></tr></thead>
+        <tbody>
+          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
+          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
+          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
+          <tr><td class="ph">[Project name]</td><td class="ph">[Emirate]</td><td class="ph">[Type]</td><td class="ph">[Client]</td><td class="num ph">[yyyy]</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="sec-head"><span class="ref">A-05</span><h2>Team &amp; contact</h2></div>
+    <div class="split">
+      <div class="team">
+        <div class="person"><b class="ph">[Name]</b><span class="ph">[Title]</span></div>
+        <div class="person"><b class="ph">[Name]</b><span class="ph">[Title]</span></div>
+        <div class="person"><b class="ph">[Name]</b><span class="ph">[Title]</span></div>
+      </div>
+      <dl class="contact">
+        <dt>Web</dt><dd><a href="https://artline-uae.com/" target="_blank" rel="noopener">artline-uae.com</a></dd>
+        <dt>Instagram</dt><dd><a href="https://www.instagram.com/artline_engineering/" target="_blank" rel="noopener">@artline_engineering</a></dd>
+        <dt>Phone</dt><dd class="ph">[+971 …]</dd>
+        <dt>Email</dt><dd class="ph">[info@…]</dd>
+        <dt>Address</dt><dd class="ph">[Office address]</dd>
+      </dl>
+    </div>
+  </section>
+
+  <footer><span>Art Line Engineering LLC · Company Profile</span><span>Rev. 0 · Draft</span></footer>
+</div>
+
+<script>
+// Fill with confirmed figures: [[year, projects], ...]. Empty = outline only.
+const PROJECTS_PER_YEAR = [];
+
+(function drawChart() {
+  const svg = document.getElementById('chart');
+  const cap = document.getElementById('chart-cap');
+  const NS = 'http://www.w3.org/2000/svg';
+  const W = 640, H = 220, L = 40, R = 12, T = 12, B = 28;
+  const el = (n, a) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  const css = getComputedStyle(document.documentElement);
+  const c = v => css.getPropertyValue(v).trim();
+  const data = PROJECTS_PER_YEAR;
+  const max = data.length ? Math.max(...data.map(d => d[1])) : 4;
+  const step = Math.max(1, Math.ceil(max / 4));
+  const top = step * 4;
+  const y = v => T + (H - T - B) * (1 - v / top);
+  for (let i = 0; i <= 4; i++) {
+    const v = step * i;
+    el('line', { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: c('--mist'), 'stroke-width': 1 });
+    if (data.length) el('text', { x: L - 8, y: y(v) + 4, 'text-anchor': 'end' }).textContent = v;
+  }
+  if (!data.length) {
+    const n = 6, slot = (W - L - R) / n;
+    for (let i = 0; i < n; i++) {
+      el('rect', { x: L + i * slot + slot * .2, y: T + 20, width: slot * .6, height: H - T - B - 20, fill: 'none', stroke: c('--steel'), 'stroke-dasharray': '4 4' });
+    }
+    cap.textContent = 'Awaiting yearly project figures.';
+    return;
+  }
+  const slot = (W - L - R) / data.length;
+  data.forEach(([yr, v]) => {
+    const i = data.findIndex(d => d[0] === yr);
+    const x = L + i * slot + slot * .2;
+    el('rect', { x, y: y(v), width: slot * .6, height: y(0) - y(v), fill: c('--maroon') });
+    el('text', { x: x + slot * .3, y: H - 8, 'text-anchor': 'middle' }).textContent = yr;
+  });
+  cap.textContent = 'Source: company records.';
+})();
+</script>
