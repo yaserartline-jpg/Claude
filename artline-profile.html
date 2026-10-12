@@ -190,6 +190,11 @@ td.proj { font-weight: 600; }
 .logos li { background: #FFFFFF; list-style: none; min-width: 0; padding: 10px 8px; }
 .logos img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: contain; display: block; }
 .logos { margin: 0; padding: 0; }
+.sub { font-size: 1.15rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin: 32px 0 14px; color: var(--graphite); }
+.brandrow li, .partners li { padding: 18px 16px; }
+.partners { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.partners img { aspect-ratio: 3 / 1; }
+.logos li.dark { background: #000000; }
 .segments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
 .segments h3 { font-size: 1.15rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
 .segments p { font-size: .94rem; color: var(--graphite); margin-top: 4px; }
@@ -239,7 +244,7 @@ footer img { height: 34px; width: auto; display: block; }
   .services, .certs, .segments, .team, .gallery, .live { grid-template-columns: 1fr; }
   .cert { border-right: 0; border-bottom: 1px solid var(--mist); }
   .cert:last-child { border-bottom: 0; }
-  .logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .logos, .partners { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .nav .btn { padding: 8px 12px; font-size: .82rem; }
   .brand img { height: 34px; }
   .gallery img { aspect-ratio: 2 / 1; }
@@ -322,7 +327,7 @@ footer img { height: 34px; width: auto; display: block; }
   </section>
 
   <section class="block" id="projects">
-    <div class="head"><span class="kicker">Featured projects</span><h2>Spaces for brands people know</h2><p>A selection of fit-outs completed and certified by Fujairah Municipality.</p></div>
+    <div class="head"><span class="kicker">Featured projects</span><h2>Spaces for brands people know</h2><p>A selection of completed fit-outs for global brands, government service centres and corporate clients.</p></div>
     <div class="cards">
       <article class="card"><img src="artline-img/p-ikea.jpg" alt="IKEA store entrance at Fujairah City Centre" loading="lazy"><span class="meta">Retail · 2024</span><h3>IKEA</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
       <article class="card"><img src="artline-img/p-sephora.jpg" alt="Sephora storefront with black and white striped portal" loading="lazy"><span class="meta">Retail · 2022</span><h3>Sephora</h3><p>Interior decor works, Fujairah City Centre.</p></article>
@@ -332,6 +337,10 @@ footer img { height: 34px; width: auto; display: block; }
       <article class="card"><img src="artline-img/p-eyewa.jpg" alt="Eyewa optical store with red slatted ceiling" loading="lazy"><span class="meta">Retail · 2024</span><h3>Eyewa</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
       <article class="card"><img src="artline-img/p-baskin-robbins.jpg" alt="Baskin Robbins parlour with timber walls and display freezers" loading="lazy"><span class="meta">F&amp;B · 2024</span><h3>Baskin Robbins</h3><p>Interior decor and maintenance, Fujairah City Centre.</p></article>
       <article class="card"><img src="artline-img/p-dominos.jpg" alt="Domino's Pizza frontage on a commercial building" loading="lazy"><span class="meta">F&amp;B · 2023</span><h3>Domino's Pizza</h3><p>Restaurant interior, Fujairah city centre.</p></article>
+      <article class="card"><img src="artline-img/p-tasheel.jpg" alt="Tasheel service centre with numbered white counters and green seating" loading="lazy"><span class="meta">Government · Fujairah</span><h3>Tasheel service centre</h3><p>Customer service hall fit-out.</p></article>
+      <article class="card"><img src="artline-img/p-tawjeeh.jpg" alt="Tawjeeh service hall with orange curved counters" loading="lazy"><span class="meta">Government · Fujairah</span><h3>Tawjeeh service centre</h3><p>Service hall fit-out with custom-built curved counters.</p></article>
+      <article class="card"><img src="artline-img/p-banobagi.jpg" alt="BANOBAGI Dermatology Clinic reception with timber slat ceiling" loading="lazy"><span class="meta">Healthcare · Fujairah</span><h3>BANOBAGI Dermatology Clinic</h3><p>Dermatology clinic interior fit-out.</p></article>
+      <article class="card"><img src="artline-img/p-al-fajar.jpg" alt="Al Fajar Al Alamia boardroom with world map wall feature" loading="lazy"><span class="meta">Corporate · Fujairah</span><h3>Al Fajar Al Alamia</h3><p>Corporate office fit-out including the boardroom.</p></article>
     </div>
     <div class="gallery">
       <figure class="wide"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park with colourful padded zones" loading="lazy"><figcaption><b>Sparkys Land</b><span>Leisure · 2024</span></figcaption></figure>
@@ -439,6 +448,25 @@ footer img { height: 34px; width: auto; display: block; }
   <section class="block" id="clients">
     <div class="head"><span class="kicker">Clients</span><h2>Trusted by government and leading brands</h2></div>
     <ul class="logos" id="logos"></ul>
+    <h3 class="sub">Brands we've built spaces for</h3>
+    <ul class="logos brandrow">
+      <li><img src="artline-img/brands/ikea.svg" alt="IKEA" title="IKEA" loading="lazy"></li>
+      <li><img src="artline-img/brands/mcdonalds.svg" alt="McDonald's" title="McDonald's" loading="lazy"></li>
+      <li><img src="artline-img/brands/underarmour.svg" alt="Under Armour" title="Under Armour" loading="lazy"></li>
+      <li><img src="artline-img/brands/eyewa.svg" alt="Eyewa" title="Eyewa" loading="lazy"></li>
+      <li><img src="artline-img/brands/baskin.svg" alt="Baskin Robbins" title="Baskin Robbins" loading="lazy"></li>
+      <li><img src="artline-img/brands/dominos.svg" alt="Domino's Pizza" title="Domino's Pizza" loading="lazy"></li>
+      <li><img src="artline-img/brands/subway.svg" alt="Subway" title="Subway" loading="lazy"></li>
+      <li><img src="artline-img/brands/papajohns.svg" alt="Papa John's" title="Papa John's" loading="lazy"></li>
+    </ul>
+    <h3 class="sub">Current clients &amp; project partners</h3>
+    <ul class="logos partners">
+      <li><img src="artline-img/partners/lead.svg" alt="LEAD Development" title="LEAD Development" loading="lazy"></li>
+      <li><img src="artline-img/partners/soco.png" alt="School of Calligraphy &amp; Ornamentation" title="School of Calligraphy &amp; Ornamentation" loading="lazy"></li>
+      <li><img src="artline-img/partners/raibal.png" alt="Raibal Holding" title="Raibal Holding" loading="lazy"></li>
+      <li><img src="artline-img/partners/bond.png" alt="Bond Interiors" title="Bond Interiors" loading="lazy"></li>
+      <li class="dark"><img src="artline-img/partners/pms.png" alt="Premier Marine Solutions" title="Premier Marine Solutions" loading="lazy"></li>
+    </ul>
     <div class="segments">
       <div><h3>Government</h3><p>Ministries, police, airport, authorities and service centres across Fujairah.</p></div>
       <div><h3>Commercial</h3><p>Malls, banks, retailers, restaurants, schools and hospitals.</p></div>
