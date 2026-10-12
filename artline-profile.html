@@ -1,413 +1,495 @@
 <title>Artline Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: drawing-sheet profile. Black title band with line-art, ruled sections keyed A-01…, specs in a mono utility face */
+/* Layout: corporate one-pager. Sticky nav, photo hero, proof strip, then services → work → record → certifications → clients → team → contact CTA */
 :root {
   /* Artline house palette */
-  --ink: #000000;        /* primary text / headers */
-  --graphite: #4D4D4D;   /* secondary headers / borders */
-  --steel: #808080;      /* subheadings / table shading */
-  --mist: #D9D9D9;       /* backgrounds / alt rows */
-  --maroon: #800000;     /* titles, highlights, chart series */
+  --ink: #000000;
+  --graphite: #4D4D4D;
+  --steel: #808080;
+  --mist: #D9D9D9;
+  --maroon: #800000;
   --paper: #FFFFFF;
   --tint: #F3F3F3;
-  --band: #000000;       /* title band */
-  --band-fg: #FFFFFF;
-  --band-line: #4D4D4D;
+  --nav-bg: rgba(255,255,255,.94);
   --th-bg: #808080;
-  --th-fg: #FFFFFF;
+  --on-dark: #FFFFFF;
+  --on-dark-2: #D9D9D9;
+  --maroon-on-dark: #D46A6A;
 
   --f-display: "Barlow Condensed", "Arial Narrow", sans-serif;
   --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --wrap: 1120px;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --ink: #F2F2F2; --graphite: #B3B3B3; --steel: #8C8C8C; --mist: #333333;
-  --maroon: #D46A6A; --paper: #121212; --tint: #1B1B1B;
-  --band: #000000; --band-fg: #FFFFFF; --band-line: #3A3A3A; --th-bg: #4D4D4D; --th-fg: #FFFFFF;
+  --maroon: #D46A6A; --paper: #121212; --tint: #1B1B1B; --nav-bg: rgba(18,18,18,.94); --th-bg: #4D4D4D;
   color-scheme: dark } }
 :root[data-theme="dark"] {
   --ink: #F2F2F2; --graphite: #B3B3B3; --steel: #8C8C8C; --mist: #333333;
-  --maroon: #D46A6A; --paper: #121212; --tint: #1B1B1B;
-  --band: #000000; --band-fg: #FFFFFF; --band-line: #3A3A3A; --th-bg: #4D4D4D; --th-fg: #FFFFFF;
+  --maroon: #D46A6A; --paper: #121212; --tint: #1B1B1B; --nav-bg: rgba(18,18,18,.94); --th-bg: #4D4D4D;
   color-scheme: dark }
 
 * { box-sizing: border-box; }
-body { background: var(--paper); color: var(--ink); font: 400 1rem/1.6 var(--f-body); padding-inline: 16px; padding-block: 0 48px; }
-.sheet { max-width: 1080px; margin-inline: auto; }
-h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--paper); color: var(--ink); font: 400 1rem/1.6 var(--f-body); margin: 0; }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.08; }
 p { margin: 0; max-width: 65ch; }
-.mono { font-family: var(--f-mono); }
+a { color: var(--maroon); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--maroon); outline-offset: 3px; }
+img { max-width: 100%; }
 
-/* Title band */
-.band { position: relative; overflow: hidden; background: var(--band); color: var(--band-fg); margin-top: 24px; display: grid; grid-template-columns: 1fr auto; }
-.band svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.band-main { position: relative; padding: 40px 32px 32px; display: grid; gap: 12px; min-width: 0; }
-.mark { width: 64px; height: 64px; }
-.band .eyebrow { font: 500 .75rem/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: #BFBFBF; }
-.band h1 { font-size: clamp(2.6rem, 8vw, 4.6rem); font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
-.band h1 span { color: #D46A6A; }
-.band .tag { font: 500 1rem var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: #D9D9D9; }
-.band-meta { position: relative; display: grid; font-family: var(--f-mono); font-size: .8rem; min-width: 230px; border-left: 1px solid var(--band-line); background: rgba(0,0,0,.6); }
-.band-meta div { padding: 12px 18px; border-bottom: 1px solid var(--band-line); display: grid; gap: 2px; }
-.band-meta div:last-child { border-bottom: 0; }
-.band-meta span { color: #A6A6A6; text-transform: uppercase; letter-spacing: .1em; font-size: .66rem; }
+/* Nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--nav-bg); backdrop-filter: blur(8px); border-bottom: 1px solid var(--mist); }
+.nav .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); flex: none; }
+.brand img { height: 40px; width: auto; display: block; }
+.brand .l-dark { display: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand .l-light { display: none; } :root:not([data-theme="light"]) .brand .l-dark { display: block; } }
+:root[data-theme="dark"] .brand .l-light { display: none; }
+:root[data-theme="dark"] .brand .l-dark { display: block; }
+.nav ul { display: flex; gap: 22px; list-style: none; margin: 0 0 0 auto; padding: 0; }
+.nav ul a { color: var(--graphite); text-decoration: none; font-weight: 600; font-size: .92rem; }
+.nav ul a:hover { color: var(--maroon); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 600 .95rem var(--f-body); padding: 11px 20px; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-primary { background: var(--maroon); color: #fff; }
+.btn-primary:hover { filter: brightness(1.12); }
+.btn-ghost { border-color: rgba(255,255,255,.7); color: #fff; }
+.btn-ghost:hover { background: rgba(255,255,255,.12); }
+.nav .btn { padding: 8px 16px; font-size: .88rem; flex: none; }
 
-section { margin-top: 56px; display: grid; gap: 20px; }
-.sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 8px; flex-wrap: wrap; }
-.sec-head .ref { font: 500 .78rem var(--f-mono); color: var(--maroon); letter-spacing: .08em; }
-.sec-head h2 { font-size: 1.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
-.sec-head .aside { margin-left: auto; font: .75rem var(--f-mono); color: var(--steel); }
+/* Hero */
+.hero { position: relative; color: var(--on-dark); background: #000; overflow: hidden; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.6) 55%, rgba(0,0,0,.15) 100%); }
+.hero .wrap { position: relative; z-index: 1; padding-block: 88px 72px; display: grid; gap: 22px; }
+.hero .eyebrow { font: 500 .78rem var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--on-dark-2); }
+.hero h1 { font-size: clamp(2.5rem, 6.4vw, 4.6rem); font-weight: 700; max-width: 15ch; text-transform: uppercase; letter-spacing: .01em; }
+.hero h1 em { font-style: normal; color: var(--maroon-on-dark); }
+.hero .lead { font-size: 1.2rem; color: var(--on-dark-2); max-width: 52ch; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.hero .iso { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 500 .78rem var(--f-mono); letter-spacing: .08em; color: var(--on-dark-2); margin-top: 10px; }
+.hero .iso span::before { content: "✓ "; color: var(--maroon-on-dark); }
+
+/* Proof strip */
+.proof { border-bottom: 1px solid var(--mist); }
+.proof .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+.proof div.item { padding: 26px 20px; border-right: 1px solid var(--mist); display: grid; gap: 2px; }
+.proof div.item:first-child { padding-left: 0; }
+.proof div.item:last-child { border-right: 0; }
+.proof b { font: 700 2.6rem/1 var(--f-display); color: var(--maroon); font-variant-numeric: tabular-nums; }
+.proof span { font-size: .92rem; color: var(--graphite); }
+
+section.block { padding-block: 72px 0; }
+.head { display: grid; gap: 10px; margin-bottom: 32px; }
+.kicker { font: 500 .76rem var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--maroon); }
+.head h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; text-transform: uppercase; letter-spacing: .01em; }
+.head p { color: var(--graphite); font-size: 1.08rem; }
 
 /* About */
-.about { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; }
-.about .lead { font-size: 1.2rem; line-height: 1.55; }
-.vm { display: grid; gap: 14px; }
-.vm h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; color: var(--maroon); font-weight: 600; }
-.vm ul { margin: 4px 0 0; padding-left: 1.1em; color: var(--graphite); font-size: .95rem; display: grid; gap: 4px; }
+.about { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: start; }
+.about .lead { font-size: 1.25rem; line-height: 1.55; }
+.about .lead + p { margin-top: 16px; color: var(--graphite); }
+.vm { display: grid; gap: 22px; border-left: 3px solid var(--maroon); padding-left: 24px; }
+.vm h3 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; }
+.vm p { color: var(--graphite); margin-top: 4px; }
 
-/* Stats */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--graphite); }
-.stat { padding: 18px 20px; border-right: 1px solid var(--mist); display: grid; gap: 4px; align-content: start; }
-.stat:last-child { border-right: 0; }
-.stat b { font: 700 2.6rem/1 var(--f-display); color: var(--maroon); font-variant-numeric: tabular-nums; }
-.stat span { font-size: .88rem; color: var(--graphite); }
-.stat small { font: .68rem var(--f-mono); color: var(--steel); }
+/* Services */
+.services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--mist); border: 1px solid var(--mist); }
+.svc { background: var(--paper); padding: 26px 24px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.svc svg { width: 34px; height: 34px; stroke: var(--maroon); fill: none; stroke-width: 1.6; }
+.svc h3 { font-size: 1.4rem; font-weight: 600; }
+.svc p { color: var(--graphite); font-size: .96rem; }
 
-.charts { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
-.chart-wrap { border: 1px solid var(--mist); padding: 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
-.chart-wrap h3 { font-size: 1.1rem; font-weight: 600; color: var(--graphite); text-transform: uppercase; letter-spacing: .04em; }
-.chart-wrap svg { width: 100%; height: auto; display: block; }
-.chart-wrap .cap { font: .72rem var(--f-mono); color: var(--steel); }
-.sectors { display: grid; gap: 10px; }
-.sector { display: grid; grid-template-columns: 110px 1fr 28px; gap: 10px; align-items: center; font-size: .9rem; }
+/* Featured projects */
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.proof .item, .svc, .card, .cert, .person, .cta .wrap > * { min-width: 0; }
+.card { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: var(--mist); }
+.card h3 { font-size: 1.3rem; font-weight: 600; }
+.card .meta { font: .74rem var(--f-mono); color: var(--steel); letter-spacing: .04em; text-transform: uppercase; }
+.card p { font-size: .92rem; color: var(--graphite); }
+
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 44px; }
+.gallery figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+.gallery img { width: 100%; aspect-ratio: 3 / 1; object-fit: cover; display: block; background: var(--mist); }
+.gallery figcaption { font-size: .9rem; color: var(--graphite); display: flex; justify-content: space-between; gap: 8px; }
+.gallery figcaption b { color: var(--ink); font-weight: 600; }
+.gallery .wide { grid-column: 1 / -1; }
+
+/* Track record */
+.record { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+.panel { border: 1px solid var(--mist); padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.panel h3 { font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--graphite); }
+.panel svg { width: 100%; height: auto; display: block; }
+.cap { font: .72rem var(--f-mono); color: var(--steel); }
+.sectors { display: grid; gap: 12px; }
+.sector { display: grid; grid-template-columns: 100px 1fr 28px; gap: 10px; align-items: center; font-size: .92rem; }
 .sector .track { height: 12px; background: var(--tint); }
 .sector .fill { height: 100%; background: var(--maroon); }
 .sector .n { font: .8rem var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
 
-/* Services */
-.services { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--graphite); }
-.svc { padding: 18px 20px 20px 0; border-bottom: 1px solid var(--mist); display: grid; gap: 6px; align-content: start; min-width: 0; }
-.svc .code { font: .7rem var(--f-mono); color: var(--steel); letter-spacing: .06em; }
-.svc h3 { font-size: 1.35rem; font-weight: 600; }
-.svc p { color: var(--graphite); font-size: .95rem; }
-
-/* Certifications */
-.certs { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--graphite); }
-.cert { padding: 18px 20px; border-right: 1px solid var(--mist); display: grid; gap: 4px; align-content: start; min-width: 0; }
-.cert:last-child { border-right: 0; }
-.cert .std { font: 700 1.7rem/1 var(--f-display); color: var(--maroon); }
-.cert h3 { font-size: 1.15rem; font-weight: 600; }
-.cert .no { font: .72rem var(--f-mono); color: var(--steel); overflow-wrap: anywhere; }
-.cert-detail { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: center; }
-.cert-text { display: grid; gap: 14px; min-width: 0; }
-.cert-text p { color: var(--graphite); }
-.cert-meta { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: .9rem; }
-.cert-meta dt { font: 500 .7rem/1.9 var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); }
-.cert-meta dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-.cert-mark { background: #FFFFFF; border: 1px solid var(--mist); padding: 16px; }
-.cert-mark img { display: block; width: 100%; max-width: 420px; height: auto; margin-inline: auto; }
-
-/* Gallery */
-.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.gallery figure { margin: 0; display: grid; gap: 6px; min-width: 0; }
-.gallery img { width: 100%; max-width: 100%; aspect-ratio: 3 / 1; object-fit: cover; display: block; background: var(--mist); }
-.gallery figcaption { font-size: .88rem; color: var(--graphite); display: flex; justify-content: space-between; gap: 8px; }
-.gallery figcaption b { color: var(--ink); font-weight: 600; }
-.gallery figure.wide { grid-column: 1 / -1; }
-
-/* Projects table */
+details.register { margin-top: 20px; border: 1px solid var(--graphite); }
+details.register summary { cursor: pointer; padding: 14px 18px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; list-style: none; }
+details.register summary::-webkit-details-marker { display: none; }
+details.register summary::after { content: "+"; font: 600 1.2rem var(--f-mono); color: var(--maroon); }
+details.register[open] summary::after { content: "–"; }
+details.register summary span { font: .78rem var(--f-mono); color: var(--steel); font-weight: 400; margin-left: auto; align-self: center; }
+.reg-body { padding: 0 18px 18px; display: grid; gap: 12px; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; }
 .filters button { font: 500 .8rem var(--f-mono); padding: 6px 12px; border: 1px solid var(--graphite); background: var(--paper); color: var(--ink); cursor: pointer; }
 .filters button[aria-pressed="true"] { background: var(--maroon); border-color: var(--maroon); color: #fff; }
-.filters button:focus-visible, a:focus-visible { outline: 2px solid var(--maroon); outline-offset: 2px; }
-.tbl { overflow-x: auto; border: 1px solid var(--graphite); }
-table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .92rem; }
-th { background: var(--th-bg); color: var(--th-fg); font: 600 .74rem var(--f-mono); text-transform: uppercase; letter-spacing: .08em; text-align: left; padding: 10px 14px; }
+.tbl { overflow-x: auto; border: 1px solid var(--mist); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .92rem; }
+th { background: var(--th-bg); color: #fff; font: 600 .72rem var(--f-mono); text-transform: uppercase; letter-spacing: .08em; text-align: left; padding: 10px 14px; }
 td { padding: 9px 14px; border-top: 1px solid var(--mist); }
 tbody tr:nth-child(even) td { background: var(--tint); }
 td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--graphite); }
 td.proj { font-weight: 600; }
 .chip { display: inline-block; font: .7rem var(--f-mono); padding: 1px 7px; border: 1px solid var(--steel); color: var(--graphite); white-space: nowrap; }
-.note { font: .75rem var(--f-mono); color: var(--steel); }
+
+/* Certifications */
+.certs { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--graphite); }
+.cert { padding: 22px 22px; border-right: 1px solid var(--mist); display: grid; gap: 4px; align-content: start; min-width: 0; }
+.cert:last-child { border-right: 0; }
+.cert .std { font: 700 1.8rem/1 var(--f-display); color: var(--maroon); }
+.cert h3 { font-size: 1.2rem; font-weight: 600; }
+.cert .no { font: .72rem var(--f-mono); color: var(--steel); overflow-wrap: anywhere; }
+.cert-detail { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: center; margin-top: 24px; }
+.cert-text { display: grid; gap: 14px; min-width: 0; }
+.cert-text p { color: var(--graphite); }
+.cert-meta { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: .92rem; }
+.cert-meta dt { font: 500 .7rem/1.9 var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); }
+.cert-meta dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.plate { background: #FFFFFF; border: 1px solid var(--mist); }
+.cert-mark { padding: 18px; }
+.cert-mark img { display: block; width: 100%; max-width: 420px; height: auto; margin-inline: auto; }
 
 /* Clients */
-.client-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.cg h3 { font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
-.cg p { font-size: .9rem; color: var(--graphite); }
-.clients { columns: 4 200px; column-gap: 24px; margin: 0; padding: 0; list-style: none; font-size: .92rem; }
-.clients li { break-inside: avoid; padding: 6px 0; border-bottom: 1px solid var(--mist); }
+.logos { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 1px; background: var(--mist); border: 1px solid var(--mist); }
+.logos li { background: #FFFFFF; list-style: none; min-width: 0; padding: 10px 8px; }
+.logos img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: contain; display: block; }
+.logos { margin: 0; padding: 0; }
+.segments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
+.segments h3 { font-size: 1.15rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.segments p { font-size: .94rem; color: var(--graphite); margin-top: 4px; }
 
-/* Team & contact */
-.split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; }
-.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px 16px; align-content: start; }
-.person { border-top: 3px solid var(--maroon); padding-top: 10px; display: grid; gap: 2px; }
-.person b { font: 600 1.2rem var(--f-display); }
-.person span { color: var(--graphite); font-size: .9rem; }
-dl.contact { margin: 0; display: grid; grid-template-columns: auto 1fr; border: 1px solid var(--graphite); align-self: start; }
-dl.contact dt, dl.contact dd { padding: 10px 14px; border-bottom: 1px solid var(--mist); margin: 0; }
-dl.contact dt { font: 500 .7rem var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: var(--steel); background: var(--tint); }
-dl.contact dd { min-width: 0; overflow-wrap: anywhere; user-select: all; }
-dl.contact dt:last-of-type, dl.contact dd:last-of-type { border-bottom: 0; }
-a { color: var(--maroon); }
+/* Team */
+.team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px 20px; }
+.person { border-top: 3px solid var(--maroon); padding-top: 12px; display: grid; gap: 2px; }
+.person b { font: 600 1.3rem var(--f-display); }
+.person span { color: var(--graphite); font-size: .94rem; }
 
-footer { margin-top: 56px; padding-top: 12px; border-top: 1px solid var(--graphite); font: .72rem var(--f-mono); color: var(--steel); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+/* Contact CTA */
+.cta { margin-top: 88px; background: #000; color: var(--on-dark); }
+.cta .wrap { padding-block: 64px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: start; }
+.cta h2 { font-size: clamp(2rem, 4.4vw, 3rem); font-weight: 700; text-transform: uppercase; }
+.cta .lead { color: var(--on-dark-2); margin-top: 14px; font-size: 1.1rem; }
+.cta .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.contact { margin: 0; display: grid; grid-template-columns: auto 1fr auto; border: 1px solid #4D4D4D; }
+.contact dt, .contact dd { padding: 12px 14px; border-bottom: 1px solid #333; margin: 0; display: flex; align-items: center; }
+.contact dt { font: 500 .7rem var(--f-mono); text-transform: uppercase; letter-spacing: .1em; color: #A6A6A6; }
+.contact dd { min-width: 0; overflow-wrap: anywhere; }
+.contact dd.v { font-family: var(--f-mono); font-size: .95rem; }
+.contact > :nth-last-child(-n+3) { border-bottom: 0; }
+.contact a { color: #fff; }
+.copy { background: none; border: 1px solid #4D4D4D; color: #D9D9D9; font: .72rem var(--f-mono); padding: 4px 9px; cursor: pointer; }
+.copy:hover { border-color: #D46A6A; color: #fff; }
 
-@media (max-width: 820px) {
-  .band { grid-template-columns: 1fr; }
-  .band-meta { border-left: 0; border-top: 1px solid var(--band-line); grid-template-columns: 1fr 1fr; min-width: 0; }
-  .band-meta div:nth-child(odd) { border-right: 1px solid var(--band-line); }
-  .band-meta div:nth-last-child(-n+2) { border-bottom: 0; }
-  .about, .charts, .split { grid-template-columns: 1fr; }
-  .services, .client-groups { grid-template-columns: 1fr 1fr; }
-  .cert-detail { grid-template-columns: 1fr; }
-  .stats { grid-template-columns: 1fr 1fr; }
-  .stat:nth-child(2) { border-right: 0; }
-  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--mist); }
+footer { background: #000; color: #A6A6A6; border-top: 1px solid #333; }
+footer .wrap { padding-block: 22px 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; font: .74rem var(--f-mono); }
+footer img { height: 34px; width: auto; display: block; }
+
+@media (max-width: 960px) {
+  .nav ul { display: none; }
+  .nav .btn { margin-left: auto; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .logos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .about, .record, .cert-detail, .cta .wrap { grid-template-columns: 1fr; }
+  .services { grid-template-columns: repeat(2, 1fr); }
+  .proof .wrap { grid-template-columns: 1fr 1fr; }
+  .proof div.item { padding-left: 0; }
+  .proof div.item:nth-child(2) { border-right: 0; }
+  .proof div.item:nth-child(-n+2) { border-bottom: 1px solid var(--mist); }
+  .proof div.item:nth-child(even) { padding-left: 20px; }
 }
-@media (max-width: 540px) {
-  .band-main { padding: 28px 20px 24px; }
-  .services, .client-groups, .gallery, .certs { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
+  .hero .wrap { padding-block: 56px 48px; }
+  .services, .certs, .segments, .team, .gallery { grid-template-columns: 1fr; }
   .cert { border-right: 0; border-bottom: 1px solid var(--mist); }
   .cert:last-child { border-bottom: 0; }
+  .logos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nav .btn { padding: 8px 12px; font-size: .82rem; }
+  .brand img { height: 34px; }
   .gallery img { aspect-ratio: 2 / 1; }
-  .sector { grid-template-columns: 90px 1fr 24px; }
+  .sector { grid-template-columns: 86px 1fr 24px; }
+  .contact { grid-template-columns: auto 1fr; }
+  .contact .c { display: none; }
+  .contact > :nth-last-child(-n+3) { border-bottom: 1px solid #333; }
+  .contact > :nth-last-child(-n+2) { border-bottom: 0; }
 }
 </style>
 
-<div class="sheet">
-  <header class="band">
-    <svg class="lines" viewBox="0 0 1000 320" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
-      <g fill="none" stroke="#FFFFFF" stroke-opacity=".22" stroke-width="1.2">
-        <polyline points="560,-10 760,120 640,330"/>
-        <polyline points="610,-10 930,90 700,330"/>
-        <polyline points="700,-10 1010,210 860,330"/>
-        <polyline points="520,330 800,40 1010,60"/>
-        <polygon points="760,120 930,90 860,250"/>
-      </g>
-    </svg>
-    <div class="band-main">
-      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
-        <g fill="none" stroke="#FFFFFF" stroke-width="3">
-          <polyline points="22,6 6,6 6,58 58,58 58,6 34,6"/>
-          <polyline points="22,6 26,14 30,6"/>
-          <line x1="42" y1="26" x2="58" y2="26"/>
-        </g>
-      </svg>
-      <div class="eyebrow">Fujairah, United Arab Emirates</div>
-      <h1>Artline <span>Engineering</span></h1>
-      <div class="tag">Contracting · Construction · Fit-out</div>
-      <div class="tag" style="color:#D46A6A">ISO 9001 · ISO 14001 · ISO 45001 certified</div>
-    </div>
-    <div class="band-meta">
-      <div><span>Legal entity</span>Art Line Engineering LLC (SPC)</div>
-      <div><span>Established</span>Nov 2009</div>
-      <div><span>Commercial licence</span>No. 93772 · Fujairah Municipality</div>
-      <div><span>Chamber reg.</span>COC 13589</div>
-    </div>
-  </header>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Artline Engineering home">
+      <img class="l-light" src="artline-img/logo-black.png" width="160" height="157" alt="Artline Engineering">
+      <img class="l-dark" src="artline-img/logo-white.png" width="160" height="157" alt="Artline Engineering">
+    </a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#clients">Clients</a></li>
+      <li><a href="#team">Team</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#contact">Request a quotation</a>
+  </div>
+</nav>
 
-  <section id="about">
-    <div class="sec-head"><span class="ref">A-01</span><h2>About</h2></div>
+<header class="hero" id="top">
+  <img class="hero-img" src="artline-img/residence.jpg" alt="">
+  <div class="wrap">
+    <div class="eyebrow">Fujairah · United Arab Emirates · Since 2009</div>
+    <h1>Fit-out &amp; construction for the UAE's <em>leading brands</em></h1>
+    <p class="lead">From IKEA and Sephora to government service centres, we design, build and furnish interiors with our own engineers, architects and carpentry workshop.</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="#contact">Request a site visit</a>
+      <a class="btn btn-ghost" href="#projects">View our projects</a>
+    </div>
+    <div class="iso"><span>ISO 9001</span><span>ISO 14001</span><span>ISO 45001</span><span>EIAC-accredited certification</span></div>
+  </div>
+</header>
+
+<div class="proof" aria-label="Key figures">
+  <div class="wrap">
+    <div class="item"><b>15+</b><span>years licensed in Fujairah</span></div>
+    <div class="item"><b>44</b><span>municipality-certified projects since 2021</span></div>
+    <div class="item"><b>32</b><span>government &amp; corporate clients</span></div>
+    <div class="item"><b>3</b><span>ISO management system certifications</span></div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="block" id="about">
+    <div class="head"><span class="kicker">About us</span><h2>Built in Fujairah, trusted across the UAE</h2></div>
     <div class="about">
-      <p class="lead">Artline Engineering is a construction and fit-out company based in Fujairah. Our team of experienced professionals delivers interiors for retail, food and beverage, healthcare, government and residential clients, with an in-house carpentry and furniture workshop and an aluminium and glazing division.</p>
+      <div>
+        <p class="lead">Artline Engineering is a construction and fit-out contractor based in Fujairah. We deliver complete interiors for retail, food and beverage, healthcare, government and residential clients.</p>
+        <p>Design, joinery, aluminium and glazing, and site works are all handled in-house. That keeps quality, cost and programme in one team's hands, from first drawing to handover.</p>
+      </div>
       <div class="vm">
-        <div><h3>Vision</h3>
-          <ul>
-            <li>To be recognised as a leading provider of high-quality construction and fit-out services in the UAE.</li>
-            <li>To lead the market by offering superior quality at competitive prices.</li>
-          </ul></div>
-        <div><h3>Mission</h3>
-          <ul>
-            <li>To deliver exceptional workmanship that surpasses market standards.</li>
-            <li>To exceed clients' expectations and support our employees' expertise.</li>
-          </ul></div>
+        <div><h3>Vision</h3><p>To be recognised as a leading provider of high-quality construction and fit-out services in the UAE, offering superior quality at competitive prices.</p></div>
+        <div><h3>Mission</h3><p>To exceed clients' expectations with workmanship above market standards, and to keep developing the expertise of our people.</p></div>
       </div>
     </div>
   </section>
 
-  <section id="stats">
-    <div class="sec-head"><span class="ref">A-02</span><h2>At a glance</h2></div>
-    <div class="stats">
-      <div class="stat"><b>15+</b><span>Years in operation</span><small>Licensed since 2009</small></div>
-      <div class="stat"><b>44</b><span>Certified fit-outs</span><small>Jun 2021 – May 2025</small></div>
-      <div class="stat"><b>32</b><span>Key clients</span><small>Government &amp; private</small></div>
-      <div class="stat"><b>30</b><span>Staff on payroll</span><small>Workshop, site &amp; office</small></div>
-    </div>
-    <div class="charts">
-      <div class="chart-wrap">
-        <h3>Completion certificates per year</h3>
-        <svg id="chart" viewBox="0 0 560 220" role="img" aria-label="Completion certificates per year: 2021 seven, 2022 eleven, 2023 ten, 2024 thirteen, 2025 three to May"></svg>
-        <div class="cap">Source: Fujairah Municipality completion certificates. 2025 covers January to May.</div>
-      </div>
-      <div class="chart-wrap">
-        <h3>Certified work by sector</h3>
-        <div class="sectors" id="sectors"></div>
-        <div class="cap">Same 44 certificates, grouped by end use.</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="services">
-    <div class="sec-head"><span class="ref">A-03</span><h2>Services</h2></div>
+  <section class="block" id="services">
+    <div class="head"><span class="kicker">Services</span><h2>One contractor, from drawing to handover</h2></div>
     <div class="services">
-      <div class="svc"><span class="code">ACTIVITY 4100002-4</span><h3>Building contracting</h3><p>All kinds of building projects, licensed for fourth-degree contracting in Fujairah.</p></div>
-      <div class="svc"><span class="code">ACTIVITY 4330015</span><h3>Interior fit-out &amp; decor</h3><p>Turnkey shop, restaurant, clinic and office interiors inside malls and standalone buildings.</p></div>
-      <div class="svc"><span class="code">ACTIVITY 1622007</span><h3>Carpentry &amp; furniture</h3><p>In-house joinery workshop producing counters, display units, wall cladding and loose furniture.</p></div>
-      <div class="svc"><span class="code">DIVISION</span><h3>Aluminium &amp; glazing</h3><p>Shopfronts, glass partitions and framed glazing for retail and office spaces.</p></div>
-      <div class="svc"><span class="code">DIVISION</span><h3>Technical office</h3><p>Design development, shop drawings and authority approvals led by our architects.</p></div>
-      <div class="svc"><span class="code">SERVICE</span><h3>Maintenance &amp; renovation</h3><p>Unit re-partitioning, merges and refurbishment of occupied commercial spaces.</p></div>
+      <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M4 30h26M7 30V12l10-7 10 7v18M13 30v-8h8v8"/></svg><h3>Building contracting</h3><p>All kinds of building projects under our Fujairah contracting licence.</p></div>
+      <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M4 6h26v22H4zM4 22h26M12 22v6M22 22v6M9 11h8M9 15h5"/></svg><h3>Interior fit-out &amp; decor</h3><p>Turnkey shops, restaurants, clinics and offices in malls and standalone buildings.</p></div>
+      <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M5 26l17-17 4 4L9 30H5zM19 12l4 4M24 5l5 5-2 2-5-5z"/></svg><h3>Carpentry &amp; furniture</h3><p>Counters, display units, wall cladding and loose furniture from our own workshop.</p></div>
+      <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M5 4h24v26H5zM17 4v26M5 17h24M9 8l4 4M21 21l4 4"/></svg><h3>Aluminium &amp; glazing</h3><p>Shopfronts, glass partitions and framed glazing for retail and office spaces.</p></div>
+      <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M4 28h26M6 28V8h14v20M10 12h6M10 16h6M10 20h6M24 28V14l4 3v11"/></svg><h3>Design &amp; approvals</h3><p>Design development, shop drawings and authority approvals by our technical office.</p></div>
+      <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M20 6a7 7 0 0 0-8 9L5 22l3 3 4 4 7-7a7 7 0 0 0 9-8l-4 4-4-1-1-4z"/></svg><h3>Maintenance &amp; renovation</h3><p>Re-partitioning, unit merges and refurbishment of occupied commercial spaces.</p></div>
     </div>
   </section>
 
-  <section id="certifications">
-    <div class="sec-head"><span class="ref">A-04</span><h2>Certifications</h2><span class="aside">Integrated management system</span></div>
+  <section class="block" id="projects">
+    <div class="head"><span class="kicker">Featured projects</span><h2>Spaces for brands people know</h2><p>A selection of fit-outs completed and certified by Fujairah Municipality.</p></div>
+    <div class="cards">
+      <article class="card"><img src="artline-img/p-ikea.jpg" alt="IKEA store entrance at Fujairah City Centre" loading="lazy"><span class="meta">Retail · 2024</span><h3>IKEA</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
+      <article class="card"><img src="artline-img/p-sephora.jpg" alt="Sephora storefront with black and white striped portal" loading="lazy"><span class="meta">Retail · 2022</span><h3>Sephora</h3><p>Interior decor works, Fujairah City Centre.</p></article>
+      <article class="card"><img src="artline-img/p-mcdonalds.jpg" alt="McDonald's food court counter with timber cladding" loading="lazy"><span class="meta">F&amp;B · 2024</span><h3>McDonald's</h3><p>Food court restaurant interior, Fujairah City Centre.</p></article>
+      <article class="card"><img src="artline-img/p-under-armour.jpg" alt="Under Armour storefront in a mall" loading="lazy"><span class="meta">Retail · 2022</span><h3>Under Armour</h3><p>Store interior, Fujairah City Centre.</p></article>
+      <article class="card"><img src="artline-img/p-du.jpg" alt="du store with illuminated curved portal" loading="lazy"><span class="meta">Telecom retail · 2023</span><h3>du</h3><p>Retail store interior, Fujairah City Centre.</p></article>
+      <article class="card"><img src="artline-img/p-eyewa.jpg" alt="Eyewa optical store with red slatted ceiling" loading="lazy"><span class="meta">Retail · 2024</span><h3>Eyewa</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
+      <article class="card"><img src="artline-img/p-baskin-robbins.jpg" alt="Baskin Robbins parlour with timber walls and display freezers" loading="lazy"><span class="meta">F&amp;B · 2024</span><h3>Baskin Robbins</h3><p>Interior decor and maintenance, Fujairah City Centre.</p></article>
+      <article class="card"><img src="artline-img/p-dominos.jpg" alt="Domino's Pizza frontage on a commercial building" loading="lazy"><span class="meta">F&amp;B · 2023</span><h3>Domino's Pizza</h3><p>Restaurant interior, Fujairah city centre.</p></article>
+    </div>
+    <div class="gallery">
+      <figure class="wide"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park with colourful padded zones" loading="lazy"><figcaption><b>Sparkys Land</b><span>Leisure · 2024</span></figcaption></figure>
+      <figure><img src="artline-img/penti.jpg" alt="Penti and Little Shop fashion storefronts" loading="lazy"><figcaption><b>Penti &amp; Little Shop</b><span>Retail · Al Tayf Mall · 2024</span></figcaption></figure>
+      <figure><img src="artline-img/mia.jpg" alt="Mia Cosmetics store with illuminated display walls" loading="lazy"><figcaption><b>Mia Cosmetics</b><span>Retail · Al Tayf Mall · 2024</span></figcaption></figure>
+      <figure><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><figcaption><b>911 Games Station</b><span>Leisure</span></figcaption></figure>
+      <figure><img src="artline-img/scratch.jpg" alt="Scratch café with booth seating and timber cladding" loading="lazy"><figcaption><b>Scratch café</b><span>F&amp;B · 2023</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="block" id="record">
+    <div class="head"><span class="kicker">Track record</span><h2>44 certified completions since 2021</h2><p>Every project below holds a Fujairah Municipality completion certificate naming Artline as contractor.</p></div>
+    <div class="record">
+      <div class="panel">
+        <h3>Completions per year</h3>
+        <svg id="chart" viewBox="0 0 560 220" role="img" aria-label="Completions per year: 2021 seven, 2022 eleven, 2023 ten, 2024 thirteen, 2025 three to May"></svg>
+        <div class="cap">2025 covers January to May.</div>
+      </div>
+      <div class="panel">
+        <h3>By sector</h3>
+        <div class="sectors" id="sectors"></div>
+      </div>
+    </div>
+    <details class="register">
+      <summary>View the full project register <span id="count"></span></summary>
+      <div class="reg-body">
+        <div class="filters" id="filters" role="group" aria-label="Filter by year"></div>
+        <div class="tbl">
+          <table>
+            <thead><tr><th>Completed</th><th>Project</th><th>Location</th><th>Sector</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="block" id="certifications">
+    <div class="head"><span class="kicker">Certifications</span><h2>Certified management system</h2></div>
     <div class="certs">
-      <div class="cert"><span class="std">ISO 9001:2015</span><h3>Quality management</h3><span class="no">VSQC099-421264353</span></div>
-      <div class="cert"><span class="std">ISO 14001:2015</span><h3>Environmental management</h3><span class="no">VSQC099-421264354</span></div>
-      <div class="cert"><span class="std">ISO 45001:2018</span><h3>Occupational health &amp; safety</h3><span class="no">VSQC099-421264355</span></div>
+      <div class="cert"><span class="std">ISO 9001:2015</span><h3>Quality management</h3><span class="no">Cert. VSQC099-421264353</span></div>
+      <div class="cert"><span class="std">ISO 14001:2015</span><h3>Environmental management</h3><span class="no">Cert. VSQC099-421264354</span></div>
+      <div class="cert"><span class="std">ISO 45001:2018</span><h3>Occupational health &amp; safety</h3><span class="no">Cert. VSQC099-421264355</span></div>
     </div>
     <div class="cert-detail">
       <div class="cert-text">
-        <p>Artline's management system is assessed and registered by Veritas System Quality Certificates (VSQC), accredited by the Emirates International Accreditation Centre. Scope: building projects contracting, interior decoration and fit-out works, aluminium works and carpentry works.</p>
+        <p>Our management system is assessed and registered by Veritas System Quality Certificates (VSQC), accredited by the Emirates International Accreditation Centre. Scope: building projects contracting, interior decoration and fit-out works, aluminium works and carpentry works.</p>
         <dl class="cert-meta">
           <dt>Registered site</dt><dd>Fujairah, UAE</dd>
-          <dt>IAF / EA-NACE</dt><dd>28 · 41.20 / 43.32</dd>
           <dt>Certified</dt><dd>15 Sep 2026</dd>
           <dt>Next surveillance</dt><dd>by 14 Sep 2027</dd>
           <dt>Verify</dt><dd><a href="https://www.veritasassurance.com/verifycert.php" target="_blank" rel="noopener">veritasassurance.com/verifycert</a></dd>
         </dl>
       </div>
-      <div class="cert-mark"><img src="artline-img/iso-vsqc-eiac.png" width="617" height="212" alt="EIAC accreditation symbol, reference CB-QMS-EMS-OHSMS-099, with the Veritas Assurance ISO 9001, ISO 14001 and ISO 45001 certification mark"></div>
+      <div class="plate cert-mark"><img src="artline-img/iso-vsqc-eiac.png" width="617" height="212" alt="EIAC accreditation symbol, reference CB-QMS-EMS-OHSMS-099, with the Veritas Assurance ISO 9001, ISO 14001 and ISO 45001 certification mark"></div>
     </div>
   </section>
 
-  <section id="gallery">
-    <div class="sec-head"><span class="ref">A-05</span><h2>Selected work</h2></div>
-    <div class="gallery">
-      <figure class="wide"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park interior with colourful padded zones" loading="lazy"><figcaption><b>Sparkys Land</b><span>Leisure · Fujairah</span></figcaption></figure>
-      <figure><img src="artline-img/penti.jpg" alt="Penti and adjacent fashion shopfronts" loading="lazy"><figcaption><b>Penti &amp; Little Shop</b><span>Retail · Al Tayf Mall</span></figcaption></figure>
-      <figure><img src="artline-img/mia.jpg" alt="Mia Cosmetics store with illuminated display walls" loading="lazy"><figcaption><b>Mia Cosmetics</b><span>Retail · Al Tayf Mall</span></figcaption></figure>
-      <figure><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><figcaption><b>911 Games Station</b><span>Leisure</span></figcaption></figure>
-      <figure><img src="artline-img/manahil.jpg" alt="Manahil showroom with timber shelving and marble counter" loading="lazy"><figcaption><b>Manahil Fujairah</b><span>Retail</span></figcaption></figure>
-      <figure><img src="artline-img/service-centre.jpg" alt="Customer service centre with green seating and service counters" loading="lazy"><figcaption><b>Customer service centre</b><span>Government</span></figcaption></figure>
-      <figure><img src="artline-img/scratch.jpg" alt="Scratch café interior with booth seating and timber cladding" loading="lazy"><figcaption><b>Scratch café</b><span>F&amp;B · Fujairah</span></figcaption></figure>
-      <figure><img src="artline-img/boardroom.jpg" alt="Executive boardroom and lounge office interior" loading="lazy"><figcaption><b>Executive offices</b><span>Corporate</span></figcaption></figure>
-      <figure><img src="artline-img/lobby.jpg" alt="Building lobby with timber slat walls and reception desk" loading="lazy"><figcaption><b>Residential lobby</b><span>Residential</span></figcaption></figure>
-      <figure class="wide"><img src="artline-img/residence.jpg" alt="Private majlis with botanical wall mural and sculptural ceiling light" loading="lazy"><figcaption><b>Private residence</b><span>Residential</span></figcaption></figure>
+  <section class="block" id="clients">
+    <div class="head"><span class="kicker">Clients</span><h2>Trusted by government and leading brands</h2></div>
+    <ul class="logos" id="logos"></ul>
+    <div class="segments">
+      <div><h3>Government</h3><p>Ministries, police, airport, authorities and service centres across Fujairah.</p></div>
+      <div><h3>Commercial</h3><p>Malls, banks, retailers, restaurants, schools and hospitals.</p></div>
+      <div><h3>Residential</h3><p>Homeowners seeking bespoke design and construction.</p></div>
     </div>
   </section>
 
-  <section id="projects">
-    <div class="sec-head"><span class="ref">A-06</span><h2>Certified project register</h2><span class="aside" id="count"></span></div>
-    <div class="filters" id="filters" role="group" aria-label="Filter by year"></div>
-    <div class="tbl">
-      <table>
-        <thead><tr><th>Completed</th><th>Project</th><th>Location</th><th>Sector</th><th>Permit</th></tr></thead>
-        <tbody id="rows"></tbody>
-      </table>
+  <section class="block" id="team">
+    <div class="head"><span class="kicker">Leadership</span><h2>The team behind the work</h2></div>
+    <div class="team">
+      <div class="person"><b>Abdul Hamid Tayfor</b><span>Managing Director</span></div>
+      <div class="person"><b>Yaser Alassaf</b><span>Executive Manager</span></div>
+      <div class="person"><b>Ashok Kumar</b><span>Operation Manager</span></div>
+      <div class="person"><b>Zuhair Abdul Daim</b><span>Business Development Manager</span></div>
+      <div class="person"><b>Ryan Carl</b><span>Lead Architect</span></div>
+      <div class="person"><b>Mhd. Iyad Rajob</b><span>Project Manager</span></div>
     </div>
-    <p class="note">Each row is a Fujairah Municipality completion certificate (100% completion) naming Art Line Engineering as contractor.</p>
   </section>
 
-  <section id="clients">
-    <div class="sec-head"><span class="ref">A-07</span><h2>Clients</h2></div>
-    <div class="client-groups">
-      <div class="cg"><h3>Residential</h3><p>Homeowners seeking bespoke design and construction solutions.</p></div>
-      <div class="cg"><h3>Commercial</h3><p>Businesses requiring modern office spaces, retail fit-outs and hospitality projects.</p></div>
-      <div class="cg"><h3>Industrial</h3><p>Companies needing robust and efficient industrial facilities.</p></div>
-    </div>
-    <ul class="clients">
-      <li>Government of Fujairah</li><li>Fujairah Police</li><li>Fujairah International Airport</li><li>Ministry of Human Resources &amp; Emiratisation</li>
-      <li>Federal Authority for Identity &amp; Citizenship</li><li>Fujairah Environment Authority</li><li>Fujairah Foundation for Region Development</li><li>Fujairah Natural Resources Corporation</li>
-      <li>Fujairah Holding</li><li>Fujairah Adventures</li><li>National Bank of Fujairah</li><li>Al Fujairah National Insurance Co.</li>
-      <li>Majid Al Futtaim</li><li>City Centre Fujairah</li><li>Burjeel Hospital</li><li>VPS Healthcare</li>
-      <li>Al Sharq Medical Centre</li><li>BANOBAGI</li><li>Ajman University</li><li>GEMS Winchester School</li>
-      <li>Diyar International Private School</li><li>FNCT</li><li>Tasheel</li><li>Tadbeer</li>
-      <li>Tawjeeh</li><li>SEPHORA</li><li>Splash</li><li>Magic Planet</li>
-      <li>911 Games Station</li><li>Jovial</li><li>HYSSNA International LLC</li><li>AFMG</li>
-    </ul>
-  </section>
+</main>
 
-  <section id="team">
-    <div class="sec-head"><span class="ref">A-08</span><h2>Team &amp; contact</h2></div>
-    <div class="split">
-      <div class="team">
-        <div class="person"><b>Abdul Hamid Tayfor</b><span>Managing Director</span></div>
-        <div class="person"><b>Yaser Alassaf</b><span>Executive Manager</span></div>
-        <div class="person"><b>Ashok Kumar</b><span>Operation Manager</span></div>
-        <div class="person"><b>Zuhair Abdul Daim</b><span>Business Development Manager</span></div>
-        <div class="person"><b>Ryan Carl</b><span>Lead Architect</span></div>
-        <div class="person"><b>Mhd. Iyad Rajob</b><span>Project Manager</span></div>
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div>
+      <h2>Planning a fit-out or new build?</h2>
+      <p class="lead">Tell us about your space. We'll arrange a site visit and send a detailed quotation.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="https://wa.me/971502990358" target="_blank" rel="noopener">Message us on WhatsApp</a>
+        <a class="btn btn-ghost" href="https://www.artline-uae.com/" target="_blank" rel="noopener">Visit artline-uae.com</a>
       </div>
-      <dl class="contact">
-        <dt>Office</dt><dd>Fujairah Tower, Office 806, Fujairah, UAE</dd>
-        <dt>P.O. Box</dt><dd class="mono">8946</dd>
-        <dt>Phone</dt><dd class="mono">+971 9 277 1997</dd>
-        <dt>Mobile</dt><dd class="mono">+971 50 299 0358</dd>
-        <dt>Email</dt><dd class="mono">info@artline-uae.com</dd>
-        <dt>Web</dt><dd><a href="https://www.artline-uae.com/" target="_blank" rel="noopener">artline-uae.com</a></dd>
-        <dt>Instagram</dt><dd><a href="https://www.instagram.com/artline_engineering/" target="_blank" rel="noopener">@artline_engineering</a></dd>
-      </dl>
     </div>
-  </section>
+    <dl class="contact">
+      <dt>Phone</dt><dd class="v" id="v-phone">+971 9 277 1997</dd><dd class="c"><button class="copy" type="button" data-copy="v-phone">Copy</button></dd>
+      <dt>Mobile</dt><dd class="v" id="v-mobile">+971 50 299 0358</dd><dd class="c"><button class="copy" type="button" data-copy="v-mobile">Copy</button></dd>
+      <dt>Email</dt><dd class="v" id="v-email">info@artline-uae.com</dd><dd class="c"><button class="copy" type="button" data-copy="v-email">Copy</button></dd>
+      <dt>Office</dt><dd>Fujairah Tower, Office 806, Fujairah</dd><dd class="c"></dd>
+      <dt>P.O. Box</dt><dd class="v">8946, Fujairah, UAE</dd><dd class="c"></dd>
+      <dt>Instagram</dt><dd><a href="https://www.instagram.com/artline_engineering/" target="_blank" rel="noopener">@artline_engineering</a></dd><dd class="c"></dd>
+    </dl>
+  </div>
+</section>
 
-  <footer><span>Art Line Engineering LLC</span><span>Licence 93772 · Rev. 1</span></footer>
-</div>
+<footer>
+  <div class="wrap">
+    <img src="artline-img/logo-white.png" width="160" height="157" alt="Artline Engineering">
+    <span>Art Line Engineering LLC · Commercial licence 93772, Fujairah Municipality</span>
+  </div>
+</footer>
 
 <script>
-// [completed yyyy-mm, project, location, sector, building permit no.]
+// [completed yyyy-mm, project, location, sector]
 const PROJECTS = [
-  ["2025-05","Pappa Roti","Fujairah City Centre","F&B","38602"],
-  ["2025-04","Diyar Property Management office","City Centre district","Office","38580"],
-  ["2025-03","Retail store, unit G040","Fujairah City Centre","Retail","38583"],
-  ["2024-12","Baskin Robbins","Fujairah City Centre","F&B","37717"],
-  ["2024-12","La Senza","Fujairah City Centre","Retail","37859"],
-  ["2024-08","Eyewa","Fujairah City Centre","Retail","37179"],
-  ["2024-07","IKEA","Fujairah City Centre","Retail","36504"],
-  ["2024-07","Sparkys Land","City Centre district","Leisure","37019"],
-  ["2024-06","McDonald's","Fujairah City Centre","F&B","36264"],
-  ["2024-06","Little Shop","Al Tayf Mall","Retail","34699"],
-  ["2024-06","Penti","Al Tayf Mall","Retail","34710"],
-  ["2024-06","Mia Cosmetics","Al Tayf Mall","Retail","34697"],
-  ["2024-05","Ibn Sina Pharmacy","Fujairah City Centre","Healthcare","36496"],
-  ["2024-05","Crown Farms","City Centre district","Retail","36583"],
-  ["2024-03","Al Majed Oud","Fujairah City Centre","Retail","36158"],
-  ["2024-01","Platora","Fujairah City Centre","Retail","35717"],
-  ["2023-11","du store","Fujairah City Centre","Retail","35232"],
-  ["2023-10","Retail store","Fujairah City Centre","Retail","35534"],
-  ["2023-09","Subway","Masafi","F&B","35255"],
-  ["2023-09","Scratch café, unit 9","City Centre district","F&B","34972"],
-  ["2023-07","STREAT hotel corner","City Centre district","F&B","34795"],
-  ["2023-06","Elegance Style","Fujairah City Centre","Retail","34678"],
-  ["2023-03","Be Dashing salon","City Centre district","Retail","34043"],
-  ["2023-03","Domino's Pizza","City Centre district","F&B","34520"],
-  ["2023-02","Life Pharmacy","Fujairah City Centre","Healthcare","34253"],
-  ["2023-02","Louzan","Fujairah City Centre","Retail","34256"],
-  ["2022-12","Mzallah, Al Hilal Tower","Al Hilal City","Retail","33836"],
-  ["2022-11","Papa John's","Al Faseel","F&B","33563"],
-  ["2022-11","Ibn Sina Pharmacy, unit RG3","City Centre district","Healthcare","32902"],
-  ["2022-08","Feathers Café","Fujairah City Centre","F&B","33068"],
-  ["2022-05","Under Armour","Fujairah City Centre","Retail","33001"],
-  ["2022-04","Fashion store","Fujairah City Centre","Retail","32852"],
-  ["2022-02","Dr. Nutrition","Fujairah City Centre","Retail","32837"],
-  ["2022-02","Dubai Optical","Fujairah City Centre","Retail","32386"],
-  ["2022-01","Unit re-partition G-073 / G-074","Fujairah City Centre","Retail","32711"],
-  ["2022-01","Unit merge G-001 / G-002","Fujairah City Centre","Retail","32742"],
-  ["2022-01","Sephora","Fujairah City Centre","Retail","32712"],
-  ["2021-12","Mumuso","Fujairah City Centre","Retail","32624"],
-  ["2021-11","Ocumed clinic","City Centre district","Healthcare","32558"],
-  ["2021-10","Duozoulu","Fujairah City Centre","Retail","32215"],
-  ["2021-08","Mashreq Bank","Mreishid","Banking","31637"],
-  ["2021-08","Office interior & maintenance","City Centre district","Office","31859"],
-  ["2021-08","Al Hajis Perfumes","Fujairah City Centre","Retail","31830"],
-  ["2021-06","New Era","Fujairah City Centre","Retail","32032"]
+  ["2025-05","Pappa Roti","Fujairah City Centre","F&B"],
+  ["2025-04","Diyar Property Management office","City centre district","Office"],
+  ["2025-03","Retail store fit-out","Fujairah City Centre","Retail"],
+  ["2024-12","Baskin Robbins","Fujairah City Centre","F&B"],
+  ["2024-12","La Senza","Fujairah City Centre","Retail"],
+  ["2024-08","Eyewa","Fujairah City Centre","Retail"],
+  ["2024-07","IKEA","Fujairah City Centre","Retail"],
+  ["2024-07","Sparkys Land","City centre district","Leisure"],
+  ["2024-06","McDonald's","Fujairah City Centre","F&B"],
+  ["2024-06","Little Shop","Al Tayf Mall","Retail"],
+  ["2024-06","Penti","Al Tayf Mall","Retail"],
+  ["2024-06","Mia Cosmetics","Al Tayf Mall","Retail"],
+  ["2024-05","Ibn Sina Pharmacy","Fujairah City Centre","Healthcare"],
+  ["2024-05","Crown Farms","City centre district","Retail"],
+  ["2024-03","Al Majed Oud","Fujairah City Centre","Retail"],
+  ["2024-01","Platora","Fujairah City Centre","Retail"],
+  ["2023-11","du store","Fujairah City Centre","Retail"],
+  ["2023-10","Retail store fit-out","Fujairah City Centre","Retail"],
+  ["2023-09","Subway","Masafi","F&B"],
+  ["2023-09","Scratch café","City centre district","F&B"],
+  ["2023-07","STREAT","City centre district","F&B"],
+  ["2023-06","Elegance Style","Fujairah City Centre","Retail"],
+  ["2023-03","Be Dashing salon","City centre district","Retail"],
+  ["2023-03","Domino's Pizza","City centre district","F&B"],
+  ["2023-02","Life Pharmacy","Fujairah City Centre","Healthcare"],
+  ["2023-02","Louzan","Fujairah City Centre","Retail"],
+  ["2022-12","Mzallah, Al Hilal Tower","Al Hilal City","Retail"],
+  ["2022-11","Papa John's","Al Faseel","F&B"],
+  ["2022-11","Ibn Sina Pharmacy","City centre district","Healthcare"],
+  ["2022-08","Feathers Café","Fujairah City Centre","F&B"],
+  ["2022-05","Under Armour","Fujairah City Centre","Retail"],
+  ["2022-04","Fashion store fit-out","Fujairah City Centre","Retail"],
+  ["2022-02","Dr. Nutrition","Fujairah City Centre","Retail"],
+  ["2022-02","Dubai Optical","Fujairah City Centre","Retail"],
+  ["2022-01","Unit re-partitioning","Fujairah City Centre","Retail"],
+  ["2022-01","Unit merge","Fujairah City Centre","Retail"],
+  ["2022-01","Sephora","Fujairah City Centre","Retail"],
+  ["2021-12","Mumuso","Fujairah City Centre","Retail"],
+  ["2021-11","Ocumed clinic","City centre district","Healthcare"],
+  ["2021-10","Duozoulu","Fujairah City Centre","Retail"],
+  ["2021-08","Mashreq Bank","Mreishid","Banking"],
+  ["2021-08","Office interior","City centre district","Office"],
+  ["2021-08","Al Hajis Perfumes","Fujairah City Centre","Retail"],
+  ["2021-06","New Era","Fujairah City Centre","Retail"]
+];
+// [file, name], ordered government first
+const CLIENTS = [
+  ["government-of-fujairah","Government of Fujairah"],["fujairah-police","Fujairah Police"],["mohre","Ministry of Human Resources & Emiratisation"],["ica","Federal Authority for Identity & Citizenship"],
+  ["fujairah-airport","Fujairah International Airport"],["fujairah-environment","Fujairah Environment Authority"],["ffrd","Fujairah Foundation for Region Development"],["fnrc","Fujairah Natural Resources Corporation"],
+  ["majid-al-futtaim","Majid Al Futtaim"],["city-centre","City Centre Fujairah"],["fujairah-holding","Fujairah Holding"],["nbf","National Bank of Fujairah"],
+  ["afnic","Al Fujairah National Insurance Co."],["burjeel","Burjeel Hospital"],["vps","VPS Healthcare"],["al-sharq","Al Sharq Medical Centre"],
+  ["sephora","Sephora"],["banobagi","BANOBAGI"],["ajman-university","Ajman University"],["gems-winchester","GEMS Winchester School Fujairah"],
+  ["diyar-school","Diyar International Private School"],["fnct","FNCT"],["tasheel","Tasheel"],["tadbeer","Tadbeer"],
+  ["tawjeeh","Tawjeeh"],["fujairah-adventures","Fujairah Adventures"],["magic-planet","Magic Planet"],["games-station","911 Games Station"],
+  ["splash","Splash"],["jovial","Jovial"],["hyssna","HYSSNA International"],["fmg","AFMG"]
 ];
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const fmt = d => MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4);
-const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+
+document.getElementById("logos").innerHTML = CLIENTS.map(([f, n]) =>
+  `<li><img src="artline-img/clients/${f}.png" width="300" height="150" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`).join("");
 
 // Register + year filter
 const years = [...new Set(PROJECTS.map(p => p[0].slice(0, 4)))];
@@ -416,8 +498,8 @@ const rows = document.getElementById("rows");
 const count = document.getElementById("count");
 function render(year) {
   const list = year === "All" ? PROJECTS : PROJECTS.filter(p => p[0].startsWith(year));
-  rows.innerHTML = list.map(p => `<tr><td class="num">${fmt(p[0])}</td><td class="proj">${esc(p[1])}</td><td>${esc(p[2])}</td><td><span class="chip">${esc(p[3])}</span></td><td class="num">${p[4]}</td></tr>`).join("");
-  count.textContent = `${list.length} of ${PROJECTS.length} certificates`;
+  rows.innerHTML = list.map(p => `<tr><td class="num">${fmt(p[0])}</td><td class="proj">${esc(p[1])}</td><td>${esc(p[2])}</td><td><span class="chip">${esc(p[3])}</span></td></tr>`).join("");
+  count.textContent = year === "All" ? `${PROJECTS.length} projects` : `${list.length} in ${year}`;
   filters.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.y === year)));
 }
 ["All", ...years].forEach(y => {
@@ -465,4 +547,12 @@ function drawChart() {
 drawChart();
 try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawChart); } catch (e) {}
 new MutationObserver(drawChart).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+// Copy buttons
+document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () => {
+  const el = document.getElementById(b.dataset.copy);
+  const done = () => { b.textContent = "Copied"; setTimeout(() => b.textContent = "Copy", 1600); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selected"; setTimeout(() => b.textContent = "Copy", 1600); };
+  try { navigator.clipboard.writeText(el.textContent.trim()).then(done, fallback); } catch (e) { fallback(); }
+}));
 </script>
