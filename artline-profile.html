@@ -301,6 +301,13 @@ footer img { height: 34px; width: auto; display: block; }
 .card .tile-lines { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .35; }
 .card .tile b { position: relative; font: 700 1.7rem/1 var(--f-display); text-transform: uppercase; letter-spacing: .02em; }
 .card .tile span { position: relative; font: 500 .7rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: #D46A6A; }
+.shots { position: relative; }
+.shots img[hidden] { display: none; }
+.shots .dots { position: absolute; left: 0; right: 0; bottom: 10px; display: flex; justify-content: center; gap: 6px; }
+.shots .dots button { width: 9px; height: 9px; padding: 0; border-radius: 50%; border: 1px solid #fff; background: rgba(0,0,0,.35); cursor: pointer; }
+.shots .dots button[aria-current="true"] { background: #fff; }
+.shots .dots button:focus-visible { outline: 2px solid #D46A6A; outline-offset: 2px; }
+.shots .count { position: absolute; top: 8px; right: 8px; font: 500 .68rem var(--f-mono); color: #fff; background: rgba(0,0,0,.55); padding: 2px 6px; }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -431,11 +438,11 @@ footer img { height: 34px; width: auto; display: block; }
       <article class="card" data-sector="leisure"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park entrance with neon portal" loading="lazy"><span class="meta">Leisure · 2024</span><h3>Sparkys Land</h3><p>Family entertainment centre interior, Fujairah.</p></article>
       <article class="card" data-sector="leisure"><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><span class="meta">Leisure</span><h3>911 Games Station</h3><p>Bowling and games venue interior.</p></article>
       <article class="card" data-sector="res"><img src="artline-img/p-lanai-villa.jpg" alt="Render of a modern island mansion with stone cladding, timber screens and a pool terrace" loading="lazy"><span class="meta">Residential · Dubai · Illustrative render</span><h3>Lanai Island Estates, villa fit-out</h3><p>Interior fit-out of island mansions. Developer: Majid Al Futtaim. With Bond Interiors.</p></article>
-      <article class="card" data-sector="res"><img src="artline-img/p-lanai-decking.jpg" alt="Render of lagoon-front villas at dusk with timber pontoon decks and a jet ski" loading="lazy"><span class="meta">Residential · Dubai · Illustrative render</span><h3>Lanai Island Estates, pontoon decking</h3><p>Timber pontoon decking on the lagoon. Developer: Majid Al Futtaim. With Green &amp; More.</p></article>
+      <article class="card" data-sector="res"><div class="shots"><img src="artline-img/p-lanai-decking.jpg" alt="Render of lagoon-front villas at dusk with timber pontoon decks and a jet ski" loading="lazy"><img src="artline-img/p-lanai-decking-2.jpg" alt="Render of a villa terrace with a timber pontoon deck and a kayak on the lagoon" loading="lazy" hidden></div><span class="meta">Residential · Dubai · Illustrative render</span><h3>Lanai Island Estates, pontoon decking</h3><p>Timber pontoon decking on the lagoon. Developer: Majid Al Futtaim. With Green &amp; More.</p></article>
       <article class="card" data-sector="build"><img src="artline-img/p-jubail.jpg" alt="Aerial render of an island waterfront community with beach, marina and villas at sunset" loading="lazy"><span class="meta">Marine · Abu Dhabi · Illustrative render</span><h3>Kayak mounting pontoons, Jubail Island</h3><p>Design, supply and installation of floating pontoons at Nad Al Dhabi, Seef Al Jubail and Ain Al Maha. Developer: LEAD Development. With Premier Marine Solutions.</p></article>
       <article class="card" data-sector="build"><img src="artline-img/p-vptc.jpg" alt="Design render of the VPTC Camel Farm building at sunset, with stone walls, timber pergolas and camel shelters beyond" loading="lazy"><span class="meta">Construction · Fujairah · Design render</span><h3>VPTC Camel Farm building</h3><p>Building construction under a main contract. Consultant: EDMAC.</p></article>
       <article class="card" data-sector="edu"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>SOCO</b><span>Dibba Al Fujairah</span></div><span class="meta">Education &amp; culture · Dibba</span><h3>School of Calligraphy &amp; Ornamentation, Dibba branch</h3><p>Fit-out with HVAC and MEP coordination. Consultant: EDMAC.</p></article>
-      <article class="card" data-sector="edu"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>SOCO Kids</b><span>Al Taif Business Tower</span></div><span class="meta">Education &amp; culture · Fujairah</span><h3>SOCO Kids &amp; SOCO Young</h3><p>Interior fit-out, admin office and VRF air-conditioning.</p></article>
+      <article class="card" data-sector="edu"><div class="shots"><img src="artline-img/p-soco-young-1.jpg" alt="SOCO Young learning hall with timber tables and chairs, pendant lights and city views" loading="lazy"><img src="artline-img/p-soco-young-2.jpg" alt="SOCO reception with stone-clad counter and backlit calligraphy wall" loading="lazy" hidden><img src="artline-img/p-soco-young-3.jpg" alt="SOCO Kids classroom with round tables and a filming area" loading="lazy" hidden><img src="artline-img/p-soco-young-4.jpg" alt="Filming and teaching corner with timber-framed ceiling" loading="lazy" hidden></div><span class="meta">Education &amp; culture · Fujairah</span><h3>SOCO Kids &amp; SOCO Young</h3><p>Interior fit-out, admin office and VRF air-conditioning.</p></article>
     </div>
   </section>
 
@@ -685,4 +692,14 @@ document.querySelectorAll(".copy").forEach(b => b.addEventListener("click", () =
   const fallback = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selected"; setTimeout(() => b.textContent = "Copy", 1600); };
   try { navigator.clipboard.writeText(el.textContent.trim()).then(done, fallback); } catch (e) { fallback(); }
 }));
+// Multi-photo cards
+document.querySelectorAll(".shots").forEach(s => {
+  const imgs = [...s.querySelectorAll("img")];
+  if (imgs.length < 2) return;
+  const count = document.createElement("span"); count.className = "count";
+  const dots = document.createElement("div"); dots.className = "dots";
+  const show = i => { imgs.forEach((im, k) => im.hidden = k !== i); dots.querySelectorAll("button").forEach((b, k) => b.setAttribute("aria-current", String(k === i))); count.textContent = `${i + 1} / ${imgs.length}`; };
+  imgs.forEach((im, i) => { const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-label", `Show photo ${i + 1} of ${imgs.length}`); b.addEventListener("click", () => show(i)); dots.appendChild(b); });
+  s.append(count, dots); show(0);
+});
 </script>
