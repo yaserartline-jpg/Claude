@@ -48,7 +48,7 @@ img { max-width: 100%; }
 .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--nav-bg); backdrop-filter: blur(8px); border-bottom: 1px solid var(--mist); }
 .nav .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); flex: none; }
-.brand img { height: 40px; width: auto; display: block; }
+.brand img { height: 48px; width: auto; display: block; }
 .brand .l-dark { display: none; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand .l-light { display: none; } :root:not([data-theme="light"]) .brand .l-dark { display: block; } }
 :root[data-theme="dark"] .brand .l-light { display: none; }
@@ -236,7 +236,7 @@ html, body { overflow-x: clip; }
 
 footer { background: #000; color: #A6A6A6; border-top: 1px solid #333; }
 footer .wrap { padding-block: 22px 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; font: .74rem var(--f-mono); }
-footer img { height: 34px; width: auto; display: block; }
+footer img { height: 48px; width: auto; display: block; }
 
 @media (max-width: 960px) {
   html { scroll-padding-top: 112px; }
@@ -313,8 +313,8 @@ footer img { height: 34px; width: auto; display: block; }
 <nav class="nav" aria-label="Main">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Artline Engineering home">
-      <img class="l-light" src="artline-img/logo-black.png" width="160" height="157" alt="Artline Engineering">
-      <img class="l-dark" src="artline-img/logo-white.png" width="160" height="157" alt="Artline Engineering">
+      <img class="l-light" src="artline-img/logo-full-black.png" width="477" height="480" alt="Artline Engineering">
+      <img class="l-dark" src="artline-img/logo-full-white.png" width="477" height="480" alt="Artline Engineering">
     </a>
     <ul>
       <li><a href="#about">About</a></li>
@@ -356,7 +356,7 @@ footer img { height: 34px; width: auto; display: block; }
     </div>
     <div class="iso"><span>ISO 9001</span><span>ISO 14001</span><span>ISO 45001</span><span>EIAC-accredited certification</span></div>
     </div>
-    <img class="hero-mark" src="artline-img/logo-white.png" width="160" height="157" alt="">
+    <img class="hero-mark" src="artline-img/logo-full-white.png" width="477" height="480" alt="">
   </div>
 </header>
 
@@ -533,7 +533,7 @@ footer img { height: 34px; width: auto; display: block; }
 
 <footer>
   <div class="wrap">
-    <img src="artline-img/logo-white.png" width="160" height="157" alt="Artline Engineering">
+    <img src="artline-img/logo-full-white.png" width="477" height="480" alt="Artline Engineering">
     <span>Art Line Engineering LLC · Fujairah · Dubai</span>
   </div>
 </footer>
