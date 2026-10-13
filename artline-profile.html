@@ -273,6 +273,29 @@ footer img { height: 34px; width: auto; display: block; }
   .contact > :nth-last-child(-n+3) { border-bottom: 1px solid #333; }
   .contact > :nth-last-child(-n+2) { border-bottom: 0; }
 }
+
+/* Regroup additions */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.tabs button { font: 600 .88rem var(--f-body); padding: 8px 14px; border: 1px solid var(--graphite); background: var(--paper); color: var(--ink); cursor: pointer; }
+.tabs button .n { font: 500 .72rem var(--f-mono); color: var(--steel); margin-left: 4px; }
+.tabs button[aria-pressed="true"] { background: #000; border-color: #000; color: #fff; }
+.tabs button[aria-pressed="true"] .n { color: #D46A6A; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tabs button[aria-pressed="true"] { background: #fff; color: #000; border-color: #fff; } }
+:root[data-theme="dark"] .tabs button[aria-pressed="true"] { background: #fff; color: #000; border-color: #fff; }
+.tabs button:focus-visible { outline: 2px solid var(--maroon); outline-offset: 2px; }
+#about .team { margin-top: 4px; }
+.licence { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+.acts { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--mist); }
+.acts li { padding: 10px 0; border-bottom: 1px solid var(--mist); display: grid; grid-template-columns: 96px 1fr; gap: 12px; font-size: .95rem; }
+.acts .mono { font: .78rem/1.9 var(--f-mono); color: var(--steel); }
+.note-lead { color: var(--graphite); margin-bottom: 16px; }
+.logos.gov { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.logos.corp { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+#clients .head + .sub { margin-top: 8px; }
+#about .sub { margin-top: 48px; }
+#credentials .sub { margin-top: 40px; }
+@media (max-width: 960px) { .logos.gov, .logos.corp { grid-template-columns: repeat(4, minmax(0, 1fr)); } .licence { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .logos.gov, .logos.corp { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -284,11 +307,10 @@ footer img { height: 34px; width: auto; display: block; }
     <ul>
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#current">Current</a></li>
-      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#projects">Portfolio</a></li>
+      <li><a href="#current">On site</a></li>
+      <li><a href="#credentials">Credentials</a></li>
       <li><a href="#clients">Clients</a></li>
-      <li><a href="#team">Team</a></li>
     </ul>
     <a class="btn btn-primary" href="#contact">Request a quotation</a>
   </div>
@@ -319,7 +341,7 @@ footer img { height: 34px; width: auto; display: block; }
     <p class="lead">From IKEA and Sephora to government service centres, we design, build and furnish interiors with our own engineers, architects and carpentry workshop.</p>
     <div class="ctas">
       <a class="btn btn-primary" href="#contact">Request a site visit</a>
-      <a class="btn btn-ghost" href="#projects">View our projects</a>
+      <a class="btn btn-ghost" href="#projects">View our portfolio</a>
     </div>
     <div class="iso"><span>ISO 9001</span><span>ISO 14001</span><span>ISO 45001</span><span>EIAC-accredited certification</span></div>
     </div>
@@ -339,7 +361,7 @@ footer img { height: 34px; width: auto; display: block; }
 <main class="wrap">
 
   <section class="block" id="about">
-    <div class="head"><span class="kicker">About us</span><h2>Built in Fujairah, trusted across the UAE</h2></div>
+    <div class="head"><span class="kicker">Who we are</span><h2>Built in Fujairah, trusted across the UAE</h2></div>
     <div class="about">
       <div>
         <p class="lead">Artline Engineering is a construction and fit-out contractor based in Fujairah. We deliver complete interiors for retail, food and beverage, healthcare, government and residential clients.</p>
@@ -349,6 +371,15 @@ footer img { height: 34px; width: auto; display: block; }
         <div><h3>Vision</h3><p>To be recognised as a leading provider of high-quality construction and fit-out services in the UAE, offering superior quality at competitive prices.</p></div>
         <div><h3>Mission</h3><p>To exceed clients' expectations with workmanship above market standards, and to keep developing the expertise of our people.</p></div>
       </div>
+    </div>
+    <h3 class="sub">Leadership</h3>
+    <div class="team">
+      <div class="person"><b>Abdul Hamid Tayfor</b><span>Managing Director</span></div>
+      <div class="person"><b>Yaser Alassaf</b><span>Executive Manager</span></div>
+      <div class="person"><b>Ashok Kumar</b><span>Operation Manager</span></div>
+      <div class="person"><b>Zuhair Abdul Daim</b><span>Business Development Manager</span></div>
+      <div class="person"><b>Ryan Carl</b><span>Lead Architect</span></div>
+      <div class="person"><b>Mhd. Iyad Rajob</b><span>Project Manager</span></div>
     </div>
   </section>
 
@@ -366,33 +397,37 @@ footer img { height: 34px; width: auto; display: block; }
   </section>
 
   <section class="block" id="projects">
-    <div class="head"><span class="kicker">Featured projects</span><h2>Spaces for brands people know</h2><p>A selection of completed fit-outs for global brands, government service centres and corporate clients.</p></div>
-    <div class="cards">
-      <article class="card"><img src="artline-img/p-ikea.jpg" alt="IKEA store entrance at Fujairah City Centre" loading="lazy"><span class="meta">Retail · 2024</span><h3>IKEA</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
-      <article class="card"><img src="artline-img/p-sephora.jpg" alt="Sephora storefront with black and white striped portal" loading="lazy"><span class="meta">Retail · 2022</span><h3>Sephora</h3><p>Interior decor works, Fujairah City Centre.</p></article>
-      <article class="card"><img src="artline-img/p-mcdonalds.jpg" alt="McDonald's food court counter with timber cladding" loading="lazy"><span class="meta">F&amp;B · 2024</span><h3>McDonald's</h3><p>Food court restaurant interior, Fujairah City Centre.</p></article>
-      <article class="card"><img src="artline-img/p-under-armour.jpg" alt="Under Armour storefront in a mall" loading="lazy"><span class="meta">Retail · 2022</span><h3>Under Armour</h3><p>Store interior, Fujairah City Centre.</p></article>
-      <article class="card"><img src="artline-img/p-du.jpg" alt="du store with illuminated curved portal" loading="lazy"><span class="meta">Telecom retail · 2023</span><h3>du</h3><p>Retail store interior, Fujairah City Centre.</p></article>
-      <article class="card"><img src="artline-img/p-eyewa.jpg" alt="Eyewa optical store with red slatted ceiling" loading="lazy"><span class="meta">Retail · 2024</span><h3>Eyewa</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
-      <article class="card"><img src="artline-img/p-baskin-robbins.jpg" alt="Baskin Robbins parlour with timber walls and display freezers" loading="lazy"><span class="meta">F&amp;B · 2024</span><h3>Baskin Robbins</h3><p>Interior decor and maintenance, Fujairah City Centre.</p></article>
-      <article class="card"><img src="artline-img/p-dominos.jpg" alt="Domino's Pizza frontage on a commercial building" loading="lazy"><span class="meta">F&amp;B · 2023</span><h3>Domino's Pizza</h3><p>Restaurant interior, Fujairah city centre.</p></article>
-      <article class="card"><img src="artline-img/p-tasheel.jpg" alt="Tasheel service centre with numbered white counters and green seating" loading="lazy"><span class="meta">Government · Fujairah</span><h3>Tasheel service centre</h3><p>Customer service hall fit-out.</p></article>
-      <article class="card"><img src="artline-img/p-tawjeeh.jpg" alt="Tawjeeh service hall with orange curved counters" loading="lazy"><span class="meta">Government · Fujairah</span><h3>Tawjeeh service centre</h3><p>Service hall fit-out with custom-built curved counters.</p></article>
-      <article class="card"><img src="artline-img/p-banobagi.jpg" alt="BANOBAGI Dermatology Clinic reception with timber slat ceiling" loading="lazy"><span class="meta">Healthcare · Fujairah</span><h3>BANOBAGI Dermatology Clinic</h3><p>Dermatology clinic interior fit-out.</p></article>
-      <article class="card"><img src="artline-img/p-al-fajar.jpg" alt="Al Fajar Al Alamia boardroom with world map wall feature" loading="lazy"><span class="meta">Corporate · Fujairah</span><h3>Al Fajar Al Alamia</h3><p>Corporate office fit-out including the boardroom.</p></article>
+    <div class="head"><span class="kicker">Portfolio</span><h2>Spaces for brands people know</h2><p>Completed fit-outs for global brands, government service centres, clinics and corporate offices.</p></div>
+    <div class="tabs" id="tabs" role="group" aria-label="Filter projects by sector">
+      <button type="button" id="t-all" data-f="all" aria-pressed="true">All</button>
+      <button type="button" id="t-retail" data-f="retail" aria-pressed="false">Retail &amp; F&amp;B</button>
+      <button type="button" id="t-gov" data-f="gov" aria-pressed="false">Government</button>
+      <button type="button" id="t-health" data-f="health" aria-pressed="false">Healthcare &amp; corporate</button>
+      <button type="button" id="t-leisure" data-f="leisure" aria-pressed="false">Leisure</button>
     </div>
-    <div class="gallery">
-      <figure class="wide"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park with colourful padded zones" loading="lazy"><figcaption><b>Sparkys Land</b><span>Leisure · 2024</span></figcaption></figure>
-      <figure><img src="artline-img/penti.jpg" alt="Penti and Little Shop fashion storefronts" loading="lazy"><figcaption><b>Penti &amp; Little Shop</b><span>Retail · Al Tayf Mall · 2024</span></figcaption></figure>
-      <figure><img src="artline-img/mia.jpg" alt="Mia Cosmetics store with illuminated display walls" loading="lazy"><figcaption><b>Mia Cosmetics</b><span>Retail · Al Tayf Mall · 2024</span></figcaption></figure>
-      <figure><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><figcaption><b>911 Games Station</b><span>Leisure</span></figcaption></figure>
-      <figure><img src="artline-img/scratch.jpg" alt="Scratch café with booth seating and timber cladding" loading="lazy"><figcaption><b>Scratch café</b><span>F&amp;B · 2023</span></figcaption></figure>
+    <div class="cards">
+      <article class="card" data-sector="retail"><img src="artline-img/p-ikea.jpg" alt="IKEA store entrance at Fujairah City Centre" loading="lazy"><span class="meta">Retail · 2024</span><h3>IKEA</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/p-sephora.jpg" alt="Sephora storefront with black and white striped portal" loading="lazy"><span class="meta">Retail · 2022</span><h3>Sephora</h3><p>Interior decor works, Fujairah City Centre.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/p-mcdonalds.jpg" alt="McDonald's food court counter with timber cladding" loading="lazy"><span class="meta">F&amp;B · 2024</span><h3>McDonald's</h3><p>Food court restaurant interior, Fujairah City Centre.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/p-under-armour.jpg" alt="Under Armour storefront in a mall" loading="lazy"><span class="meta">Retail · 2022</span><h3>Under Armour</h3><p>Store interior, Fujairah City Centre.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/p-du.jpg" alt="du store with illuminated curved portal" loading="lazy"><span class="meta">Telecom retail · 2023</span><h3>du</h3><p>Retail store interior, Fujairah City Centre.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/p-eyewa.jpg" alt="Eyewa optical store with red slatted ceiling" loading="lazy"><span class="meta">Retail · 2024</span><h3>Eyewa</h3><p>Store fit-out and maintenance, Fujairah City Centre.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/p-baskin-robbins.jpg" alt="Baskin Robbins parlour with timber walls and display freezers" loading="lazy"><span class="meta">F&amp;B · 2024</span><h3>Baskin Robbins</h3><p>Interior decor and maintenance, Fujairah City Centre.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/p-dominos.jpg" alt="Domino's Pizza frontage on a commercial building" loading="lazy"><span class="meta">F&amp;B · 2023</span><h3>Domino's Pizza</h3><p>Restaurant interior, Fujairah city centre.</p></article>
+      <article class="card" data-sector="gov"><img src="artline-img/p-tasheel.jpg" alt="Tasheel service centre with numbered white counters and green seating" loading="lazy"><span class="meta">Government · Fujairah</span><h3>Tasheel service centre</h3><p>Customer service hall fit-out.</p></article>
+      <article class="card" data-sector="gov"><img src="artline-img/p-tawjeeh.jpg" alt="Tawjeeh service hall with orange curved counters" loading="lazy"><span class="meta">Government · Fujairah</span><h3>Tawjeeh service centre</h3><p>Service hall fit-out with custom-built curved counters.</p></article>
+      <article class="card" data-sector="health"><img src="artline-img/p-banobagi.jpg" alt="BANOBAGI Dermatology Clinic reception with timber slat ceiling" loading="lazy"><span class="meta">Healthcare · Fujairah</span><h3>BANOBAGI Dermatology Clinic</h3><p>Dermatology clinic interior fit-out.</p></article>
+      <article class="card" data-sector="health"><img src="artline-img/p-al-fajar.jpg" alt="Al Fajar Al Alamia boardroom with world map wall feature" loading="lazy"><span class="meta">Corporate · Fujairah</span><h3>Al Fajar Al Alamia</h3><p>Corporate office fit-out including the boardroom.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/penti.jpg" alt="Penti and Little Shop fashion storefronts" loading="lazy"><span class="meta">Retail · 2024</span><h3>Penti &amp; Little Shop</h3><p>Two fashion stores, Al Tayf Mall, Fujairah.</p></article>
+      <article class="card" data-sector="retail"><img src="artline-img/mia.jpg" alt="Mia Cosmetics store with illuminated display walls" loading="lazy"><span class="meta">Retail · 2024</span><h3>Mia Cosmetics</h3><p>Cosmetics store interior, Al Tayf Mall, Fujairah.</p></article>
+      <article class="card" data-sector="leisure"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park entrance with neon portal" loading="lazy"><span class="meta">Leisure · 2024</span><h3>Sparkys Land</h3><p>Family entertainment centre interior, Fujairah.</p></article>
+      <article class="card" data-sector="leisure"><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><span class="meta">Leisure</span><h3>911 Games Station</h3><p>Bowling and games venue interior.</p></article>
     </div>
   </section>
 
   <section class="block dark" id="current">
     <svg class="lines" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><use href="#lineart"/></svg>
-    <div class="head"><span class="kicker">Current projects</span><h2>On site now</h2><p>Recent awards and works in progress across Fujairah, Dibba, Dubai and Abu Dhabi.</p></div>
+    <div class="head"><span class="kicker">On site now</span><h2>Current projects</h2><p>Recent awards and works in progress across Fujairah, Dibba, Dubai and Abu Dhabi.</p></div>
     <div class="live">
       <article class="job">
         <span class="status on">In progress</span>
@@ -430,10 +465,52 @@ footer img { height: 34px; width: auto; display: block; }
         <a class="btn btn-primary" href="#contact">Invite us to tender</a>
       </article>
     </div>
+    <h3 class="sub">Working with</h3>
+    <ul class="logos partners">
+      <li><img src="artline-img/partners/lead.svg" alt="LEAD Development" title="LEAD Development" loading="lazy"></li>
+      <li><img src="artline-img/partners/soco.png" alt="School of Calligraphy &amp; Ornamentation" title="School of Calligraphy &amp; Ornamentation" loading="lazy"></li>
+      <li><img src="artline-img/partners/raibal.png" alt="Raibal Holding" title="Raibal Holding" loading="lazy"></li>
+      <li><img src="artline-img/partners/bond.png" alt="Bond Interiors" title="Bond Interiors" loading="lazy"></li>
+      <li><img src="artline-img/partners/pms.png" alt="Premier Marine Solutions" title="Premier Marine Solutions" loading="lazy"></li>
+    </ul>
   </section>
 
-  <section class="block" id="record">
-    <div class="head"><span class="kicker">Track record</span><h2>44 certified completions since 2021</h2><p>Every project below holds a Fujairah Municipality completion certificate naming Artline as contractor.</p></div>
+  <section class="block" id="credentials">
+    <div class="head"><span class="kicker">Credentials</span><h2>Licensed, certified and on record</h2><p>Everything a client or consultant needs for pre-qualification, in one place.</p></div>
+    <h3 class="sub">ISO certification</h3>
+    <div class="certs">
+      <div class="cert"><span class="std">ISO 9001:2015</span><h3>Quality management</h3><span class="no">Cert. VSQC099-421264353</span></div>
+      <div class="cert"><span class="std">ISO 14001:2015</span><h3>Environmental management</h3><span class="no">Cert. VSQC099-421264354</span></div>
+      <div class="cert"><span class="std">ISO 45001:2018</span><h3>Occupational health &amp; safety</h3><span class="no">Cert. VSQC099-421264355</span></div>
+    </div>
+    <div class="cert-detail">
+      <div class="cert-text">
+        <p>Our management system is assessed and registered by Veritas System Quality Certificates (VSQC), accredited by the Emirates International Accreditation Centre. Scope: building projects contracting, interior decoration and fit-out works, aluminium works and carpentry works.</p>
+        <dl class="cert-meta">
+          <dt>Registered site</dt><dd>Fujairah, UAE</dd>
+          <dt>Certified</dt><dd>15 Sep 2026</dd>
+          <dt>Next surveillance</dt><dd>by 14 Sep 2027</dd>
+          <dt>Verify</dt><dd><a href="https://www.veritasassurance.com/verifycert.php" target="_blank" rel="noopener">veritasassurance.com/verifycert</a></dd>
+        </dl>
+      </div>
+      <div class="plate cert-mark"><img src="artline-img/iso-vsqc-eiac.png" width="617" height="212" alt="EIAC accreditation symbol, reference CB-QMS-EMS-OHSMS-099, with the Veritas Assurance ISO 9001, ISO 14001 and ISO 45001 certification mark"></div>
+    </div>
+    <h3 class="sub">Trade licence</h3>
+    <div class="licence">
+      <dl class="cert-meta">
+        <dt>Legal name</dt><dd>Art Line Engineering L.L.C. (Single Person Company)</dd>
+        <dt>Commercial licence</dt><dd>No. 93772, Fujairah Municipality</dd>
+        <dt>Chamber of Commerce</dt><dd>Member No. 13589</dd>
+        <dt>Established</dt><dd>November 2009</dd>
+      </dl>
+      <ul class="acts">
+        <li><span class="mono">4100002-4</span>All kinds of building projects contracting, fourth degree</li>
+        <li><span class="mono">4330015</span>Decor works</li>
+        <li><span class="mono">1622007</span>Carpenter shop</li>
+      </ul>
+    </div>
+    <h3 class="sub">Completion record</h3>
+    <p class="note-lead">44 projects with a Fujairah Municipality completion certificate naming Artline as contractor, since 2021.</p>
     <div class="record">
       <div class="panel">
         <h3>Completions per year</h3>
@@ -459,30 +536,12 @@ footer img { height: 34px; width: auto; display: block; }
     </details>
   </section>
 
-  <section class="block" id="certifications">
-    <div class="head"><span class="kicker">Certifications</span><h2>Certified management system</h2></div>
-    <div class="certs">
-      <div class="cert"><span class="std">ISO 9001:2015</span><h3>Quality management</h3><span class="no">Cert. VSQC099-421264353</span></div>
-      <div class="cert"><span class="std">ISO 14001:2015</span><h3>Environmental management</h3><span class="no">Cert. VSQC099-421264354</span></div>
-      <div class="cert"><span class="std">ISO 45001:2018</span><h3>Occupational health &amp; safety</h3><span class="no">Cert. VSQC099-421264355</span></div>
-    </div>
-    <div class="cert-detail">
-      <div class="cert-text">
-        <p>Our management system is assessed and registered by Veritas System Quality Certificates (VSQC), accredited by the Emirates International Accreditation Centre. Scope: building projects contracting, interior decoration and fit-out works, aluminium works and carpentry works.</p>
-        <dl class="cert-meta">
-          <dt>Registered site</dt><dd>Fujairah, UAE</dd>
-          <dt>Certified</dt><dd>15 Sep 2026</dd>
-          <dt>Next surveillance</dt><dd>by 14 Sep 2027</dd>
-          <dt>Verify</dt><dd><a href="https://www.veritasassurance.com/verifycert.php" target="_blank" rel="noopener">veritasassurance.com/verifycert</a></dd>
-        </dl>
-      </div>
-      <div class="plate cert-mark"><img src="artline-img/iso-vsqc-eiac.png" width="617" height="212" alt="EIAC accreditation symbol, reference CB-QMS-EMS-OHSMS-099, with the Veritas Assurance ISO 9001, ISO 14001 and ISO 45001 certification mark"></div>
-    </div>
-  </section>
-
   <section class="block" id="clients">
     <div class="head"><span class="kicker">Clients</span><h2>Trusted by government and leading brands</h2></div>
-    <ul class="logos" id="logos"></ul>
+    <h3 class="sub">Government &amp; semi-government</h3>
+    <ul class="logos gov" id="logos-gov"></ul>
+    <h3 class="sub">Corporate, healthcare &amp; education</h3>
+    <ul class="logos corp" id="logos-corp"></ul>
     <h3 class="sub">Brands we've built spaces for</h3>
     <ul class="logos brandrow">
       <li><img src="artline-img/brands/ikea.svg" alt="IKEA" title="IKEA" loading="lazy"></li>
@@ -494,31 +553,6 @@ footer img { height: 34px; width: auto; display: block; }
       <li><img src="artline-img/brands/subway.svg" alt="Subway" title="Subway" loading="lazy"></li>
       <li><img src="artline-img/brands/papajohns.svg" alt="Papa John's" title="Papa John's" loading="lazy"></li>
     </ul>
-    <h3 class="sub">Current clients &amp; project partners</h3>
-    <ul class="logos partners">
-      <li><img src="artline-img/partners/lead.svg" alt="LEAD Development" title="LEAD Development" loading="lazy"></li>
-      <li><img src="artline-img/partners/soco.png" alt="School of Calligraphy &amp; Ornamentation" title="School of Calligraphy &amp; Ornamentation" loading="lazy"></li>
-      <li><img src="artline-img/partners/raibal.png" alt="Raibal Holding" title="Raibal Holding" loading="lazy"></li>
-      <li><img src="artline-img/partners/bond.png" alt="Bond Interiors" title="Bond Interiors" loading="lazy"></li>
-      <li><img src="artline-img/partners/pms.png" alt="Premier Marine Solutions" title="Premier Marine Solutions" loading="lazy"></li>
-    </ul>
-    <div class="segments">
-      <div><h3>Government</h3><p>Ministries, police, airport, authorities and service centres across Fujairah.</p></div>
-      <div><h3>Commercial</h3><p>Malls, banks, retailers, restaurants, schools and hospitals.</p></div>
-      <div><h3>Residential</h3><p>Homeowners seeking bespoke design and construction.</p></div>
-    </div>
-  </section>
-
-  <section class="block" id="team">
-    <div class="head"><span class="kicker">Leadership</span><h2>The team behind the work</h2></div>
-    <div class="team">
-      <div class="person"><b>Abdul Hamid Tayfor</b><span>Managing Director</span></div>
-      <div class="person"><b>Yaser Alassaf</b><span>Executive Manager</span></div>
-      <div class="person"><b>Ashok Kumar</b><span>Operation Manager</span></div>
-      <div class="person"><b>Zuhair Abdul Daim</b><span>Business Development Manager</span></div>
-      <div class="person"><b>Ryan Carl</b><span>Lead Architect</span></div>
-      <div class="person"><b>Mhd. Iyad Rajob</b><span>Project Manager</span></div>
-    </div>
   </section>
 
 </main>
@@ -600,8 +634,8 @@ const PROJECTS = [
   ["2021-08","Al Hajis Perfumes","Fujairah City Centre","Retail"],
   ["2021-06","New Era","Fujairah City Centre","Retail"]
 ];
-// [file, name], ordered government first
-const CLIENTS = [
+// [file, name]
+const CLIENTS_ALL = [
   ["government-of-fujairah","Government of Fujairah"],["fujairah-police","Fujairah Police"],["mohre","Ministry of Human Resources & Emiratisation"],["ica","Federal Authority for Identity & Citizenship"],
   ["fujairah-airport","Fujairah International Airport"],["fujairah-environment","Fujairah Environment Authority"],["ffrd","Fujairah Foundation for Region Development"],["fnrc","Fujairah Natural Resources Corporation"],
   ["majid-al-futtaim","Majid Al Futtaim"],["city-centre","City Centre Fujairah"],["fujairah-holding","Fujairah Holding"],["nbf","National Bank of Fujairah"],
@@ -615,8 +649,22 @@ const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov
 const fmt = d => MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4);
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 
-document.getElementById("logos").innerHTML = CLIENTS.map(([f, n]) =>
-  `<li><img src="artline-img/clients/${f}.png" width="300" height="150" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`).join("");
+const GOV = ["government-of-fujairah","fujairah-police","mohre","ica","fujairah-airport","fujairah-environment","ffrd","fnrc","fujairah-holding","fmg","fnct","tasheel","tadbeer","tawjeeh"];
+const logoLi = ([f, n]) => `<li><img src="artline-img/clients/${f}.png" width="300" height="150" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`;
+document.getElementById("logos-gov").innerHTML = GOV.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("");
+document.getElementById("logos-corp").innerHTML = CLIENTS_ALL.filter(c => !GOV.includes(c[0])).map(logoLi).join("");
+
+// Portfolio sector tabs
+const tabs = document.getElementById("tabs");
+const cardsEl = document.querySelectorAll("#projects .card");
+tabs.querySelectorAll("button").forEach(b => {
+  const n = b.dataset.f === "all" ? cardsEl.length : [...cardsEl].filter(c => c.dataset.sector === b.dataset.f).length;
+  b.insertAdjacentHTML("beforeend", ` <span class="n">${n}</span>`);
+  b.addEventListener("click", () => {
+    tabs.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    cardsEl.forEach(c => { c.hidden = !(b.dataset.f === "all" || c.dataset.sector === b.dataset.f); });
+  });
+});
 
 // Register + year filter
 const years = [...new Set(PROJECTS.map(p => p[0].slice(0, 4)))];
