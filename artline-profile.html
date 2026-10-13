@@ -643,13 +643,13 @@ const CLIENTS_ALL = [
   ["sephora","Sephora"],["banobagi","Banobagi Clinic"],["ajman-university","Ajman University"],["gems-winchester","GEMS Winchester School Fujairah"],
   ["diyar-school","Diyar Private Academy"],["fnct","FNCT"],["tasheel","Tasheel"],["tadbeer","Tadbeer"],
   ["tawjeeh","Tawjeeh"],["fujairah-adventures","Fujairah Adventures"],["magic-planet","Magic Planet"],["games-station","911 Games Station"],
-  ["splash","Splash"],["jovial","Jovial"],["hyssna","HYSSNA International"],["fmg","AFMG"]
+  ["splash","Splash"],["jovial","Jovial"],["hyssna","HYSSNA International"],["fng","Fujairah National Group"]
 ];
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const fmt = d => MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4);
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 
-const GOV = ["government-of-fujairah","fujairah-police","mohre","ica","fujairah-airport","fujairah-environment","ffrd","fnrc","fujairah-holding","fmg","fnct","tasheel","tadbeer","tawjeeh"];
+const GOV = ["government-of-fujairah","fujairah-police","mohre","ica","fujairah-airport","fujairah-environment","ffrd","fnrc","fujairah-holding","fnct","tasheel","tadbeer","tawjeeh"];
 const logoLi = ([f, n]) => `<li><img src="artline-img/clients/${f}.png" width="300" height="150" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`;
 document.getElementById("logos-gov").innerHTML = GOV.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("");
 const BRANDS = ["sephora","splash","jovial","magic-planet","games-station"];
