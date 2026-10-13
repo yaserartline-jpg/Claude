@@ -290,12 +290,12 @@ footer img { height: 34px; width: auto; display: block; }
 .acts .mono { font: .78rem/1.9 var(--f-mono); color: var(--steel); }
 .note-lead { color: var(--graphite); margin-bottom: 16px; }
 .logos.gov { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.logos.corp { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.logos.corp, .logos.brandrow { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 #clients .head + .sub { margin-top: 8px; }
 #about .sub { margin-top: 48px; }
 #credentials .sub { margin-top: 40px; }
-@media (max-width: 960px) { .logos.gov, .logos.corp { grid-template-columns: repeat(4, minmax(0, 1fr)); } .licence { grid-template-columns: 1fr; } }
-@media (max-width: 600px) { .logos.gov, .logos.corp { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 960px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(4, minmax(0, 1fr)); } .licence { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -540,10 +540,10 @@ footer img { height: 34px; width: auto; display: block; }
     <div class="head"><span class="kicker">Clients</span><h2>Trusted by government and leading brands</h2></div>
     <h3 class="sub">Government &amp; semi-government</h3>
     <ul class="logos gov" id="logos-gov"></ul>
-    <h3 class="sub">Corporate, healthcare &amp; education</h3>
+    <h3 class="sub">Developers, corporate, healthcare &amp; education</h3>
     <ul class="logos corp" id="logos-corp"></ul>
     <h3 class="sub">Brands we've built spaces for</h3>
-    <ul class="logos brandrow">
+    <ul class="logos brandrow" id="logos-brand">
       <li><img src="artline-img/brands/ikea.svg" alt="IKEA" title="IKEA" loading="lazy"></li>
       <li><img src="artline-img/brands/mcdonalds.svg" alt="McDonald's" title="McDonald's" loading="lazy"></li>
       <li><img src="artline-img/brands/underarmour.svg" alt="Under Armour" title="Under Armour" loading="lazy"></li>
@@ -652,7 +652,9 @@ const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&
 const GOV = ["government-of-fujairah","fujairah-police","mohre","ica","fujairah-airport","fujairah-environment","ffrd","fnrc","fujairah-holding","fmg","fnct","tasheel","tadbeer","tawjeeh"];
 const logoLi = ([f, n]) => `<li><img src="artline-img/clients/${f}.png" width="300" height="150" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`;
 document.getElementById("logos-gov").innerHTML = GOV.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("");
-document.getElementById("logos-corp").innerHTML = CLIENTS_ALL.filter(c => !GOV.includes(c[0])).map(logoLi).join("");
+const BRANDS = ["sephora","splash","jovial","magic-planet","games-station"];
+document.getElementById("logos-corp").innerHTML = CLIENTS_ALL.filter(c => !GOV.includes(c[0]) && !BRANDS.includes(c[0])).map(logoLi).join("");
+document.getElementById("logos-brand").insertAdjacentHTML("beforeend", BRANDS.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join(""));
 
 // Portfolio sector tabs
 const tabs = document.getElementById("tabs");
