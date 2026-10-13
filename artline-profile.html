@@ -289,13 +289,18 @@ footer img { height: 34px; width: auto; display: block; }
 .acts li { padding: 10px 0; border-bottom: 1px solid var(--mist); display: grid; grid-template-columns: 96px 1fr; gap: 12px; font-size: .95rem; }
 .acts .mono { font: .78rem/1.9 var(--f-mono); color: var(--steel); }
 .note-lead { color: var(--graphite); margin-bottom: 16px; }
-.logos.gov { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.logos.corp, .logos.brandrow { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.logos.gov { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.logos.corp { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.logos.brandrow { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 #clients .head + .sub { margin-top: 8px; }
 #about .sub { margin-top: 48px; }
 #credentials .sub { margin-top: 40px; }
 @media (max-width: 960px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(4, minmax(0, 1fr)); } .licence { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.card .tile { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: #000; color: #fff; display: grid; align-content: end; gap: 2px; padding: 16px; }
+.card .tile-lines { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .35; }
+.card .tile b { position: relative; font: 700 1.7rem/1 var(--f-display); text-transform: uppercase; letter-spacing: .02em; }
+.card .tile span { position: relative; font: 500 .7rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: #D46A6A; }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -308,7 +313,6 @@ footer img { height: 34px; width: auto; display: block; }
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#projects">Portfolio</a></li>
-      <li><a href="#current">Recent</a></li>
       <li><a href="#credentials">Credentials</a></li>
       <li><a href="#clients">Clients</a></li>
     </ul>
@@ -397,12 +401,15 @@ footer img { height: 34px; width: auto; display: block; }
   </section>
 
   <section class="block" id="projects">
-    <div class="head"><span class="kicker">Portfolio</span><h2>Spaces for brands people know</h2><p>Completed fit-outs for global brands, government service centres, clinics and corporate offices.</p></div>
+    <div class="head"><span class="kicker">Portfolio</span><h2>Spaces for brands people know</h2><p>Completed fit-outs and construction for global brands, government, healthcare, education, residential and marine clients across the UAE.</p></div>
     <div class="tabs" id="tabs" role="group" aria-label="Filter projects by sector">
       <button type="button" id="t-all" data-f="all" aria-pressed="true">All</button>
       <button type="button" id="t-retail" data-f="retail" aria-pressed="false">Retail &amp; F&amp;B</button>
       <button type="button" id="t-gov" data-f="gov" aria-pressed="false">Government</button>
       <button type="button" id="t-health" data-f="health" aria-pressed="false">Healthcare &amp; corporate</button>
+      <button type="button" id="t-edu" data-f="edu" aria-pressed="false">Education &amp; culture</button>
+      <button type="button" id="t-res" data-f="res" aria-pressed="false">Residential</button>
+      <button type="button" id="t-build" data-f="build" aria-pressed="false">Construction &amp; marine</button>
       <button type="button" id="t-leisure" data-f="leisure" aria-pressed="false">Leisure</button>
     </div>
     <div class="cards">
@@ -422,57 +429,13 @@ footer img { height: 34px; width: auto; display: block; }
       <article class="card" data-sector="retail"><img src="artline-img/mia.jpg" alt="Mia Cosmetics store with illuminated display walls" loading="lazy"><span class="meta">Retail · 2024</span><h3>Mia Cosmetics</h3><p>Cosmetics store interior, Al Tayf Mall, Fujairah.</p></article>
       <article class="card" data-sector="leisure"><img src="artline-img/sparkys.jpg" alt="Sparkys Jump trampoline park entrance with neon portal" loading="lazy"><span class="meta">Leisure · 2024</span><h3>Sparkys Land</h3><p>Family entertainment centre interior, Fujairah.</p></article>
       <article class="card" data-sector="leisure"><img src="artline-img/games-station.jpg" alt="911 Games Station bowling lanes with neon lighting" loading="lazy"><span class="meta">Leisure</span><h3>911 Games Station</h3><p>Bowling and games venue interior.</p></article>
+      <article class="card" data-sector="res"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Lanai Island</b><span>Tilal Al Ghaf · Dubai</span></div><span class="meta">Residential · Dubai</span><h3>Lanai Island Estates, villa fit-out</h3><p>Interior fit-out of island mansions. Developer: Majid Al Futtaim. With Bond Interiors.</p></article>
+      <article class="card" data-sector="res"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Lanai Island</b><span>Tilal Al Ghaf · Dubai</span></div><span class="meta">Residential · Dubai</span><h3>Lanai Island Estates, decking</h3><p>Outdoor decking works. Developer: Majid Al Futtaim. With Green &amp; More.</p></article>
+      <article class="card" data-sector="build"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Jubail Island</b><span>Abu Dhabi</span></div><span class="meta">Marine · Abu Dhabi</span><h3>Kayak mounting pontoons, Jubail Island</h3><p>Design, supply and installation of floating pontoons at Nad Al Dhabi, Seef Al Jubail and Ain Al Maha. Developer: LEAD Development. With Premier Marine Solutions.</p></article>
+      <article class="card" data-sector="build"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Camel Farm</b><span>Fujairah</span></div><span class="meta">Construction · Fujairah</span><h3>VPTC Camel Farm building</h3><p>Building construction under a main contract. Consultant: EDMAC.</p></article>
+      <article class="card" data-sector="edu"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>SOCO</b><span>Dibba Al Fujairah</span></div><span class="meta">Education &amp; culture · Dibba</span><h3>School of Calligraphy &amp; Ornamentation, Dibba branch</h3><p>Fit-out with HVAC and MEP coordination. Consultant: EDMAC.</p></article>
+      <article class="card" data-sector="edu"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>SOCO Kids</b><span>Al Taif Business Tower</span></div><span class="meta">Education &amp; culture · Fujairah</span><h3>SOCO Kids &amp; SOCO Young</h3><p>Interior fit-out, admin office and VRF air-conditioning.</p></article>
     </div>
-  </section>
-
-  <section class="block dark" id="current">
-    <svg class="lines" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><use href="#lineart"/></svg>
-    <div class="head"><span class="kicker">Recent projects</span><h2>Recently delivered</h2><p>Recent projects across Fujairah, Dibba, Dubai and Abu Dhabi.</p></div>
-    <div class="live">
-      <article class="job">
-        <span class="status">Completed</span>
-        <h3>VPTC Camel Farm building</h3>
-        <dl><dt>Location</dt><dd>Fujairah</dd><dt>Scope</dt><dd>Building construction, main contract</dd><dt>Consultant</dt><dd>EDMAC</dd></dl>
-      </article>
-      <article class="job">
-        <span class="status">Completed</span>
-        <h3>School of Calligraphy &amp; Ornamentation, Dibba branch</h3>
-        <dl><dt>Location</dt><dd>Dibba Al Fujairah</dd><dt>Scope</dt><dd>Fit-out with HVAC and MEP coordination</dd><dt>Client</dt><dd>School of Calligraphy &amp; Ornamentation (SOCO)</dd><dt>Consultant</dt><dd>EDMAC</dd></dl>
-      </article>
-      <article class="job">
-        <span class="status">Completed</span>
-        <h3>SOCO Kids &amp; SOCO Young</h3>
-        <dl><dt>Location</dt><dd>Al Taif Business Tower, Fujairah</dd><dt>Scope</dt><dd>Interior fit-out, admin office, VRF air-conditioning</dd><dt>Client</dt><dd>SOCO Fujairah</dd></dl>
-      </article>
-      <article class="job">
-        <span class="status">Completed</span>
-        <h3>Kayak mounting pontoons, Jubail Island</h3>
-        <dl><dt>Location</dt><dd>Nad Al Dhabi, Seef Al Jubail &amp; Ain Al Maha, Abu Dhabi</dd><dt>Scope</dt><dd>Design, supply and installation of floating pontoons</dd><dt>Developer</dt><dd>Jubail Island Investment Co. (LEAD Development)</dd><dt>With</dt><dd>Premier Marine Solutions</dd></dl>
-      </article>
-      <article class="job">
-        <span class="status">Completed</span>
-        <h3>Lanai Island Estates, villa fit-out</h3>
-        <dl><dt>Location</dt><dd>Tilal Al Ghaf, Dubai</dd><dt>Scope</dt><dd>Interior fit-out of ultra-luxury island mansions</dd><dt>Developer</dt><dd>Majid Al Futtaim</dd><dt>With</dt><dd>Bond Interiors</dd></dl>
-      </article>
-      <article class="job">
-        <span class="status">Completed</span>
-        <h3>Lanai Island Estates, decking</h3>
-        <dl><dt>Location</dt><dd>Tilal Al Ghaf, Dubai</dd><dt>Scope</dt><dd>Outdoor decking works</dd><dt>Developer</dt><dd>Majid Al Futtaim</dd><dt>With</dt><dd>Green &amp; More</dd></dl>
-      </article>
-      <article class="job more">
-        <h3>Tendering now</h3>
-        <p>Marine and waterfront works in Dubai and Abu Dhabi, including pedestrian bridges, beach structures and marina maintenance.</p>
-        <a class="btn btn-primary" href="#contact">Invite us to tender</a>
-      </article>
-    </div>
-    <h3 class="sub">Working with</h3>
-    <ul class="logos partners">
-      <li><img src="artline-img/partners/lead.svg" alt="LEAD Development" title="LEAD Development" loading="lazy"></li>
-      <li><img src="artline-img/partners/soco.png" alt="School of Calligraphy &amp; Ornamentation" title="School of Calligraphy &amp; Ornamentation" loading="lazy"></li>
-      <li><img src="artline-img/partners/raibal.png" alt="Raibal Holding" title="Raibal Holding" loading="lazy"></li>
-      <li><img src="artline-img/partners/bond.png" alt="Bond Interiors" title="Bond Interiors" loading="lazy"></li>
-      <li><img src="artline-img/partners/pms.png" alt="Premier Marine Solutions" title="Premier Marine Solutions" loading="lazy"></li>
-    </ul>
   </section>
 
   <section class="block" id="credentials">
@@ -532,6 +495,14 @@ footer img { height: 34px; width: auto; display: block; }
       <li><img src="artline-img/brands/dominos.svg" alt="Domino's Pizza" title="Domino's Pizza" loading="lazy"></li>
       <li><img src="artline-img/brands/subway.svg" alt="Subway" title="Subway" loading="lazy"></li>
       <li><img src="artline-img/brands/papajohns.svg" alt="Papa John's" title="Papa John's" loading="lazy"></li>
+    </ul>
+    <h3 class="sub">Project partners</h3>
+    <ul class="logos partners">
+      <li><img src="artline-img/partners/lead.svg" alt="LEAD Development" title="LEAD Development" loading="lazy"></li>
+      <li><img src="artline-img/partners/soco.png" alt="School of Calligraphy &amp; Ornamentation" title="School of Calligraphy &amp; Ornamentation" loading="lazy"></li>
+      <li><img src="artline-img/partners/raibal.png" alt="Raibal Holding" title="Raibal Holding" loading="lazy"></li>
+      <li><img src="artline-img/partners/bond.png" alt="Bond Interiors" title="Bond Interiors" loading="lazy"></li>
+      <li><img src="artline-img/partners/pms.png" alt="Premier Marine Solutions" title="Premier Marine Solutions" loading="lazy"></li>
     </ul>
   </section>
 
