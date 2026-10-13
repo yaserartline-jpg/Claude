@@ -356,7 +356,7 @@ footer img { height: 34px; width: auto; display: block; }
 <div class="proof" aria-label="Key figures">
   <div class="wrap">
     <div class="item"><b>15+</b><span>years licensed in Fujairah</span></div>
-    <div class="item"><b>44</b><span>municipality-certified projects since 2021</span></div>
+    <div class="item"><b>50</b><span>projects delivered since 2021</span></div>
     <div class="item"><b>32</b><span>government &amp; corporate clients</span></div>
     <div class="item"><b>3</b><span>ISO management system certifications</span></div>
   </div>
@@ -439,7 +439,7 @@ footer img { height: 34px; width: auto; display: block; }
   </section>
 
   <section class="block" id="credentials">
-    <div class="head"><span class="kicker">Credentials</span><h2>Certified and on record</h2><p>Our ISO certification and municipality completion record.</p></div>
+    <div class="head"><span class="kicker">Credentials</span><h2>Certified and on record</h2><p>Our ISO certification and project record.</p></div>
     <h3 class="sub">ISO certification</h3>
     <div class="certs">
       <div class="cert"><span class="std">ISO 9001:2015</span><h3>Quality management</h3><span class="no">Cert. VSQC099-421264353</span></div>
@@ -453,12 +453,12 @@ footer img { height: 34px; width: auto; display: block; }
       <div class="plate cert-mark"><img src="artline-img/iso-vsqc-eiac.png" width="617" height="212" alt="EIAC accreditation symbol, reference CB-QMS-EMS-OHSMS-099, with the Veritas Assurance ISO 9001, ISO 14001 and ISO 45001 certification mark"></div>
     </div>
     <h3 class="sub">Completion record</h3>
-    <p class="note-lead">44 projects with a Fujairah Municipality completion certificate naming Artline as contractor, since 2021.</p>
+    <p class="note-lead">50 projects delivered since 2021. 44 hold a Fujairah Municipality completion certificate naming Artline as contractor; the 6 most recent span Fujairah, Dibba, Dubai and Abu Dhabi.</p>
     <div class="record">
       <div class="panel">
-        <h3>Completions per year</h3>
-        <svg id="chart" viewBox="0 0 560 220" role="img" aria-label="Completions per year: 2021 seven, 2022 eleven, 2023 ten, 2024 thirteen, 2025 three to May"></svg>
-        <div class="cap">2025 covers January to May.</div>
+        <h3>Projects per year</h3>
+        <svg id="chart" viewBox="0 0 560 220" role="img" aria-label="Projects per year: 2021 seven, 2022 eleven, 2023 ten, 2024 thirteen, 2025 three, 2026 six"></svg>
+        <div class="cap">2021–2025 from municipality certificates (2025 to May); 2026 shows recent projects.</div>
       </div>
       <div class="panel">
         <h3>By sector</h3>
@@ -471,7 +471,7 @@ footer img { height: 34px; width: auto; display: block; }
         <div class="filters" id="filters" role="group" aria-label="Filter by year"></div>
         <div class="tbl">
           <table>
-            <thead><tr><th>Completed</th><th>Project</th><th>Location</th><th>Sector</th></tr></thead>
+            <thead><tr><th>Completed</th><th>Project</th><th>Location</th><th>Sector</th><th>Municipality certificate</th></tr></thead>
             <tbody id="rows"></tbody>
           </table>
         </div>
@@ -532,6 +532,12 @@ footer img { height: 34px; width: auto; display: block; }
 <script>
 // [completed yyyy-mm, project, location, sector]
 const PROJECTS = [
+  ["2026","VPTC Camel Farm building","Fujairah","Construction",false],
+  ["2026","School of Calligraphy & Ornamentation, Dibba branch","Dibba Al Fujairah","Education",false],
+  ["2026","SOCO Kids & SOCO Young","Al Taif Business Tower, Fujairah","Education",false],
+  ["2026","Kayak mounting pontoons","Jubail Island, Abu Dhabi","Marine",false],
+  ["2026","Lanai Island Estates, villa fit-out","Tilal Al Ghaf, Dubai","Residential",false],
+  ["2026","Lanai Island Estates, pontoon decking","Tilal Al Ghaf, Dubai","Residential",false],
   ["2025-05","Pappa Roti","Fujairah City Centre","F&B"],
   ["2025-04","Diyar Property Management office","City centre district","Office"],
   ["2025-03","Retail store fit-out","Fujairah City Centre","Retail"],
@@ -589,7 +595,7 @@ const CLIENTS_ALL = [
   ["splash","Splash"],["jovial","Jovial"],["hyssna","HYSSNA International"],["fng","Fujairah National Group"]
 ];
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const fmt = d => MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4);
+const fmt = d => d.length === 4 ? d : MONTHS[+d.slice(5) - 1] + " " + d.slice(0, 4);
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 
 const GOV = ["government-of-fujairah","fujairah-police","mohre","ica","fujairah-airport","fujairah-environment","ffrd","fnrc","fujairah-holding","tasheel","tadbeer","tawjeeh"];
@@ -620,7 +626,7 @@ const rows = document.getElementById("rows");
 const count = document.getElementById("count");
 function render(year) {
   const list = year === "All" ? PROJECTS : PROJECTS.filter(p => p[0].startsWith(year));
-  rows.innerHTML = list.map(p => `<tr><td class="num">${fmt(p[0])}</td><td class="proj">${esc(p[1])}</td><td>${esc(p[2])}</td><td><span class="chip">${esc(p[3])}</span></td></tr>`).join("");
+  rows.innerHTML = list.map(p => `<tr><td class="num">${fmt(p[0])}</td><td class="proj">${esc(p[1])}</td><td>${esc(p[2])}</td><td><span class="chip">${esc(p[3])}</span></td><td class="num">${p[4] === false ? "—" : "✓"}</td></tr>`).join("");
   count.textContent = year === "All" ? `${PROJECTS.length} projects` : `${list.length} in ${year}`;
   filters.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.y === year)));
 }
@@ -660,10 +666,10 @@ function drawChart() {
   const slot = (W - L - R) / data.length;
   data.forEach(([yr, v], i) => {
     const x = L + i * slot + slot * .22, w = slot * .56;
-    const partial = yr === "2025";
+    const partial = false;
     el("rect", { x, y: y(v), width: w, height: y(0) - y(v), fill: c("--maroon"), "fill-opacity": partial ? .45 : 1 });
     el("text", { ...font, x: x + w / 2, y: y(v) - 6, "text-anchor": "middle", fill: c("--ink"), "font-weight": 500 }, v);
-    el("text", { ...font, x: x + w / 2, y: H - 8, "text-anchor": "middle", fill: c("--graphite") }, partial ? "2025*" : yr);
+    el("text", { ...font, x: x + w / 2, y: H - 8, "text-anchor": "middle", fill: c("--graphite") }, yr);
   });
 }
 drawChart();
