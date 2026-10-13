@@ -432,7 +432,7 @@ footer img { height: 34px; width: auto; display: block; }
       <article class="card" data-sector="res"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Lanai Island</b><span>Tilal Al Ghaf · Dubai</span></div><span class="meta">Residential · Dubai</span><h3>Lanai Island Estates, villa fit-out</h3><p>Interior fit-out of island mansions. Developer: Majid Al Futtaim. With Bond Interiors.</p></article>
       <article class="card" data-sector="res"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Lanai Island</b><span>Tilal Al Ghaf · Dubai</span></div><span class="meta">Residential · Dubai</span><h3>Lanai Island Estates, decking</h3><p>Outdoor decking works. Developer: Majid Al Futtaim. With Green &amp; More.</p></article>
       <article class="card" data-sector="build"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Jubail Island</b><span>Abu Dhabi</span></div><span class="meta">Marine · Abu Dhabi</span><h3>Kayak mounting pontoons, Jubail Island</h3><p>Design, supply and installation of floating pontoons at Nad Al Dhabi, Seef Al Jubail and Ain Al Maha. Developer: LEAD Development. With Premier Marine Solutions.</p></article>
-      <article class="card" data-sector="build"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>Camel Farm</b><span>Fujairah</span></div><span class="meta">Construction · Fujairah</span><h3>VPTC Camel Farm building</h3><p>Building construction under a main contract. Consultant: EDMAC.</p></article>
+      <article class="card" data-sector="build"><img src="artline-img/p-vptc.jpg" alt="Design render of the VPTC Camel Farm building at sunset, with stone walls, timber pergolas and camel shelters beyond" loading="lazy"><span class="meta">Construction · Fujairah · Design render</span><h3>VPTC Camel Farm building</h3><p>Building construction under a main contract. Consultant: EDMAC.</p></article>
       <article class="card" data-sector="edu"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>SOCO</b><span>Dibba Al Fujairah</span></div><span class="meta">Education &amp; culture · Dibba</span><h3>School of Calligraphy &amp; Ornamentation, Dibba branch</h3><p>Fit-out with HVAC and MEP coordination. Consultant: EDMAC.</p></article>
       <article class="card" data-sector="edu"><div class="tile" aria-hidden="true"><svg class="tile-lines" preserveAspectRatio="xMaxYMid slice"><use href="#lineart"/></svg><b>SOCO Kids</b><span>Al Taif Business Tower</span></div><span class="meta">Education &amp; culture · Fujairah</span><h3>SOCO Kids &amp; SOCO Young</h3><p>Interior fit-out, admin office and VRF air-conditioning.</p></article>
     </div>
@@ -495,14 +495,6 @@ footer img { height: 34px; width: auto; display: block; }
       <li><img src="artline-img/brands/dominos.svg" alt="Domino's Pizza" title="Domino's Pizza" loading="lazy"></li>
       <li><img src="artline-img/brands/subway.svg" alt="Subway" title="Subway" loading="lazy"></li>
       <li><img src="artline-img/brands/papajohns.svg" alt="Papa John's" title="Papa John's" loading="lazy"></li>
-    </ul>
-    <h3 class="sub">Project partners</h3>
-    <ul class="logos partners">
-      <li><img src="artline-img/partners/lead.svg" alt="LEAD Development" title="LEAD Development" loading="lazy"></li>
-      <li><img src="artline-img/partners/soco.png" alt="School of Calligraphy &amp; Ornamentation" title="School of Calligraphy &amp; Ornamentation" loading="lazy"></li>
-      <li><img src="artline-img/partners/raibal.png" alt="Raibal Holding" title="Raibal Holding" loading="lazy"></li>
-      <li><img src="artline-img/partners/bond.png" alt="Bond Interiors" title="Bond Interiors" loading="lazy"></li>
-      <li><img src="artline-img/partners/pms.png" alt="Premier Marine Solutions" title="Premier Marine Solutions" loading="lazy"></li>
     </ul>
   </section>
 
@@ -605,6 +597,8 @@ const logoLi = ([f, n]) => `<li><img src="artline-img/clients/${f}.png" width="3
 document.getElementById("logos-gov").innerHTML = GOV.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("");
 const BRANDS = ["sephora","splash","jovial","magic-planet","games-station"];
 document.getElementById("logos-corp").innerHTML = CLIENTS_ALL.filter(c => !GOV.includes(c[0]) && !BRANDS.includes(c[0])).map(logoLi).join("");
+const PARTNERS = [["partners/lead.svg","LEAD Development"],["partners/soco.png","School of Calligraphy & Ornamentation"],["partners/raibal.png","Raibal Holding"],["partners/bond.png","Bond Interiors"],["partners/pms.png","Premier Marine Solutions"]];
+document.getElementById("logos-corp").insertAdjacentHTML("beforeend", PARTNERS.map(([f, n]) => `<li><img src="artline-img/${f}" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`).join(""));
 document.getElementById("logos-brand").insertAdjacentHTML("beforeend", BRANDS.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join(""));
 
 // Portfolio sector tabs
