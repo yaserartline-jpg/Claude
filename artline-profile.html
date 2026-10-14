@@ -111,6 +111,12 @@ section.block { padding-block: 72px 0; }
 .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .proof .item, .svc, .card, .cert, .person, .cta .wrap > * { min-width: 0; }
 .card { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.card { position: relative; padding-bottom: 12px; }
+.card::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: #800000; transition: width .25s ease; }
+.card:hover::after { width: 100%; }
+.card:hover h3 { color: #800000; }
+@media (hover: none) { .card::after { display: none; } }
+@media (prefers-reduced-motion: reduce) { .card::after { transition: none; } }
 .card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; background: var(--mist); }
 .card h3 { font-size: 1.3rem; font-weight: 600; }
 .card .meta { font: .74rem var(--f-mono); color: var(--steel); letter-spacing: .04em; text-transform: uppercase; }
@@ -164,7 +170,7 @@ details.register summary span { font: .78rem var(--f-mono); color: var(--steel);
 table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .92rem; }
 th { background: var(--th-bg); color: #fff; font: 600 .72rem var(--f-mono); text-transform: uppercase; letter-spacing: .08em; text-align: left; padding: 10px 14px; }
 td { padding: 9px 14px; border-top: 1px solid var(--mist); }
-tbody tr:nth-child(even) td { background: var(--tint); }
+tbody tr:hover td { background: #D9D9D9; }
 td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--graphite); }
 td.proj { font-weight: 600; }
 .chip { display: inline-block; font: .7rem var(--f-mono); padding: 1px 7px; border: 1px solid var(--steel); color: var(--graphite); white-space: nowrap; }
