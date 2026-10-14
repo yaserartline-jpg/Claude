@@ -11,7 +11,7 @@ canvas { display: block; }
 </style></head>
 <body><canvas id="c" width="1080" height="1920"></canvas>
 <script>
-/* "Every space starts as a line" — Artline Stories reel, 19 s @ 30 fps on a 120 BPM grid (1 beat = 15 frames).
+/* "Every space starts as a line" — Artline reel, 31.5 s @ 30 fps on a 120 BPM grid (1 beat = 15 frames).
    The floor plan IS the logo geometry: lines draw a plan, the plan tightens into the logo.
    Projects run as a full-width film strip with whip transitions. draw(f) is deterministic; render.mjs encodes.
    Palette: #000 #FFF #4D4D4D #808080 #D9D9D9 #800000. */
@@ -24,13 +24,14 @@ const CONFIG = {
     ["RESIDENTIAL & MARINE", "offset2", [["lanai", "LANAI ISLAND · RENDER"], ["jubail", "JUBAIL ISLAND · RENDER"]]],
   ],
   stats: [["15+", "YEARS OF FIT-OUT & CONSTRUCTION"], ["50", "PROJECTS DELIVERED SINCE 2021"], ["33", "GOVERNMENT & CORPORATE CLIENTS"]],
-  iso: "ISO 9001 · ISO 14001 · ISO 45001",
+  certs: [["ISO 9001:2015", "QUALITY MANAGEMENT", "VSQC099-421264353"], ["ISO 14001:2015", "ENVIRONMENTAL MANAGEMENT", "VSQC099-421264354"], ["ISO 45001:2018", "OCCUPATIONAL HEALTH & SAFETY", "VSQC099-421264355"]],
   contact: ["+971 50 299 0358", "info@artline-uae.com", "artline-uae.com"],
   words: ["DESIGN", "BUILD", "FURNISH"],
 };
 const W = 1080, H = 1920, BEAT = 15;
 const C = { black: "#000000", white: "#FFFFFF", dark: "#4D4D4D", mid: "#808080", light: "#D9D9D9", maroon: "#800000" };
-const T = { logo: 0, words: 75, cats: 135, per: 60, stats: 435, end: 495, total: 570 };
+// 31.5 s: every section held long enough to read (all boundaries on the 120 BPM grid)
+const T = { logo: 0, words: 75, cats: 165, per: 90, stats: 615, cert: 735, end: 840, total: 945 };
 const EVENTS = []; // [frame, type] consumed by audio.py for sound design
 
 const cv = document.getElementById("c"), x = cv.getContext("2d");
@@ -50,7 +51,7 @@ const load = (k, src) => new Promise(r => { const i = new Image(); i.onload = ()
 const GRAIN = [];
 window.ready = (async () => {
   await Promise.all([
-    load("logo", "../../artline-img/logo-full-white.png"),
+    load("logo", "../../artline-img/logo-full-white.png"), load("eiac", "assets/eiac.png"),
     ...CONFIG.categories.flatMap(c => c[2]).map(p => load(p[0], "assets/" + p[0] + ".jpg")),
     document.fonts.load("700 100px Barlow"), document.fonts.load("600 100px Barlow"),
     document.fonts.load("500 40px Plex"), document.fonts.load("400 40px Sans"),
@@ -171,7 +172,7 @@ function drawLogoAt(L, f) {
 }
 function sceneWords(f) {
   const t = f - T.words;
-  const exit = inOutExpo(P(t, 52, 10)) * -1500;
+  const exit = inOutExpo(P(t, 80, 10)) * -1500;
   x.save(); x.translate(0, exit);
   font(700, 250, "Barlow");
   CONFIG.words.forEach((w, i) => {
@@ -200,7 +201,7 @@ const LAYOUTS = { // boxes in region units (px inside R) + entry direction per t
   cols3: [[0, 0, 328, 1170, "up"], [336, 0, 328, 1170, "down"], [672, 0, 328, 1170, "up"]],
   offset2: [[0, 0, 1000, 730, "down"], [180, 746, 820, 424, "left"]],
 };
-const ENTER = (j) => 4 + j * 5, EXIT = (j) => T.per - 9 + j * 1.5;
+const ENTER = (j) => 6 + j * 7, EXIT = (j) => T.per - 9 + j * 1.5;
 function tile(img, label, box, lt, j, dimAll) {
   const [bx, by, bw, bh, dir] = box, X = R.x + bx, Y = R.y + by;
   const e = outExpo(P(lt, ENTER(j), 13)), q = inOutExpo(P(lt, EXIT(j), 9));
@@ -246,15 +247,6 @@ function sceneCats(f) {
   font(700, 132, "Barlow"); const fs = Math.min(132, 132 * 960 / x.measureText(name).width);
   font(700, fs, "Barlow"); x.fillStyle = C.white;
   lettersIn(name, 56, 438, lt, 0, 0.7, 9, fs * 0.95, T.per - 10);
-  font(500, 26, "Plex"); x.fillStyle = C.light; x.textAlign = "right";
-  x.globalAlpha = outCubic(P(lt, 6, 8)) * (1 - P(lt, T.per - 8, 5));
-  x.fillText(String(tiles.length).padStart(2, "0") + " PROJECTS", 1024, 300); x.globalAlpha = 1;
-  // odometer index
-  font(700, 64, "Barlow"); x.save(); x.beginPath(); x.rect(800, 160, 230, 80); x.clip();
-  const roll = ci > 0 ? outExpo(P(lt, 0, 10)) : outExpo(P(t, 0, 10));
-  if (ci > 0 && roll < 1) x.fillText(String(ci).padStart(2, "0"), 960, 230 - roll * 80);
-  x.fillText(String(ci + 1).padStart(2, "0"), 960, 230 + (1 - roll) * 80); x.restore();
-  font(500, 26, "Plex"); x.fillStyle = C.mid; x.fillText("/ " + String(n).padStart(2, "0"), 1024, 226); x.textAlign = "left";
   // story-style progress segments
   for (let i = 0; i < n; i++) {
     const sx = 40 + i * 202, fill = i < ci ? 1 : i > ci ? 0 : clamp(lt / T.per);
@@ -266,7 +258,7 @@ function sceneCats(f) {
 function sceneStats(f) {
   const t = f - T.stats;
   drawCat(CONFIG.categories.length - 1, T.per - 12, 0.85);
-  const seg = 20, i = clamp(Math.floor(t / seg), 0, 2), lt = t - i * seg;
+  const seg = 40, i = clamp(Math.floor(t / seg), 0, 2), lt = t - i * seg;
   const roll = i > 0 ? outExpo(P(lt, 0, 9)) : outExpo(P(t, 0, 10));
   font(700, 520, "Barlow"); x.textAlign = "center"; x.fillStyle = C.white;
   x.save(); x.beginPath(); x.rect(0, 460, W, 560); x.clip();
@@ -276,14 +268,49 @@ function sceneStats(f) {
   x.fillStyle = C.maroon; x.fillRect(540 - 90 * roll, 1000, 180 * roll, 10);
   font(600, 56, "Barlow"); x.fillStyle = C.light; x.globalAlpha = outCubic(P(lt, 3, 8));
   x.fillText(CONFIG.stats[i][1], 540, 1110); x.globalAlpha = 1;
-  font(500, 32, "Plex"); const n = Math.floor(clamp((t - 28) / 0.6, 0, CONFIG.iso.length));
-  x.fillStyle = C.light; x.fillText(CONFIG.iso.slice(0, n), 540, 1560); x.textAlign = "left";
+  x.textAlign = "left";
 }
 
 // ---- scene 5: logo returns to centre, contact, CTA (375-450)
+// ---- scene 5: ISO certificates + EIAC accreditation (735-840)
+function sceneCert(f) {
+  const t = f - T.cert, out = inOutExpo(P(t, 96, 9)) * -1600;
+  x.save(); x.translate(0, out);
+  font(500, 28, "Plex"); x.fillStyle = C.light;
+  const kick = "ISO CERTIFIED · EIAC ACCREDITED", nk = Math.floor(clamp((t - 2) / 0.5, 0, kick.length));
+  x.fillText(kick.slice(0, nk), 60, 330);
+  x.fillStyle = C.maroon; x.fillRect(60, 348, 70 * outExpo(P(t, 2, 10)), 6);
+  font(700, 132, "Barlow"); x.fillStyle = C.white; lettersIn("CERTIFIED", 56, 500, t, 4, 0.8, 9, 125);
+  CONFIG.certs.forEach(([std, name, no], i) => {
+    const f0 = 12 + i * BEAT, Y = 560 + i * 230, X = 60, w = 960, h = 200;
+    const o = outCubic(P(t, f0, 10)), c = outExpo(P(t, f0 + 4, 10));
+    if (o <= 0) return;
+    x.strokeStyle = C.dark; x.lineWidth = 3; strokePath(x, [[X, Y], [X + w, Y], [X + w, Y + h], [X, Y + h], [X, Y]], o);
+    x.fillStyle = C.maroon; x.fillRect(X, Y, 10, h * c);
+    x.save(); x.beginPath(); x.rect(X, Y, w, h); x.clip(); x.globalAlpha = c;
+    font(700, 92, "Barlow"); x.fillStyle = C.white; x.fillText(std, X + 44, Y + 100 + (1 - c) * 60);
+    font(600, 40, "Barlow"); x.fillStyle = C.light; x.fillText(name, X + 46, Y + 150 + (1 - c) * 60);
+    font(500, 24, "Plex"); x.fillStyle = C.mid; x.textAlign = "right"; x.fillText("CERT. " + no, X + w - 30, Y + 150 + (1 - c) * 60); x.textAlign = "left";
+    x.restore();
+  });
+  // EIAC accreditation plate stamps in
+  const s = P(t, 58, 10);
+  if (s > 0) {
+    const k = outBack(s, 2.4), pw = 960, ph = 330, px = 60, py = 1270;
+    x.save(); x.globalAlpha = clamp(s * 3); x.translate(540, py + ph / 2); x.scale(lerp(1.25, 1, k), lerp(1.25, 1, k)); x.translate(-540, -(py + ph / 2));
+    x.fillStyle = C.white; x.fillRect(px, py, pw, ph);
+    const iw = 880, ih = iw * IMG.eiac.height / IMG.eiac.width; x.drawImage(IMG.eiac, 540 - iw / 2, py + (ph - ih) / 2, iw, ih);
+    x.restore();
+    font(400, 34, "Sans"); x.fillStyle = C.light; x.globalAlpha = outCubic(P(t, 68, 10)); x.textAlign = "center";
+    x.fillText("Certified by VSQC, accredited by the Emirates", 540, 1665);
+    x.fillText("International Accreditation Centre (EIAC)", 540, 1712); x.textAlign = "left"; x.globalAlpha = 1;
+  }
+  x.restore();
+}
+
 function sceneEnd(f) {
   const t = f - T.end;
-  const fade = P(t, 0, 10); if (fade < 1) { drawCat(CONFIG.categories.length - 1, T.per - 12, 0.9); x.fillStyle = C.black; x.globalAlpha = fade; x.fillRect(0, 0, W, H); x.globalAlpha = 1; }
+  
   const d = inOutExpo(P(t, 0, 14));
   const L = { cx: lerp(140, 540, d), cy: lerp(225, 700, d), S: lerp(140, 470, d) };
   if (d < 1) logoRaster(L.cx, L.cy, L.S); else { logoVector(L.cx, L.cy, L.S, 1, LT * L.S, 0); logoTextReveal(L.cx, L.cy, L.S, 1, 0); }
@@ -307,7 +334,8 @@ function draw(f) {
   if (f < T.words) sceneLogo(f);
   else if (f < T.cats) sceneWords(f);
   else if (f < T.stats) sceneCats(f);
-  else if (f < T.end) sceneStats(f);
+  else if (f < T.cert) sceneStats(f);
+  else if (f < T.end) sceneCert(f);
   else sceneEnd(f);
   if (f >= T.words && f < T.end) drawLogoAt(headerLogo(f), f);
   grain(f);
@@ -316,13 +344,14 @@ function draw(f) {
   const E = (f, k) => EVENTS.push([Math.round(f), k]);
   E(0, "sweep"); E(7, "snap"); E(10, "riser"); E(54, "lock"); E(50, "shimmer");
   E(T.words, "whoosh"); [0, 1, 2].forEach(i => E(T.words + 8 + i * BEAT + 3, "hit")); E(T.words + 3 * BEAT + 5, "bighit");
-  E(T.words + 52, "whoosh");
+  E(T.words + 80, "whoosh"); E(T.cats, "drop"); E(T.end, "outro");
   CONFIG.categories.forEach((c, ci) => {
-    const s = T.cats + ci * T.per; E(s, "whoosh"); E(s + 1, "tick");
+    const s = T.cats + ci * T.per; E(s, "whoosh");
     LAYOUTS[c[1]].forEach((b, j) => { E(s + ENTER(j) + 2, "pop"); E(s + ENTER(j) + 8, "type"); });
     E(s + T.per - 9, "swoosh");
   });
-  E(T.stats, "impact"); E(T.stats + 20, "tick"); E(T.stats + 40, "tick"); E(T.stats + 28, "type");
+  E(T.stats, "impact"); E(T.stats + 40, "tick"); E(T.stats + 80, "tick");
+  E(T.cert, "whoosh"); E(T.cert + 2, "type"); [0, 1, 2].forEach(i => { E(T.cert + 12 + i * BEAT, "pop"); E(T.cert + 16 + i * BEAT, "tick"); }); E(T.cert + 60, "stamp"); E(T.cert + 96, "swoosh");
   E(T.end, "whoosh"); E(T.end + 14, "lock"); E(T.end + 39, "shimmer");
 })();
 window.draw = draw; window.TOTAL = T.total; window.EVENTS = EVENTS;

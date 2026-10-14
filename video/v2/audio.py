@@ -18,7 +18,8 @@ N = int(DUR * SR)
 t = np.arange(N) / SR
 rng = np.random.default_rng(42)
 BEAT = 0.5
-GROOVE_START, GROOVE_END = 135 / FPS, 495 / FPS   # first category -> end card
+marks = {k: f / FPS for f, k in cue["events"] if k in ("drop", "outro")}
+GROOVE_START, GROOVE_END = marks["drop"], marks["outro"]   # first category -> end card
 
 def bp(sig, lo, hi, order=2): return sosfilt(butter(order, [lo, hi], "bandpass", fs=SR, output="sos"), sig)
 def hp(sig, f, order=2): return sosfilt(butter(order, f, "highpass", fs=SR, output="sos"), sig)
@@ -142,6 +143,7 @@ for f, kind in cue["events"]:
     elif kind == "swoosh": place(sfx, whoosh(0.25, 600, 6000), at, 0.32, 0.3)
     elif kind == "hit": place(sfx, boom(120, 45, 0.45, 0.4), at, 0.85); place(sfx, clap(), at, 0.25)
     elif kind == "bighit": place(sfx, boom(140, 36, 0.9, 0.5), at, 1.0); place(sfx, metal(0.7), at, 0.3); place(sfx, clap(), at, 0.4)
+    elif kind == "stamp": place(sfx, boom(150, 42, 0.7, 0.6), at, 0.9); place(sfx, metal(0.5), at, 0.25); place(sfx, click(900, 0.04), at, 0.5)
     elif kind == "impact": place(sfx, boom(120, 38, 0.8, 0.4), at, 0.9)
     elif kind == "tick": place(sfx, click(3000), at, 0.45)
     elif kind == "pop": place(sfx, pop(), at, 0.38, ((f * 7) % 5 - 2) * 0.3)
