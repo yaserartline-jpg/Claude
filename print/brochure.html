@@ -29,10 +29,13 @@ p { margin: 0; }
 .dark .foot { color: #808080; }
 
 /* cover */
-.cover .logo { position: absolute; left: 18mm; top: 22mm; width: 62mm; }
-.cover .block { position: absolute; left: 18mm; right: 18mm; bottom: 34mm; }
-.cover h1 { font-size: 46pt; font-weight: 700; margin: 6mm 0 7mm; max-width: 165mm; }
-.cover h1 em { font-style: normal; background: var(--maroon); padding: 0 2mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.cover .logo { width: 34mm; display: block; margin-bottom: 8mm; }
+.cover-photos { position: absolute; left: 0; right: 0; top: 0; height: 150mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2mm; }
+.cover-photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover-photos::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 80%, #000 100%); }
+.cover .block { position: absolute; left: 18mm; right: 18mm; bottom: 30mm; }
+.cover h1 { font-size: 44pt; font-weight: 700; margin: 5mm 0 7mm; max-width: 130mm; }
+.cover h1 em { font-style: normal; white-space: nowrap; background: var(--maroon); padding: 0 2mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .promise { font: 600 13pt Barlow; letter-spacing: .16em; text-transform: uppercase; border-left: 1.2mm solid var(--maroon); padding-left: 4mm; }
 .cover .lead { font-size: 11pt; color: #D9D9D9; max-width: 135mm; margin-top: 6mm; }
 .strip { position: absolute; left: 18mm; right: 18mm; bottom: 14mm; display: flex; justify-content: space-between; font: 500 7pt Plex; letter-spacing: .12em; color: #D9D9D9; border-top: .25mm solid #4D4D4D; padding-top: 3mm; }
@@ -53,33 +56,33 @@ p { margin: 0; }
 .proof span { font-size: 8.5pt; color: #D9D9D9; }
 
 /* team */
-.team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7mm 6mm; }
+.team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10mm 7mm; margin-top: 4mm; }
 .person { border-top: .8mm solid var(--maroon); padding-top: 3mm; }
-.person b { font: 600 13pt Barlow; display: block; }
-.person span { color: var(--graphite); font-size: 9pt; }
-.quote { font: 700 26pt/1.08 Barlow; text-transform: uppercase; border-left: 1.2mm solid var(--maroon); padding-left: 6mm; margin-top: 14mm; max-width: 140mm; }
-.offices { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 14mm; }
-.office { border: .25mm solid var(--mist); padding: 5mm; }
-.office h3 { font-size: 13pt; }
-.office p { font-size: 9pt; color: var(--graphite); margin-top: 1.5mm; }
+.person b { font: 600 16pt/1.1 Barlow; display: block; margin-bottom: 1mm; }
+.person span { color: var(--graphite); font-size: 10pt; }
+.quote { font: 700 30pt/1.06 Barlow; text-transform: uppercase; border-left: 1.2mm solid var(--maroon); padding-left: 6mm; margin-top: 14mm; max-width: 140mm; }
+.offices { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 16mm; }
+.office { border-top: .8mm solid var(--ink); padding: 4mm 0 0; }
+.office h3 { font-size: 15pt; }
+.office p { font-size: 10pt; color: var(--graphite); margin-top: 1.5mm; }
 .photo-row { position: absolute; left: 0; right: 0; bottom: 22mm; height: 62mm; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5mm; }
 .photo-row img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* services */
 .svcs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: .25mm solid #4D4D4D; }
-.svc { padding: 6mm 6mm 6mm 0; border-bottom: .25mm solid #4D4D4D; display: grid; grid-template-columns: 11mm 1fr; gap: 1mm 4mm; }
+.svc { padding: 9mm 7mm 9mm 0; border-bottom: .25mm solid #4D4D4D; display: grid; grid-template-columns: 11mm 1fr; gap: 1mm 4mm; }
 .svc:nth-child(odd) { border-right: .25mm solid #4D4D4D; }
-.svc:nth-child(even) { padding-left: 6mm; }
-.svc svg { width: 9mm; height: 9mm; stroke: #fff; fill: none; stroke-width: 1.6; grid-row: span 2; }
-.svc h3 { font-size: 13pt; font-weight: 600; }
-.svc p { color: #D9D9D9; font-size: 8.8pt; }
-.sub { font: 600 11pt Barlow; letter-spacing: .14em; text-transform: uppercase; margin: 11mm 0 5mm; }
+.svc:nth-child(even) { padding-left: 7mm; }
+.svc svg { width: 10mm; height: 10mm; stroke: #fff; fill: none; stroke-width: 1.6; grid-row: span 2; }
+.svc h3 { font-size: 16pt; font-weight: 600; margin-bottom: 1.5mm; }
+.svc p { color: #D9D9D9; font-size: 10pt; line-height: 1.45; }
+.sub { font: 600 12pt Barlow; letter-spacing: .14em; text-transform: uppercase; margin: 14mm 0 6mm; }
 .process { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4mm; list-style: none; padding: 0; margin: 0; }
 .process li { border-top: .25mm solid #4D4D4D; padding-top: 4mm; }
-.process .step { font: 700 20pt/1 Barlow; display: block; }
+.process .step { font: 700 26pt/1 Barlow; display: block; }
 .process .step::after { content: ""; display: block; width: 7mm; height: .8mm; background: var(--maroon); margin: 2mm 0; }
-.process h3 { font-size: 10.5pt; font-weight: 600; margin-bottom: 1.5mm; }
-.process p { font-size: 7.8pt; color: #D9D9D9; line-height: 1.45; }
+.process h3 { font-size: 12pt; font-weight: 600; margin-bottom: 2mm; }
+.process p { font-size: 8.8pt; color: #D9D9D9; line-height: 1.45; }
 
 /* portfolio */
 .sec { margin-bottom: 7mm; }
@@ -107,9 +110,9 @@ p { margin: 0; }
 .sector em { font: 500 7.5pt Plex; font-style: normal; text-align: right; }
 .note { font-size: 10pt; color: var(--graphite); max-width: 150mm; margin-bottom: 8mm; }
 
-table { width: 100%; border-collapse: collapse; font-size: 7.6pt; }
+table { width: 100%; border-collapse: collapse; font-size: 7.4pt; line-height: 1.2; }
 th { background: #000; color: #fff; font: 500 6.2pt Plex; letter-spacing: .12em; text-transform: uppercase; text-align: left; padding: 1.8mm 2.5mm; }
-td { padding: .95mm 2.5mm; border-bottom: .2mm solid var(--mist); }
+td { padding: .62mm 2.5mm; border-bottom: .2mm solid var(--mist); }
 tr:nth-child(even) td { background: #F2F2F2; }
 td.d { font: 500 6.8pt Plex; color: var(--graphite); white-space: nowrap; }
 td.p { font-weight: 600; }
@@ -127,10 +130,10 @@ td.c { text-align: center; color: var(--maroon); font-weight: 700; }
 
 /* clients */
 .logos { display: grid; border-top: .25mm solid var(--mist); border-left: .25mm solid var(--mist); margin: 0 0 7mm; padding: 0; }
-.logos li { list-style: none; border-right: .25mm solid var(--mist); border-bottom: .25mm solid var(--mist); padding: 2.2mm; }
+.logos li { list-style: none; border-right: .25mm solid var(--mist); border-bottom: .25mm solid var(--mist); padding: 4mm 3.5mm; }
 .logos img { width: 100%; aspect-ratio: 2 / 1; object-fit: contain; display: block; }
 .logos li.slim img { transform: scale(.75); }
-.grp { font: 600 10pt Barlow; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 3mm; }
+.grp { font: 600 11pt Barlow; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 3mm; }
 
 /* back cover */
 .back .logo { width: 54mm; display: block; margin-bottom: 10mm; }
@@ -162,10 +165,9 @@ const page = (cls, html, kickerFoot = true) => { const p = el(`<section class="p
 const photo = c => IMG + (c.enhanced || c.img);
 
 // 1. cover
-page("dark cover", `${lines("left:-20%;top:0;width:150%;height:62%")}
-  <img class="logo" src="${IMG}artline-img/logo-full-white.png" alt="Artline Engineering">
-  <div class="block"><div class="kicker">Company profile · ${D.year}</div>
-  <h1>${D.h1}</h1><div class="promise">${esc(D.promise)}</div><p class="lead">${esc(D.lead)}</p></div>
+page("dark cover", `<div class="cover-photos">${D.coverPhotos.map(c => `<img src="${photo(c)}" alt="">`).join("")}</div>
+  <div class="block"><img class="logo" src="${IMG}artline-img/logo-full-white.png" alt="Artline Engineering"><div class="kicker">Company profile · ${D.year}</div>
+  <h1>${D.h1}</h1><div class="promise">${esc(D.promise)}</div></div>
   <div class="strip"><span>${D.iso.join(" · ")}</span><span>artline-uae.com</span></div>`, false);
 
 // 2. about + key figures
@@ -179,8 +181,8 @@ page("", `<img class="hero-photo" src="${photo(D.aboutPhoto)}" alt="">
 page("", `<div class="in"><div class="kicker">Leadership</div><h1 class="title">The team behind every handover</h1>
   <div class="team">${D.team.map(([n, r]) => `<div class="person"><b>${esc(n)}</b><span>${esc(r)}</span></div>`).join("")}</div>
   <div class="offices">${D.offices.map(([c, a]) => `<div class="office"><h3>${esc(c)} office</h3><p>${a}</p></div>`).join("")}</div>
-  <div class="quote">${esc(D.promise)}</div></div>
-  <div class="photo-row">${D.teamPhotos.map(c => `<img src="${photo(c)}" alt="">`).join("")}</div>`);
+  <div class="quote" style="margin-top:20mm">${esc(D.promise)}</div></div>
+  <div class="photo-row" style="height:84mm">${D.teamPhotos.map(c => `<img src="${photo(c)}" alt="">`).join("")}</div>`);
 
 // 4. services + process
 page("dark", `${lines("left:-10%;bottom:0;width:130%;height:40%", true)}<div class="in"><div class="kicker">${esc(D.svcKicker)}</div><h1 class="title">${esc(D.svcTitle)}</h1>
@@ -235,8 +237,8 @@ page("", `<div class="in"><div class="kicker">Track record</div><h1 class="title
   <div class="photo-row">${D.recordPhotos.map(c => `<img src="${photo(c)}" alt="">`).join("")}</div>`);
 
 // register: 52 rows on the first page, 60 after
-for (let i = 0; i < D.register.length; i += i === 0 ? 52 : 60) {
-  const rows = D.register.slice(i, i + (i === 0 ? 52 : 60));
+for (let i = 0; i < D.register.length; i += i === 0 ? 54 : 62) {
+  const rows = D.register.slice(i, i + (i === 0 ? 54 : 62));
   page("", `<div class="in">${i === 0 ? `<div class="kicker">Project register</div><h1 class="title" style="margin-bottom:5mm">Every project, on record</h1>` : ""}
   <table><thead><tr><th>Completed</th><th>Project</th><th>Location</th><th>Sector</th><th>Certificate</th></tr></thead>
   <tbody>${rows.map(r => `<tr><td class="d">${esc(r[0])}</td><td class="p">${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td class="c">${r[4] ? "✓" : "—"}</td></tr>`).join("")}</tbody></table></div>`);
@@ -250,7 +252,7 @@ page("dark", `${lines("left:-20%;top:0;width:150%;height:35%")}<div class="in"><
 
 // clients
 page("", `<div class="in"><div class="kicker">Clients</div><h1 class="title">${esc(D.clientsTitle)}</h1>
-  ${D.logoGroups.map(([g, logos]) => { const cols = logos.length > 10 ? 7 : logos.length > 8 ? 5 : 6;
+  ${D.logoGroups.map(([g, logos]) => { const cols = logos.length > 12 ? 7 : logos.length > 10 ? 6 : 5;
     return `<div class="grp">${esc(g)}</div><ul class="logos" style="grid-template-columns:repeat(${cols},1fr)">${logos.map(([src, alt, slim]) => `<li${slim ? ' class="slim"' : ""}><img src="${IMG}${src}" alt="${esc(alt)}"></li>`).join("")}</ul>`; }).join("")}</div>`);
 
 // back cover

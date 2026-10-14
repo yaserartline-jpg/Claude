@@ -54,6 +54,7 @@ const enh = src => { const k = ENHANCED[basename(src)]; return k && existsSync(r
 D.cards = D.cards.map(c => { const e = c.imgs.map(enh).find(Boolean); return { ...c, img: c.imgs[0], enhanced: e }; });
 const pick = name => ({ img: `artline-img/enhanced/${name}.jpg` });
 D.aboutPhoto = pick("05-banobagi");
+D.coverPhotos = ["03-eyewa", "01-ikea", "06-doctor-b", "02-du"].map(pick);
 D.teamPhotos = ["06-doctor-b", "03-eyewa", "08-tawjeeh"].map(pick);
 D.recordPhotos = ["13-lanai", "10-sparkys", "14-jubail"].map(pick);
 console.log(`Read ${D.cards.length} projects, ${D.register.length} register rows, ${D.logoGroups.reduce((n, g) => n + g[1].length, 0)} logos`);
