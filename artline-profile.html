@@ -602,7 +602,7 @@ footer img { height: 48px; width: auto; display: block; }
       <div class="ctas">
         <a class="btn btn-primary" href="https://wa.me/971502990358" target="_blank" rel="noopener">Message us on WhatsApp</a>
         <a class="btn btn-ghost" href="https://www.artline-uae.com/" target="_blank" rel="noopener">Visit artline-uae.com</a>
-        <a class="btn btn-ghost no-print" href="Artline-Company-Profile.pdf" download>Download PDF profile</a>
+        <a class="btn btn-ghost no-print" id="pdf-dl" href="Artline-Company-Profile.pdf" download>Download PDF profile</a>
       </div>
     </div>
     <dl class="contact">
@@ -816,4 +816,21 @@ const prepPrint = () => {
 };
 if (/[?&]pdf\b/.test(location.search)) { document.querySelectorAll("img[loading]").forEach(i => i.loading = "eager"); prepPrint(); }
 window.addEventListener("beforeprint", prepPrint);
+
+// PDF download: inside claude.ai use the downloads capability; on a normal website the link works as is
+const pdfLink = document.getElementById("pdf-dl");
+let dlNs;
+if (window.claude && window.claude.use) window.claude.use("downloads").then(ns => { dlNs = ns; }).catch(() => {});
+pdfLink.addEventListener("click", async e => {
+  if (!dlNs) return;
+  e.preventDefault();
+  const label = pdfLink.textContent;
+  try {
+    pdfLink.textContent = "Preparing PDF…";
+    const blob = await (await fetch(pdfLink.getAttribute("href"))).blob();
+    await dlNs.save({ filename: "Artline-Company-Profile.pdf", data: blob });
+  } catch (err) {
+    if (err && err.code === "unavailable") pdfLink.hidden = true;
+  } finally { pdfLink.textContent = label; }
+});
 </script>
