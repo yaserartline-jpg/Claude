@@ -56,9 +56,9 @@ const pick = name => ({ img: `artline-img/enhanced/${name}.jpg` });
 const orig = file => ({ img: `artline-img/${file}` });
 // supporting photo bands use shots that are NOT the portfolio's lead images, so nothing repeats
 D.coverPhotos = ["03-eyewa", "01-ikea", "06-doctor-b", "02-du"].map(pick);
-D.aboutPhoto = orig("p-afnic-2.jpg");
-D.teamPhotos = ["p-banobagi-5.jpg", "p-philo-2.jpg", "p-manahil-2.jpg"].map(orig);
-D.recordPhotos = ["p-lanai-decking-2.jpg", "p-sparkys-2.jpg", "p-soco-dibba-2.jpg"].map(orig);
+D.aboutPhoto = pick("15-afnic-office");
+D.teamPhotos = ["16-banobagi-corridor", "17-philosophy-house-boardroom", "18-manahil-showroom"].map(pick);
+D.recordPhotos = ["19-lanai-pontoons", "20-sparkys-play-area", "21-soco-dibba-courtyard"].map(pick);
 console.log(`Read ${D.cards.length} projects, ${D.register.length} register rows, ${D.logoGroups.reduce((n, g) => n + g[1].length, 0)} logos`);
 
 // 2. lay out and print
