@@ -202,6 +202,7 @@ td.proj { font-weight: 600; }
 .partners { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .partners img { aspect-ratio: 3 / 1; }
 .logos li.dark { background: #000000; }
+.logos li.slim img { transform: scale(.72); }
 .segments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
 .segments h3 { font-size: 1.15rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
 .segments p { font-size: .94rem; color: var(--graphite); margin-top: 4px; }
@@ -273,8 +274,8 @@ footer img { height: 48px; width: auto; display: block; }
 }
 
 /* Regroup additions */
-.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-.tabs button { font: 600 .88rem var(--f-body); padding: 8px 14px; border: 1px solid var(--graphite); background: var(--paper); color: var(--ink); cursor: pointer; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.tabs button { font: 600 .84rem var(--f-body); padding: 8px 11px; border: 1px solid var(--graphite); background: var(--paper); color: var(--ink); cursor: pointer; }
 .tabs button .n { font: 500 .72rem var(--f-mono); color: var(--graphite); margin-left: 4px; }
 .tabs button[aria-pressed="true"] { background: #000; border-color: #000; color: #fff; }
 .tabs button[aria-pressed="true"] .n { color: #D9D9D9; }
@@ -323,7 +324,7 @@ footer img { height: 48px; width: auto; display: block; }
 @media (max-width: 960px) { .process { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; } .process li::after { display: none; } }
 @media (max-width: 600px) { .process { grid-template-columns: 1fr; } .process li { padding: 18px 0 14px; border-bottom: 1px solid var(--mist); } }
 .logos.corp { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-.logos.hedu { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+.logos.hedu { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 @media (max-width: 960px) { .logos.corp { grid-template-columns: repeat(4, minmax(0, 1fr)); } .logos.hedu { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .logos.corp, .logos.hedu { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 600px) {
@@ -336,6 +337,7 @@ footer img { height: 48px; width: auto; display: block; }
 .more:hover { background: #000; color: #fff; }
 @media (max-width: 600px) { .cards.collapsed + .more { display: block; } }
 .nav ul a[aria-current="true"] { color: var(--ink); box-shadow: inset 0 -2px 0 #800000; }
+@media (max-width: 600px) { .logos.logos li:last-child:nth-child(3n+1) { grid-column: 1 / -1; border-left: 0; } .logos.logos li:last-child:nth-child(3n+1) img { width: calc(33.333% - 6px); margin-inline: auto; } }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -557,7 +559,7 @@ footer img { height: 48px; width: auto; display: block; }
   <svg class="lines flip" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><use href="#lineart"/></svg>
   <div class="wrap">
     <div>
-      <h2>Planning a fit-out or new build?</h2>
+      <h2>Planning a fit&#8209;out or new build?</h2>
       <p class="lead">Tell us about your space. We'll arrange a site visit and send a detailed quotation.</p>
       <div class="ctas">
         <a class="btn btn-primary" href="https://wa.me/971502990358" target="_blank" rel="noopener">Message us on WhatsApp</a>
@@ -568,8 +570,8 @@ footer img { height: 48px; width: auto; display: block; }
       <dt>Phone</dt><dd class="v" id="v-phone">+971 9 277 1997</dd><dd class="c"><button class="copy" type="button" data-copy="v-phone">Copy</button></dd>
       <dt>Mobile</dt><dd class="v" id="v-mobile">+971 50 299 0358</dd><dd class="c"><button class="copy" type="button" data-copy="v-mobile">Copy</button></dd>
       <dt>Email</dt><dd class="v" id="v-email">info@artline-uae.com</dd><dd class="c"><button class="copy" type="button" data-copy="v-email">Copy</button></dd>
-      <dt>Fujairah</dt><dd>Fujairah Tower, Office 806 · P.O. Box 8946</dd><dd class="c"></dd>
-      <dt>Dubai</dt><dd>Al Riqqa, Deira · P.O. Box 8905</dd><dd class="c"></dd>
+      <dt>Fujairah</dt><dd>Fujairah Tower, Office 806 · P.O.&nbsp;Box&nbsp;8946</dd><dd class="c"></dd>
+      <dt>Dubai</dt><dd>Al Riqqa, Deira · P.O.&nbsp;Box&nbsp;8905</dd><dd class="c"></dd>
       <dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/company/107930882/" target="_blank" rel="noopener">Artline Engineering</a></dd><dd class="c"></dd>
       <dt>Instagram</dt><dd><a href="https://www.instagram.com/artline_engineering/" target="_blank" rel="noopener">@artline_engineering</a></dd><dd class="c"></dd>
     </dl>
@@ -658,7 +660,7 @@ document.getElementById("logos-gov").innerHTML = GOV.map(f => CLIENTS_ALL.find(c
 const BRANDS = ["sephora","splash","jovial","magic-planet","games-station"];
 const HEALTH = ["burjeel","vps","al-sharq","banobagi"];
 const EDU = ["ajman-university","gems-winchester","diyar-school","philosophy-house"];
-const partnerLi = ([f, n]) => `<li><img src="artline-img/${f}" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`;
+const partnerLi = ([f, n]) => `<li${/lead|raibal/.test(f) ? ' class="slim"' : ""}><img src="artline-img/${f}" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`;
 document.getElementById("logos-corp").innerHTML = CLIENTS_ALL.filter(c => ![...GOV, ...BRANDS, ...HEALTH, ...EDU].includes(c[0])).map(logoLi).join("")
   + [["partners/lead.svg","LEAD Development"],["partners/raibal.png","Raibal Holding"],["partners/bond.png","Bond Interiors"],["partners/pms.png","Premier Marine Solutions"]].map(partnerLi).join("");
 document.getElementById("logos-hedu").innerHTML = [...HEALTH, ...EDU].map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("")
