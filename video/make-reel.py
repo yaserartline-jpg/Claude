@@ -28,6 +28,13 @@ ISO_LINE = "ISO 9001 · ISO 14001 · ISO 45001"
 CONTACT = ["+971 50 299 0358", "info@artline-uae.com", "artline-uae.com"]
 EYEBROW = "UNITED ARAB EMIRATES · SINCE 2009"
 PROMISE = "DESIGNED, BUILT AND FURNISHED BY ONE TEAM."
+STORY_PICKS = [0, 1, 2, 3, 4]   # projects used in the 15 s Stories cut
+
+# --short -> 15 s Stories cut (artline-story-15s.mp4)
+SHORT = "--short" in sys.argv
+if SHORT:
+    sys.argv.remove("--short")
+    PROJECTS = [PROJECTS[i] for i in STORY_PICKS]
 
 # ---- Setup ---------------------------------------------------------------
 W, H, FPS = 1080, 1920, 30
@@ -119,6 +126,14 @@ T_PROJ, PER = 165, 70                       # 7 x 2.33 s
 T_STATS = T_PROJ + PER * len(PROJECTS)      # ~21.8 s
 T_END = T_STATS + 120                       # 4 s stats, then end card
 TOTAL = 900
+SPEED = {"intro": 1, "head": 1, "stats": 1, "end": 1}
+if SHORT:  # 15 s: 1.3 s logo, 1.8 s headline, 5 x 1.5 s projects, 2 s stats, 2.2 s end card
+    T_HEAD, T_PROJ, PER = 40, 95, 46
+    T_STATS = T_PROJ + PER * len(PROJECTS)
+    T_END = T_STATS + 60
+    TOTAL = 450
+    SPEED = {"intro": 2, "head": 1.25, "stats": 1.4, "end": 1.6}
+    OUT = ROOT / "video" / "artline-story-15s.mp4"
 
 def wipe(im, f, t0):
     """Maroon band sweeping across the frame around a scene cut at t0."""
@@ -211,11 +226,11 @@ def scene_end(f):
     return im
 
 def frame(f):
-    if f < T_HEAD: im = scene_intro(f)
-    elif f < T_PROJ: im = scene_head(f)
+    if f < T_HEAD: im = scene_intro(f * SPEED["intro"])
+    elif f < T_PROJ: im = scene_head(T_HEAD + (f - T_HEAD) * SPEED["head"])
     elif f < T_STATS: im = scene_project(f)
-    elif f < T_END: im = scene_stats(f)
-    else: im = scene_end(f)
+    elif f < T_END: im = scene_stats(T_STATS + (f - T_STATS) * SPEED["stats"])
+    else: im = scene_end(T_END + (f - T_END) * SPEED["end"])
     for cut in (T_HEAD, T_PROJ, T_STATS, T_END): wipe(im, f, cut)
     return im
 
