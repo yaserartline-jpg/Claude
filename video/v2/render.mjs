@@ -9,7 +9,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const exe = process.env.CHROME || "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell";
-const out = resolve(here, "../artline-story-15s.mp4");
+const out = resolve(here, "video-only.mp4");
 const args = process.argv.slice(2);
 
 const browser = await chromium.launch({ executablePath: exe, args: ["--allow-file-access-from-files"] });
@@ -17,6 +17,7 @@ const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
 await page.goto(pathToFileURL(resolve(here, "reel.html")).href);
 await page.evaluate(() => window.ready);
 const total = await page.evaluate(() => window.TOTAL);
+writeFileSync(resolve(here, "events.json"), JSON.stringify({ fps: 30, total, events: await page.evaluate(() => window.EVENTS) }));
 const grab = async f => { await page.evaluate(f => window.draw(f), f); return page.screenshot({ type: "png" }); };
 
 if (args[0] === "--stills") {
