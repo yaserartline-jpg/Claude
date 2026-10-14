@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Artline Engineering — Company Profile</title>
+<style>
+/* A4 company profile. Layout only: every word, number, photo and logo comes from artline-profile.html
+   (extracted by build-pdf.mjs into window.DATA), so the PDF follows the website after each update. */
+@font-face { font-family: Barlow; font-weight: 700; src: url(../video/fonts/BarlowCondensed-Bold.ttf); }
+@font-face { font-family: Barlow; font-weight: 600; src: url(../video/fonts/BarlowCondensed-SemiBold.ttf); }
+@font-face { font-family: Plex; font-weight: 500; src: url(../video/fonts/IBMPlexMono-Medium.ttf); }
+@font-face { font-family: Sans; font-weight: 300 700; src: url("../video/fonts/SourceSans3[wght].ttf"); }
+@page { size: A4; margin: 0; }
+:root { --ink: #000; --graphite: #4D4D4D; --steel: #808080; --mist: #D9D9D9; --maroon: #800000; --paper: #FFF; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #808080; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font: 400 10pt/1.5 Sans, sans-serif; color: var(--ink); }
+h1, h2, h3 { font-family: Barlow, sans-serif; margin: 0; line-height: 1.02; text-transform: uppercase; letter-spacing: .01em; }
+p { margin: 0; }
+
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; background: var(--paper); break-after: page; margin: 0 auto; }
+.page.dark { background: #000; color: #fff; --ink: #fff; --graphite: #D9D9D9; --mist: #4D4D4D; }
+.in { position: absolute; inset: 20mm 18mm 22mm; }
+.lines { position: absolute; pointer-events: none; }
+.lines polyline, .lines polygon { fill: none; stroke: #4D4D4D; stroke-width: 1.1; vector-effect: non-scaling-stroke; }
+.kicker { font: 500 7.5pt Plex, monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--maroon); display: flex; align-items: center; gap: 3mm; }
+.dark .kicker { color: #D9D9D9; }
+.kicker::after { content: ""; width: 12mm; height: .8mm; background: var(--maroon); }
+.title { font-size: 30pt; font-weight: 700; margin: 3mm 0 7mm; max-width: 150mm; }
+.foot { position: absolute; left: 18mm; right: 18mm; bottom: 10mm; display: flex; justify-content: space-between; font: 500 6.5pt Plex, monospace; letter-spacing: .14em; color: var(--steel); border-top: .25mm solid var(--mist); padding-top: 2.5mm; }
+.dark .foot { color: #808080; }
+
+/* cover */
+.cover .logo { position: absolute; left: 18mm; top: 22mm; width: 62mm; }
+.cover .block { position: absolute; left: 18mm; right: 18mm; bottom: 34mm; }
+.cover h1 { font-size: 46pt; font-weight: 700; margin: 6mm 0 7mm; max-width: 165mm; }
+.cover h1 em { font-style: normal; background: var(--maroon); padding: 0 2mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.promise { font: 600 13pt Barlow; letter-spacing: .16em; text-transform: uppercase; border-left: 1.2mm solid var(--maroon); padding-left: 4mm; }
+.cover .lead { font-size: 11pt; color: #D9D9D9; max-width: 135mm; margin-top: 6mm; }
+.strip { position: absolute; left: 18mm; right: 18mm; bottom: 14mm; display: flex; justify-content: space-between; font: 500 7pt Plex; letter-spacing: .12em; color: #D9D9D9; border-top: .25mm solid #4D4D4D; padding-top: 3mm; }
+
+/* about */
+.hero-photo { position: absolute; left: 0; right: 0; top: 0; height: 96mm; object-fit: cover; width: 100%; }
+.about { position: absolute; left: 18mm; right: 18mm; top: 106mm; display: grid; grid-template-columns: 1.25fr 1fr; gap: 10mm; }
+.about .lead { font-size: 12pt; line-height: 1.5; }
+.about .lead + p { margin-top: 4mm; color: var(--graphite); }
+.vm { border-left: .8mm solid var(--maroon); padding-left: 5mm; display: grid; gap: 5mm; align-content: start; }
+.vm h3 { font-size: 10pt; letter-spacing: .14em; font-weight: 600; }
+.vm p { color: var(--graphite); font-size: 9.5pt; margin-top: 1mm; }
+.proof { position: absolute; left: 0; right: 0; bottom: 22mm; height: 40mm; background: #000; color: #fff; display: grid; grid-template-columns: repeat(4, 1fr); padding: 0 18mm; }
+.proof div { padding: 7mm 4mm 0 0; border-right: .25mm solid #4D4D4D; margin-right: 4mm; }
+.proof div:last-child { border: 0; }
+.proof b { font: 700 30pt/1 Barlow; display: block; }
+.proof b::after { content: ""; display: block; width: 9mm; height: .8mm; background: var(--maroon); margin: 2.5mm 0 2mm; }
+.proof span { font-size: 8.5pt; color: #D9D9D9; }
+
+/* team */
+.team { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7mm 6mm; }
+.person { border-top: .8mm solid var(--maroon); padding-top: 3mm; }
+.person b { font: 600 13pt Barlow; display: block; }
+.person span { color: var(--graphite); font-size: 9pt; }
+.quote { font: 700 26pt/1.08 Barlow; text-transform: uppercase; border-left: 1.2mm solid var(--maroon); padding-left: 6mm; margin-top: 14mm; max-width: 140mm; }
+.offices { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 14mm; }
+.office { border: .25mm solid var(--mist); padding: 5mm; }
+.office h3 { font-size: 13pt; }
+.office p { font-size: 9pt; color: var(--graphite); margin-top: 1.5mm; }
+.photo-row { position: absolute; left: 0; right: 0; bottom: 22mm; height: 62mm; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5mm; }
+.photo-row img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* services */
+.svcs { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: .25mm solid #4D4D4D; }
+.svc { padding: 6mm 6mm 6mm 0; border-bottom: .25mm solid #4D4D4D; display: grid; grid-template-columns: 11mm 1fr; gap: 1mm 4mm; }
+.svc:nth-child(odd) { border-right: .25mm solid #4D4D4D; }
+.svc:nth-child(even) { padding-left: 6mm; }
+.svc svg { width: 9mm; height: 9mm; stroke: #fff; fill: none; stroke-width: 1.6; grid-row: span 2; }
+.svc h3 { font-size: 13pt; font-weight: 600; }
+.svc p { color: #D9D9D9; font-size: 8.8pt; }
+.sub { font: 600 11pt Barlow; letter-spacing: .14em; text-transform: uppercase; margin: 11mm 0 5mm; }
+.process { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4mm; list-style: none; padding: 0; margin: 0; }
+.process li { border-top: .25mm solid #4D4D4D; padding-top: 4mm; }
+.process .step { font: 700 20pt/1 Barlow; display: block; }
+.process .step::after { content: ""; display: block; width: 7mm; height: .8mm; background: var(--maroon); margin: 2mm 0; }
+.process h3 { font-size: 10.5pt; font-weight: 600; margin-bottom: 1.5mm; }
+.process p { font-size: 7.8pt; color: #D9D9D9; line-height: 1.45; }
+
+/* portfolio */
+.sec { margin-bottom: 7mm; }
+.sec-h { display: flex; justify-content: space-between; align-items: baseline; border-bottom: .25mm solid var(--ink); padding-bottom: 2mm; margin-bottom: 4mm; }
+.sec-h h2 { font-size: 17pt; }
+.sec-h span { font: 500 7pt Plex; letter-spacing: .14em; color: var(--steel); }
+.grid { display: grid; gap: 4mm; }
+.card img { width: 100%; object-fit: cover; display: block; background: var(--mist); }
+.card .meta { font: 500 6.3pt Plex; letter-spacing: .1em; text-transform: uppercase; color: var(--graphite); margin-top: 2mm; }
+.card h3 { font-size: 11.5pt; font-weight: 600; margin-top: .8mm; }
+.card p { font-size: 7.8pt; color: var(--graphite); line-height: 1.35; margin-top: .5mm; }
+.card.hero h3 { font-size: 15pt; }
+
+/* record */
+.bignums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; margin-bottom: 9mm; }
+.bignums div { border-top: .8mm solid var(--maroon); padding-top: 3mm; }
+.bignums b { font: 700 40pt/1 Barlow; display: block; }
+.bignums span { font-size: 9pt; color: var(--graphite); }
+.panels { display: grid; grid-template-columns: 1.3fr 1fr; gap: 6mm; }
+.panel { border: .25mm solid var(--mist); padding: 5mm; }
+.panel h3 { font-size: 10pt; letter-spacing: .1em; font-weight: 600; color: var(--graphite); margin-bottom: 3mm; }
+.sector { display: grid; grid-template-columns: 24mm 1fr 6mm; gap: 2mm; align-items: center; font-size: 8.5pt; margin-bottom: 2mm; }
+.sector i { height: 2.6mm; background: var(--mist); display: block; position: relative; }
+.sector i::before { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--w); background: var(--maroon); }
+.sector em { font: 500 7.5pt Plex; font-style: normal; text-align: right; }
+.note { font-size: 10pt; color: var(--graphite); max-width: 150mm; margin-bottom: 8mm; }
+
+table { width: 100%; border-collapse: collapse; font-size: 7.6pt; }
+th { background: #000; color: #fff; font: 500 6.2pt Plex; letter-spacing: .12em; text-transform: uppercase; text-align: left; padding: 1.8mm 2.5mm; }
+td { padding: .95mm 2.5mm; border-bottom: .2mm solid var(--mist); }
+tr:nth-child(even) td { background: #F2F2F2; }
+td.d { font: 500 6.8pt Plex; color: var(--graphite); white-space: nowrap; }
+td.p { font-weight: 600; }
+td.c { text-align: center; color: var(--maroon); font-weight: 700; }
+
+/* certifications */
+.certs { display: grid; gap: 5mm; }
+.cert { border: .25mm solid #4D4D4D; border-left: 1.4mm solid var(--maroon); padding: 6mm 7mm; display: grid; grid-template-columns: 1fr auto; align-items: end; }
+.cert b { font: 700 28pt/1 Barlow; display: block; }
+.cert span { font: 600 12pt Barlow; letter-spacing: .1em; text-transform: uppercase; color: #D9D9D9; }
+.cert em { font: 500 7pt Plex; font-style: normal; color: #808080; letter-spacing: .08em; }
+.plate { background: #fff; padding: 8mm; margin-top: 9mm; }
+.plate img { width: 100%; display: block; }
+.cert-text { color: #D9D9D9; font-size: 10pt; margin-top: 6mm; max-width: 165mm; }
+
+/* clients */
+.logos { display: grid; border-top: .25mm solid var(--mist); border-left: .25mm solid var(--mist); margin: 0 0 7mm; padding: 0; }
+.logos li { list-style: none; border-right: .25mm solid var(--mist); border-bottom: .25mm solid var(--mist); padding: 2.2mm; }
+.logos img { width: 100%; aspect-ratio: 2 / 1; object-fit: contain; display: block; }
+.logos li.slim img { transform: scale(.75); }
+.grp { font: 600 10pt Barlow; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 3mm; }
+
+/* back cover */
+.back .logo { width: 54mm; display: block; margin-bottom: 10mm; }
+.back h2 { font-size: 34pt; max-width: 150mm; }
+.back .lead { color: #D9D9D9; font-size: 11pt; margin: 5mm 0 10mm; max-width: 130mm; }
+.contact { display: grid; grid-template-columns: 26mm 1fr; border-top: .25mm solid #4D4D4D; max-width: 120mm; }
+.contact dt, .contact dd { margin: 0; padding: 2.6mm 0; border-bottom: .25mm solid #4D4D4D; font-size: 9.5pt; }
+.contact dt { font: 500 6.8pt Plex; letter-spacing: .14em; text-transform: uppercase; color: #808080; padding-top: 3.2mm; }
+.qrs { position: absolute; right: 18mm; bottom: 34mm; display: grid; gap: 5mm; }
+.qr { background: #fff; padding: 3mm; width: 34mm; text-align: center; }
+.qr img { width: 100%; display: block; }
+.qr span { font: 500 6pt Plex; letter-spacing: .1em; color: #000; display: block; margin-top: 1.5mm; }
+@media screen { .page { margin: 8mm auto; box-shadow: 0 2mm 6mm rgba(0,0,0,.4); } }
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="lineart" viewBox="0 0 1200 520">
+  <polyline points="640,-10 880,150 760,540"/><polyline points="700,-10 1090,110 830,540"/><polyline points="560,540 930,60 1210,90"/>
+  <polygon points="880,150 1090,110 1010,330"/><polygon points="930,60 1050,20 1120,170 1000,210"/><polyline points="980,540 1060,380 1210,420"/>
+  <polyline points="-10,470 180,330 330,540"/><polyline points="-10,520 90,410"/><polyline points="300,-10 420,200 260,380"/>
+</symbol></svg>
+<main id="doc"></main>
+<script>
+const D = window.DATA, IMG = "../";
+const el = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstChild; };
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+const doc = document.getElementById("doc");
+const lines = (style, flip) => `<svg class="lines" style="${style}${flip ? ";transform:scaleX(-1)" : ""}" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice"><use href="#lineart"/></svg>`;
+const page = (cls, html, kickerFoot = true) => { const p = el(`<section class="page ${cls}">${html}${kickerFoot ? `<div class="foot"><span>ARTLINE ENGINEERING · COMPANY PROFILE ${D.year}</span><span class="pn"></span></div>` : ""}</section>`); doc.appendChild(p); return p; };
+const photo = c => IMG + (c.enhanced || c.img);
+
+// 1. cover
+page("dark cover", `${lines("left:-20%;top:0;width:150%;height:62%")}
+  <img class="logo" src="${IMG}artline-img/logo-full-white.png" alt="Artline Engineering">
+  <div class="block"><div class="kicker">Company profile · ${D.year}</div>
+  <h1>${D.h1}</h1><div class="promise">${esc(D.promise)}</div><p class="lead">${esc(D.lead)}</p></div>
+  <div class="strip"><span>${D.iso.join(" · ")}</span><span>artline-uae.com</span></div>`, false);
+
+// 2. about + key figures
+page("", `<img class="hero-photo" src="${photo(D.aboutPhoto)}" alt="">
+  <div class="about"><div><div class="kicker">${esc(D.aboutKicker)}</div><h1 class="title" style="margin-bottom:5mm">${esc(D.aboutTitle)}</h1>
+  ${D.about.map((p, i) => `<p class="${i ? "" : "lead"}">${esc(p)}</p>`).join("")}</div>
+  <div class="vm" style="margin-top:12mm">${D.vm.map(([h, p]) => `<div><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("")}</div></div>
+  <div class="proof">${D.proof.map(([b, s]) => `<div><b>${esc(b)}</b><span>${esc(s)}</span></div>`).join("")}</div>`);
+
+// 3. people, offices, promise
+page("", `<div class="in"><div class="kicker">Leadership</div><h1 class="title">The team behind every handover</h1>
+  <div class="team">${D.team.map(([n, r]) => `<div class="person"><b>${esc(n)}</b><span>${esc(r)}</span></div>`).join("")}</div>
+  <div class="offices">${D.offices.map(([c, a]) => `<div class="office"><h3>${esc(c)} office</h3><p>${a}</p></div>`).join("")}</div>
+  <div class="quote">${esc(D.promise)}</div></div>
+  <div class="photo-row">${D.teamPhotos.map(c => `<img src="${photo(c)}" alt="">`).join("")}</div>`);
+
+// 4. services + process
+page("dark", `${lines("left:-10%;bottom:0;width:130%;height:40%", true)}<div class="in"><div class="kicker">${esc(D.svcKicker)}</div><h1 class="title">${esc(D.svcTitle)}</h1>
+  <div class="svcs">${D.services.map(([svg, h, p]) => `<div class="svc">${svg}<h3>${esc(h)}</h3><p>${esc(p)}</p></div>`).join("")}</div>
+  <div class="sub">How we deliver</div>
+  <ol class="process">${D.process.map(([s, h, p]) => `<li><span class="step">${esc(s)}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join("")}</ol></div>`);
+
+// 5+. portfolio: each category as a composed section, packed onto pages
+const MM = 3.7795; // px per mm
+function section(cat, cards, part) {
+  const n = cards.length, count = `${n} PROJECT${n > 1 ? "S" : ""}${part ? " · CONTINUED" : ""}`;
+  let grid, h;
+  if (n <= 3) {
+    const ph = n === 1 ? 70 : 46;
+    grid = `<div class="grid" style="grid-template-columns:repeat(${n},1fr)">${cards.map(c => card(c, ph)).join("")}</div>`; h = 14 + ph + 18;
+  } else {
+    const ph = 46, heroH = ph * 2 + 4 + 17;
+    const [first, ...rest] = cards;
+    grid = `<div class="grid" style="grid-template-columns:repeat(3,1fr)"><div style="grid-column:span 2;grid-row:span 2">${card(first, heroH, true)}</div>${rest.map(c => card(c, ph)).join("")}</div>`;
+    h = 14 + (ph + 17) * 3 + 8;
+  }
+  return { h, html: `<div class="sec"><div class="sec-h"><h2>${esc(cat)}</h2><span>${count}</span></div>${grid}</div>` };
+}
+function card(c, ph, hero) {
+  return `<div class="card${hero ? " hero" : ""}"><img src="${photo(c)}" style="height:${ph}mm" alt=""><div class="meta">${esc(c.meta)}</div><h3>${esc(c.title)}</h3>${hero || c.desc.length < 90 ? `<p>${esc(c.desc)}</p>` : ""}</div>`;
+}
+const secs = [];
+D.categories.forEach(([key, label]) => {
+  const cards = D.cards.filter(c => c.sector === key);
+  for (let i = 0; i < cards.length; i += 6) secs.push(section(label, cards.slice(i, i + 6), i > 0));
+});
+// big sections first in their order, small ones packed three to a page
+const CAP = 255, FIRST = 30;
+// first-fit: each section goes on the first page that still has room, so small categories share pages
+const pages = [];
+secs.forEach(s => { let pg = pages.find(p => p.used + s.h <= CAP); if (!pg) { pg = { used: pages.length ? 0 : FIRST, html: [] }; pages.push(pg); } pg.html.push(s.html); pg.used += s.h; });
+pages.forEach((pg, i) => page("", `<div class="in">${i === 0 ? `<div class="kicker">${esc(D.portKicker)}</div><h1 class="title">${esc(D.portTitle)}</h1>` : ""}${pg.html.join("")}${pg.used < 180 ? `<div class="quote" style="position:absolute;bottom:0;margin:0">${esc(D.promise)}</div>` : ""}</div>`));
+
+// track record
+const years = {}, sectors = {};
+D.register.forEach(r => { const y = r[0].slice(-4); years[y] = (years[y] || 0) + 1; sectors[r[3]] = (sectors[r[3]] || 0) + 1; });
+const ys = Object.keys(years).sort(), maxY = Math.max(...Object.values(years));
+const bars = ys.map((y, i) => { const h = years[y] / maxY * 120, x = 30 + i * (440 / ys.length);
+  return `<rect x="${x}" y="${150 - h}" width="${440 / ys.length * .55}" height="${h}" fill="#800000"/><text x="${x + 440 / ys.length * .275}" y="${144 - h}" text-anchor="middle" font-family="Plex" font-size="11">${years[y]}</text><text x="${x + 440 / ys.length * .275}" y="168" text-anchor="middle" font-family="Plex" font-size="10" fill="#4D4D4D">${y}</text>`; }).join("");
+const secRows = Object.entries(sectors).sort((a, b) => b[1] - a[1]), maxS = secRows[0][1];
+const certified = D.register.filter(r => r[4]).length;
+page("", `<div class="in"><div class="kicker">Track record</div><h1 class="title">Delivered and documented</h1>
+  <p class="note">${esc(D.note)}</p>
+  <div class="bignums"><div><b>${D.register.length}</b><span>projects delivered since ${ys[0]}</span></div><div><b>${certified}</b><span>with a completion certificate naming Artline</span></div><div><b>${secRows.length}</b><span>sectors served</span></div></div>
+  <div class="panels"><div class="panel"><h3>Projects per year</h3><svg viewBox="0 0 480 180" width="100%"><line x1="20" y1="150" x2="475" y2="150" stroke="#D9D9D9"/>${bars}</svg></div>
+  <div class="panel"><h3>By sector</h3>${secRows.map(([s, n]) => `<div class="sector"><span>${esc(s)}</span><i style="--w:${n / maxS * 100}%"></i><em>${n}</em></div>`).join("")}</div></div></div>
+  <div class="photo-row">${D.recordPhotos.map(c => `<img src="${photo(c)}" alt="">`).join("")}</div>`);
+
+// register: 52 rows on the first page, 60 after
+for (let i = 0; i < D.register.length; i += i === 0 ? 52 : 60) {
+  const rows = D.register.slice(i, i + (i === 0 ? 52 : 60));
+  page("", `<div class="in">${i === 0 ? `<div class="kicker">Project register</div><h1 class="title" style="margin-bottom:5mm">Every project, on record</h1>` : ""}
+  <table><thead><tr><th>Completed</th><th>Project</th><th>Location</th><th>Sector</th><th>Certificate</th></tr></thead>
+  <tbody>${rows.map(r => `<tr><td class="d">${esc(r[0])}</td><td class="p">${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td class="c">${r[4] ? "✓" : "—"}</td></tr>`).join("")}</tbody></table></div>`);
+}
+
+// certifications
+page("dark", `${lines("left:-20%;top:0;width:150%;height:35%")}<div class="in"><div class="kicker">Credentials</div><h1 class="title">ISO certified, EIAC accredited</h1>
+  <div class="certs">${D.certs.map(([s, n, no]) => `<div class="cert"><div><b>${esc(s)}</b><span>${esc(n)}</span></div><em>${esc(no)}</em></div>`).join("")}</div>
+  <div class="plate"><img src="${IMG}artline-img/iso-vsqc-eiac.png" alt="EIAC accreditation mark"></div>
+  <p class="cert-text">${esc(D.certText)}</p></div>`);
+
+// clients
+page("", `<div class="in"><div class="kicker">Clients</div><h1 class="title">${esc(D.clientsTitle)}</h1>
+  ${D.logoGroups.map(([g, logos]) => { const cols = logos.length > 10 ? 7 : logos.length > 8 ? 5 : 6;
+    return `<div class="grp">${esc(g)}</div><ul class="logos" style="grid-template-columns:repeat(${cols},1fr)">${logos.map(([src, alt, slim]) => `<li${slim ? ' class="slim"' : ""}><img src="${IMG}${src}" alt="${esc(alt)}"></li>`).join("")}</ul>`; }).join("")}</div>`);
+
+// back cover
+page("dark back", `${lines("left:-20%;bottom:0;width:150%;height:55%", true)}<div class="in" style="top:28mm">
+  <img class="logo" src="${IMG}artline-img/logo-full-white.png" alt="">
+  <h2>${esc(D.ctaTitle)}</h2><p class="lead">${esc(D.ctaLead)}</p>
+  <dl class="contact">${D.contact.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>
+  <div class="qrs"><div class="qr"><img src="qr-whatsapp.svg" alt=""><span>WHATSAPP</span></div><div class="qr"><img src="qr-site.svg" alt=""><span>ARTLINE-UAE.COM</span></div></div>
+  <div class="strip"><span>ART LINE ENGINEERING LLC · UNITED ARAB EMIRATES</span><span>${D.year}</span></div>`, false);
+
+// page numbers
+[...document.querySelectorAll(".pn")].forEach((s, i) => s.textContent = String(i + 2).padStart(2, "0"));
+window.BUILT = true;
+</script>
+</body></html>
