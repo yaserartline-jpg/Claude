@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Rebuild Artline-Company-Profile.pdf from the website (artline-profile.html is the single source).
-# Run after every update to the page:  ./make-pdf.sh
+# Rebuild the company profile PDFs from the website (artline-profile.html is the single source).
+#   Artline-Company-Profile.pdf      full-quality print master
+#   Artline-Company-Profile-web.pdf  lighter copy served by the website's download button
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 node "$DIR/print/build-pdf.mjs" "$@"
+node "$DIR/print/build-pdf.mjs" --web

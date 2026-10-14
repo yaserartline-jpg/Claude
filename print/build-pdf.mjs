@@ -62,12 +62,23 @@ D.recordPhotos = ["19-lanai-pontoons", "20-sparkys-play-area", "21-soco-dibba-co
 console.log(`Read ${D.cards.length} projects, ${D.register.length} register rows, ${D.logoGroups.reduce((n, g) => n + g[1].length, 0)} logos`);
 
 // 2. lay out and print
-const out = resolve(root, "Artline-Company-Profile.pdf");
+// --web: lighter copy for the website (photos resized to 1600 px); default is the full-quality print master
+const WEB = process.argv.includes("--web");
+const out = resolve(root, WEB ? "Artline-Company-Profile-web.pdf" : "Artline-Company-Profile.pdf");
+if (WEB) {
+  const { execFileSync } = await import("node:child_process");
+  const all = [...D.cards.map(c => c.enhanced || c.img), ...[D.aboutPhoto, ...D.coverPhotos, ...D.teamPhotos, ...D.recordPhotos].map(c => c.img)];
+  execFileSync("python3", [resolve(here, "web-images.py"), ...new Set(all)], { stdio: "inherit" });
+  const w = p => p && /\.(jpe?g)$/i.test(p) ? "print/web-img/" + p : p;
+  D.cards = D.cards.map(c => ({ ...c, img: w(c.img), enhanced: w(c.enhanced) }));
+  for (const k of ["aboutPhoto"]) D[k] = { img: w(D[k].img) };
+  for (const k of ["coverPhotos", "teamPhotos", "recordPhotos"]) D[k] = D[k].map(c => ({ img: w(c.img) }));
+}
 await page.addInitScript(`window.DATA = ${JSON.stringify(D)};`);
 await page.goto(pathToFileURL(resolve(here, "brochure.html")).href);
 await page.waitForFunction(() => window.BUILT && [...document.images].every(i => i.complete));
 await page.evaluate(() => document.fonts.ready);
-if (process.argv[2] === "--png") { // page previews for checking
+if (process.argv.includes("--png")) { // page previews for checking
   const pages = await page.$$(".page");
   for (let i = 0; i < pages.length; i++) await pages[i].screenshot({ path: resolve(here, `preview-${String(i + 1).padStart(2, "0")}.png`) });
 }
