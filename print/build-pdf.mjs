@@ -45,7 +45,7 @@ const D = await page.evaluate(() => {
     logoGroups: $$("#clients ul.logos").map(ul => { let h = ul.previousElementSibling; while (h && !h.matches("h3")) h = h.previousElementSibling;
       return [h ? h.textContent.trim() : "", $$("li", ul).map(li => [$("img", li).getAttribute("src"), $("img", li).alt, li.classList.contains("slim")])]; }),
     ctaTitle: tx("#contact h2"), ctaLead: tx("#contact .lead"),
-    contact: pairs.filter(([k]) => /phone|mobile|email|fujairah|dubai/i.test(k)),
+    contact: pairs.filter(([k]) => /phone|mobile|email|fujairah|dubai|linkedin|instagram/i.test(k)),
     offices: pairs.filter(([k]) => /fujairah|dubai/i.test(k)),
   };
 });
@@ -53,10 +53,12 @@ unlinkSync(tmp);
 const enh = src => { const k = ENHANCED[basename(src)]; return k && existsSync(resolve(root, `artline-img/enhanced/${k}.jpg`)) ? `artline-img/enhanced/${k}.jpg` : null; };
 D.cards = D.cards.map(c => { const e = c.imgs.map(enh).find(Boolean); return { ...c, img: c.imgs[0], enhanced: e }; });
 const pick = name => ({ img: `artline-img/enhanced/${name}.jpg` });
-D.aboutPhoto = pick("05-banobagi");
+const orig = file => ({ img: `artline-img/${file}` });
+// supporting photo bands use shots that are NOT the portfolio's lead images, so nothing repeats
 D.coverPhotos = ["03-eyewa", "01-ikea", "06-doctor-b", "02-du"].map(pick);
-D.teamPhotos = ["06-doctor-b", "03-eyewa", "08-tawjeeh"].map(pick);
-D.recordPhotos = ["13-lanai", "10-sparkys", "14-jubail"].map(pick);
+D.aboutPhoto = orig("p-afnic-2.jpg");
+D.teamPhotos = ["p-banobagi-5.jpg", "p-philo-2.jpg", "p-manahil-2.jpg"].map(orig);
+D.recordPhotos = ["p-lanai-decking-2.jpg", "p-sparkys-2.jpg", "p-soco-dibba-2.jpg"].map(orig);
 console.log(`Read ${D.cards.length} projects, ${D.register.length} register rows, ${D.logoGroups.reduce((n, g) => n + g[1].length, 0)} logos`);
 
 // 2. lay out and print

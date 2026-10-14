@@ -65,7 +65,7 @@ p { margin: 0; }
 .office { border-top: .8mm solid var(--ink); padding: 4mm 0 0; }
 .office h3 { font-size: 15pt; }
 .office p { font-size: 10pt; color: var(--graphite); margin-top: 1.5mm; }
-.photo-row { position: absolute; left: 0; right: 0; bottom: 22mm; height: 62mm; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5mm; }
+.photo-row { position: absolute; left: 0; right: 0; bottom: 22mm; height: 62mm; display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: minmax(0, 1fr); gap: 1.5mm; overflow: hidden; }
 .photo-row img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* services */
@@ -92,9 +92,9 @@ p { margin: 0; }
 .grid { display: grid; gap: 4mm; }
 .card img { width: 100%; object-fit: cover; display: block; background: var(--mist); }
 .card .meta { font: 500 6.3pt Plex; letter-spacing: .1em; text-transform: uppercase; color: var(--graphite); margin-top: 2mm; }
-.card h3 { font-size: 11.5pt; font-weight: 600; margin-top: .8mm; }
+.card h3 { font-size: 12.5pt; font-weight: 600; margin-top: .8mm; text-transform: none; }
 .card p { font-size: 7.8pt; color: var(--graphite); line-height: 1.35; margin-top: .5mm; }
-.card.hero h3 { font-size: 15pt; }
+.card.hero h3 { font-size: 17pt; }
 
 /* record */
 .bignums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; margin-bottom: 9mm; }
