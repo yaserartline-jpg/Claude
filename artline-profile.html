@@ -157,6 +157,7 @@ section.block { padding-block: 72px 0; }
 .sector .n { font: .8rem var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
 
 details.register { margin-top: 20px; border: 1px solid var(--graphite); }
+details.register summary b { font-weight: 600; }
 details.register summary { cursor: pointer; padding: 14px 18px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; list-style: none; }
 details.register summary::-webkit-details-marker { display: none; }
 details.register summary::after { content: "+"; font: 600 1.2rem var(--f-mono); color: var(--maroon); }
@@ -235,7 +236,7 @@ footer { background: #000; color: #808080; border-top: 1px solid #4D4D4D; }
 footer .wrap { padding-block: 22px 28px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; font: .74rem var(--f-mono); }
 footer img { height: 48px; width: auto; display: block; }
 
-@media (max-width: 960px) {
+@media screen and (max-width: 960px) {
   html { scroll-padding-top: 112px; }
   .nav .wrap { flex-wrap: wrap; height: auto; row-gap: 0; padding-block: 10px 0; }
   .nav ul { order: 3; width: 100%; margin: 0; overflow-x: auto; gap: 20px; padding-block: 10px 12px; scrollbar-width: none; }
@@ -253,7 +254,7 @@ footer img { height: 48px; width: auto; display: block; }
   .proof div.item:nth-child(-n+2) { border-bottom: 1px solid var(--mist); }
   .proof div.item:nth-child(even) { padding-left: 20px; }
 }
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .hero .wrap { padding-block: 56px 48px; grid-template-columns: 1fr; }
   .hero-mark { order: -1; width: 128px; margin-bottom: 0; }
   .hero .wrap { gap: 18px; padding-block: 36px 40px; }
@@ -292,8 +293,8 @@ footer img { height: 48px; width: auto; display: block; }
 #clients .head + .sub { margin-top: 8px; }
 #about .sub { margin-top: 48px; }
 #credentials .sub { margin-top: 40px; }
-@media (max-width: 960px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(4, minmax(0, 1fr)); } .licence { grid-template-columns: 1fr; } }
-@media (max-width: 600px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(3, minmax(0, 1fr)); } .logos li:last-child:nth-child(3n+1) { grid-column: 2; border-left: 1px solid var(--mist); } }
+@media screen and (max-width: 960px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(4, minmax(0, 1fr)); } .licence { grid-template-columns: 1fr; } }
+@media screen and (max-width: 600px) { .logos.gov, .logos.corp, .logos.brandrow { grid-template-columns: repeat(3, minmax(0, 1fr)); } .logos li:last-child:nth-child(3n+1) { grid-column: 2; border-left: 1px solid var(--mist); } }
 .card .tile { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: #000; color: #fff; display: grid; align-content: end; gap: 2px; padding: 16px; }
 .card .tile-lines { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .35; }
 .card .tile b { position: relative; font: 700 1.7rem/1 var(--f-display); text-transform: uppercase; letter-spacing: .02em; }
@@ -321,13 +322,13 @@ footer img { height: 48px; width: auto; display: block; }
 .process h3 { font-size: 1.2rem; font-weight: 600; }
 .process p { color: var(--graphite); font-size: .92rem; }
 #services .sub { margin-top: 48px; color: #FFFFFF; }
-@media (max-width: 960px) { .process { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; } .process li::after { display: none; } }
-@media (max-width: 600px) { .process { grid-template-columns: 1fr; } .process li { padding: 18px 0 14px; border-bottom: 1px solid var(--mist); } }
+@media screen and (max-width: 960px) { .process { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; } .process li::after { display: none; } }
+@media screen and (max-width: 600px) { .process { grid-template-columns: 1fr; } .process li { padding: 18px 0 14px; border-bottom: 1px solid var(--mist); } }
 .logos.corp { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 .logos.hedu { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-@media (max-width: 960px) { .logos.corp { grid-template-columns: repeat(4, minmax(0, 1fr)); } .logos.hedu { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-@media (max-width: 600px) { .logos.corp, .logos.hedu { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 600px) {
+@media screen and (max-width: 960px) { .logos.corp { grid-template-columns: repeat(4, minmax(0, 1fr)); } .logos.hedu { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media screen and (max-width: 600px) { .logos.corp, .logos.hedu { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media screen and (max-width: 600px) {
   .tabs { flex-wrap: nowrap; overflow-x: auto; margin-inline: -20px; padding-inline: 20px; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
   .tabs button { flex: none; }
@@ -335,9 +336,46 @@ footer img { height: 48px; width: auto; display: block; }
 }
 .more { display: none; margin-top: 20px; width: 100%; font: 600 .95rem var(--f-body); padding: 12px; border: 1px solid #000; background: #fff; color: #000; cursor: pointer; }
 .more:hover { background: #000; color: #fff; }
-@media (max-width: 600px) { .cards.collapsed + .more { display: block; } }
+@media screen and (max-width: 600px) { .cards.collapsed + .more { display: block; } }
 .nav ul a[aria-current="true"] { color: var(--ink); box-shadow: inset 0 -2px 0 #800000; }
-@media (max-width: 600px) { .logos.logos li:last-child:nth-child(3n+1) { grid-column: 1 / -1; border-left: 0; } .logos.logos li:last-child:nth-child(3n+1) img { width: calc(33.333% - 6px); margin-inline: auto; } }
+@media screen and (max-width: 600px) { .logos.logos li:last-child:nth-child(3n+1) { grid-column: 1 / -1; border-left: 0; } .logos.logos li:last-child:nth-child(3n+1) img { width: calc(33.333% - 6px); margin-inline: auto; } }
+
+/* PDF / print: same content, A4 pages. Rebuild the PDF with ./make-pdf.sh after any update. */
+.print-only { display: none; }
+@media print {
+  @page { size: A4; margin: 0; }
+  html { zoom: .8; scroll-behavior: auto; }
+  html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; overflow: visible; }
+  .nav, .tabs, .more, .no-print, .shots .dots, .shots .nav-btn, .shots .count, .hero .ctas, .contact .c, .filters, details.register summary::after { display: none !important; }
+  .contact { grid-template-columns: auto 1fr; }
+  .contact > :nth-last-child(-n+3) { border-bottom: 1px solid #4D4D4D; }
+  .contact > :nth-last-child(-n+2) { border-bottom: 0; }
+  .print-only { display: revert; }
+  .wrap { max-width: none; padding-inline: 64px; }
+  main.wrap { padding-inline: 0; }
+  main > section.block { padding-inline: 64px; }
+  .lines { left: 0; width: 100%; transform: none; }
+  .lines.flip { transform: scaleX(-1); }
+  .cards.collapsed .card { display: grid !important; }
+  .card::after { display: none; }
+  /* Cover: hero + key figures fill page 1 */
+  .hero .wrap { min-height: calc(297mm / .8 - 158px); padding-block: 80px; align-content: center; }
+  .hero-mark { width: 380px; }
+  /* Every section starts a new page; padding repeats on every page it spans */
+  section.block, .dark, .cta { break-before: page; margin-top: 0; padding-block: 56px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  .dark, .cta { box-shadow: none; clip-path: none; min-height: calc(297mm / .8); }
+  .cta { display: flex; flex-direction: column; justify-content: center; min-height: calc(297mm / .8 - 100px); }
+  .card, .svc, .process li, .cert, .panel, .person, .logos li, tr, .cert-detail, .vm { break-inside: avoid; }
+  .head, .sub, h2, h3 { break-after: avoid; }
+  .tbl { overflow: visible; }
+  thead { display: table-header-group; }
+  td { padding: 5px 12px; font-size: .86rem; }
+  th { padding: 7px 12px; }
+  tbody tr:hover td { background: none; }
+  details.register summary { cursor: default; }
+  details.register { break-before: page; margin-top: 0; }
+  footer .upd::before { content: " · Profile updated "; }
+}
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -519,7 +557,7 @@ footer img { height: 48px; width: auto; display: block; }
       </div>
     </div>
     <details class="register">
-      <summary>View the full project register <span id="count"></span></summary>
+      <summary><b class="no-print">View the full project register</b><b class="print-only">Project register</b> <span id="count"></span></summary>
       <div class="reg-body">
         <div class="filters" id="filters" role="group" aria-label="Filter by year"></div>
         <div class="tbl">
@@ -564,6 +602,7 @@ footer img { height: 48px; width: auto; display: block; }
       <div class="ctas">
         <a class="btn btn-primary" href="https://wa.me/971502990358" target="_blank" rel="noopener">Message us on WhatsApp</a>
         <a class="btn btn-ghost" href="https://www.artline-uae.com/" target="_blank" rel="noopener">Visit artline-uae.com</a>
+        <a class="btn btn-ghost no-print" href="Artline-Company-Profile.pdf" download>Download PDF profile</a>
       </div>
     </div>
     <dl class="contact">
@@ -581,7 +620,7 @@ footer img { height: 48px; width: auto; display: block; }
 <footer>
   <div class="wrap">
     <img src="artline-img/logo-full-white.png" width="477" height="480" alt="Artline Engineering">
-    <span>Art Line Engineering LLC · United Arab Emirates</span>
+    <span>Art Line Engineering LLC · United Arab Emirates<span class="upd"></span></span>
   </div>
 </footer>
 
@@ -768,4 +807,13 @@ try {
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + e.target.id))); }), { rootMargin: "-45% 0px -50% 0px" });
   links.forEach(a => { const el = document.querySelector(a.getAttribute("href")); if (el) io.observe(el); });
 } catch (e) {}
+
+// PDF / print mode: open the register, load every photo, stamp the date
+const prepPrint = () => {
+  document.querySelectorAll("details.register").forEach(d => d.open = true);
+  document.getElementById("cards").classList.remove("collapsed");
+  document.querySelector("footer .upd").textContent = new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+};
+if (/[?&]pdf\b/.test(location.search)) { document.querySelectorAll("img[loading]").forEach(i => i.loading = "eager"); prepPrint(); }
+window.addEventListener("beforeprint", prepPrint);
 </script>
