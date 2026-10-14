@@ -59,7 +59,7 @@ img { max-width: 100%; }
 .hero { position: relative; color: var(--on-dark); background: #000; overflow: hidden; }
 .hero .wrap { position: relative; z-index: 1; padding-block: 96px 80px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; }
 .hero-text { display: grid; gap: 22px; }
-.hero-mark { width: clamp(150px, 20vw, 240px); height: auto; opacity: .95; }
+.hero-mark { width: clamp(220px, 30vw, 400px); height: auto; }
 .hero .eyebrow { font: 500 .78rem var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--on-dark-2); }
 .hero h1 { font-size: clamp(2.5rem, 6.4vw, 4.6rem); font-weight: 700; max-width: 15ch; text-transform: uppercase; letter-spacing: .01em; }
 .hero h1 em { font-style: normal; color: #FFFFFF; background: #800000; padding: 0 .12em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
@@ -254,7 +254,7 @@ footer img { height: 48px; width: auto; display: block; }
 }
 @media (max-width: 600px) {
   .hero .wrap { padding-block: 56px 48px; grid-template-columns: 1fr; }
-  .hero-mark { display: none; }
+  .hero-mark { order: -1; width: 190px; margin-bottom: 4px; }
   .dark { padding-block: 56px; margin-top: 56px; }
   .services, .certs, .segments, .team, .gallery, .live { grid-template-columns: 1fr; }
   .cert { border-right: 0; border-bottom: 1px solid var(--mist); }
