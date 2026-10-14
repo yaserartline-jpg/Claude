@@ -1,6 +1,6 @@
 <!doctype html>
 <html><head><meta charset="utf-8">
-<title>Artline reel v2</title>
+<title>Artline reel v3</title>
 <style>
 @font-face { font-family: Barlow; font-weight: 700; src: url(../fonts/BarlowCondensed-Bold.ttf); }
 @font-face { font-family: Barlow; font-weight: 600; src: url(../fonts/BarlowCondensed-SemiBold.ttf); }
@@ -11,30 +11,33 @@ canvas { display: block; }
 </style></head>
 <body><canvas id="c" width="1080" height="1920"></canvas>
 <script>
-/* "From line to space" — Artline Stories reel, 15 s @ 30 fps, cut on a 120 BPM grid (1 beat = 15 frames).
-   draw(f) renders frame f deterministically; render.mjs captures every frame into an MP4.
+/* "Every space starts as a line" — Artline Stories reel, 15 s @ 30 fps on a 120 BPM grid (1 beat = 15 frames).
+   The floor plan IS the logo geometry: lines draw a plan, the plan tightens into the logo.
+   Projects run as a full-width film strip with whip transitions. draw(f) is deterministic; render.mjs encodes.
    Palette: #000 #FFF #4D4D4D #808080 #D9D9D9 #800000. */
 const CONFIG = {
-  projects: [ // photo, meta, title, caption
-    ["p-ikea.jpg", "RETAIL · 2024", "IKEA", "Store fit-out and maintenance"],
-    ["p-mcdonalds.jpg", "F&B · 2024", "McDONALD'S", "Food court restaurant interior"],
-    ["p-tawjeeh-2.jpg", "GOVERNMENT", "TAWJEEH", "Service hall with custom curved counters"],
-    ["p-banobagi-2.jpg", "HEALTHCARE", "BANOBAGI CLINIC", "Dermatology clinic fit-out"],
-    ["p-deyaar.jpg", "CORPORATE · 2025", "DEYAAR HQ", "Head office fit-out and shopfront"],
+  projects: [ // asset, meta, name, caption
+    ["du", "TELECOM RETAIL · 2023", "du", "Showroom with an illuminated arch"],
+    ["eyewa", "RETAIL · 2024", "EYEWA", "Eyewear store fit-out"],
+    ["banobagi", "HEALTHCARE", "BANOBAGI", "Clinic reception and lounge"],
+    ["drb", "HEALTHCARE", "DOCTOR B", "Dental clinic interiors"],
+    ["sparkys", "LEISURE · 2024", "SPARKYS LAND", "Family entertainment centre"],
+    ["lanai", "RESIDENTIAL · 2026 · RENDER", "LANAI ISLAND", "Villa fit-out and pontoon decking"],
   ],
-  stats: [["15+", "years of fit-out & construction"], ["50", "projects delivered since 2021"], ["33", "government & corporate clients"]],
+  stats: [["15+", "YEARS OF FIT-OUT & CONSTRUCTION"], ["50", "PROJECTS DELIVERED SINCE 2021"], ["33", "GOVERNMENT & CORPORATE CLIENTS"]],
   iso: "ISO 9001 · ISO 14001 · ISO 45001",
   contact: ["+971 50 299 0358", "info@artline-uae.com", "artline-uae.com"],
   words: ["DESIGN", "BUILD", "FURNISH"],
 };
 const W = 1080, H = 1920, BEAT = 15;
 const C = { black: "#000000", white: "#FFFFFF", dark: "#4D4D4D", mid: "#808080", light: "#D9D9D9", maroon: "#800000" };
-const T = { plan: 0, words: 4 * BEAT, proj: 8 * BEAT, per: 36, stats: 20 * BEAT, end: 25 * BEAT, total: 30 * BEAT };
+const T = { logo: 0, words: 75, strip: 135, per: 30, stats: 315, end: 375, total: 450 };
 
 const cv = document.getElementById("c"), x = cv.getContext("2d");
 const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const P = (f, a, d) => clamp((f - a) / d);
 const outExpo = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const inOutExpo = t => t <= 0 ? 0 : t >= 1 ? 1 : t < .5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2;
 const outCubic = t => 1 - Math.pow(1 - t, 3);
 const inOutCubic = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const inCubic = t => t * t * t;
@@ -44,264 +47,251 @@ const lerp = (a, b, t) => a + (b - a) * t;
 // ---- assets
 const IMG = {};
 const load = (k, src) => new Promise(r => { const i = new Image(); i.onload = () => { IMG[k] = i; r(); }; i.src = src; });
+const GRAIN = [];
 window.ready = (async () => {
   await Promise.all([
     load("logo", "../../artline-img/logo-full-white.png"),
-    ...CONFIG.projects.map((p, i) => load("p" + i, "../../artline-img/" + p[0])),
+    ...CONFIG.projects.map(p => load(p[0], "assets/" + p[0] + ".jpg")),
     document.fonts.load("700 100px Barlow"), document.fonts.load("600 100px Barlow"),
     document.fonts.load("500 40px Plex"), document.fonts.load("400 40px Sans"),
   ]);
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let k = 0; k < 4; k++) { // deterministic film grain
+    const g = document.createElement("canvas"); g.width = 540; g.height = 960; const gx = g.getContext("2d");
+    const id = gx.createImageData(540, 960);
+    for (let i = 0; i < id.data.length; i += 4) { const v = rnd() * 255; id.data[i] = id.data[i+1] = id.data[i+2] = v; id.data[i+3] = 255; }
+    gx.putImageData(id, 0, 0); GRAIN.push(g);
+  }
   return true;
 })();
+const off = document.createElement("canvas"); off.width = W; off.height = H; const ox = off.getContext("2d");
 
-// ---- line-art backdrop (from the website's symbol, viewBox 1200x520)
-const NET = [
-  [[640,-10],[880,150],[760,540]], [[700,-10],[1090,110],[830,540]], [[560,540],[930,60],[1210,90]],
-  [[880,150],[1090,110],[1010,330],[880,150]], [[930,60],[1050,20],[1120,170],[1000,210],[930,60]],
-  [[980,540],[1060,380],[1210,420]], [[-10,470],[180,330],[330,540]], [[-10,520],[90,410]], [[300,-10],[420,200],[260,380]],
-];
-function net(f, alpha, y0, flip, drift) {
-  x.save(); x.globalAlpha = alpha; x.strokeStyle = C.dark; x.lineWidth = 2;
-  const s = 1.3, dx = -150 + drift;
-  x.beginPath();
-  for (const p of NET) p.forEach(([a, b], i) => { const X = (flip ? 1200 - a : a) * s + dx, Y = b * s + y0; i ? x.lineTo(X, Y) : x.moveTo(X, Y); });
-  x.stroke(); x.restore();
-}
-function backdrop(f, alpha = 1) {
-  const pulse = (f % BEAT) < 3 ? 1 - (f % BEAT) / 3 : 0; // tiny kick on every beat
-  net(f, alpha * (0.8 + 0.2 * pulse), -80 - f * 0.25, false, -f * 0.6);
-  net(f, alpha * (0.8 + 0.2 * pulse), 1260 + f * 0.25, true, f * 0.6);
-}
-
-// ---- drawing helpers
-function partialPath(pts, amt) { // pts: [[x,y]...], amt 0..1
+// ---- helpers
+function strokePath(ctx, pts, amt) {
   let total = 0; for (let i = 1; i < pts.length; i++) total += Math.hypot(pts[i][0] - pts[i-1][0], pts[i][1] - pts[i-1][1]);
-  let left = total * amt; x.beginPath(); x.moveTo(...pts[0]);
+  let left = total * amt; ctx.beginPath(); ctx.moveTo(...pts[0]);
   for (let i = 1; i < pts.length && left > 0; i++) {
-    const [ax, ay] = pts[i-1], [bx, by] = pts[i], L = Math.hypot(bx - ax, by - ay);
-    const k = Math.min(1, left / L); x.lineTo(ax + (bx - ax) * k, ay + (by - ay) * k); left -= L;
+    const [ax, ay] = pts[i-1], [bx, by] = pts[i], L = Math.hypot(bx - ax, by - ay), k = Math.min(1, left / L);
+    ctx.lineTo(ax + (bx - ax) * k, ay + (by - ay) * k); left -= L;
   }
-  x.stroke();
+  ctx.stroke();
 }
-function smear(n, dx, dy, fn) { // cheap motion blur: draw ghosts along the velocity
-  if (Math.abs(dx) + Math.abs(dy) < 1) { fn(); return; }
-  const a0 = x.globalAlpha;
-  for (let i = n; i >= 0; i--) { x.save(); x.globalAlpha = a0 * (i === 0 ? 1 : 0.35 / n * (n - i + 1)); x.translate(-dx * i / n, -dy * i / n); fn(); x.restore(); }
-}
-function font(w, s, fam) { x.font = `${w} ${s}px ${fam}`; }
-function cover(img, X, Y, w, h, zoom, panX = 0) {
+function font(w, s, fam, ctx = x) { ctx.font = `${w} ${s}px ${fam}`; }
+function cover(img, X, Y, w, h, zoom, panY = 0) {
   const r = Math.max(w / img.width, h / img.height) * zoom, iw = img.width * r, ih = img.height * r;
-  x.drawImage(img, X + (w - iw) / 2 + panX, Y + (h - ih) / 2, iw, ih);
+  x.drawImage(img, X + (w - iw) / 2, Y + (h - ih) / 2 + panY, iw, ih);
 }
-function logo(cx, cy, size, alpha = 1, blur = 0) {
-  x.save(); x.globalAlpha = alpha; if (blur > .3) x.filter = `blur(${blur}px)`;
-  x.drawImage(IMG.logo, cx - size / 2, cy - size / 2, size, size); x.restore();
-}
-function lettersUp(str, X, Y, f0, f, perLetter = 1.2, dur = 9, color = C.white) { // per-letter masked rise
+function lettersIn(str, X, Y, lt, start, per, dur, rise, exitT = 1e9) { // masked per-letter rise in, rise out on exit
   let cx = X;
   for (let i = 0; i < str.length; i++) {
-    const ch = str[i], w = x.measureText(ch).width, p = outExpo(P(f, f0 + i * perLetter, dur));
-    if (p > 0) {
-      x.save(); x.beginPath(); x.rect(cx - 4, Y - 200, w + 8, 230); x.clip();
-      x.fillStyle = color; x.fillText(ch, cx, Y + (1 - p) * 140); x.restore();
+    const ch = str[i], w = x.measureText(ch).width;
+    const pin = outExpo(P(lt, start + i * per, dur)), pout = inCubic(P(lt, exitT + i * per * 0.5, 6));
+    if (pin > 0 && pout < 1) {
+      x.save(); x.beginPath(); x.rect(cx - 6, Y - rise * 1.05, w + 12, rise * 1.25); x.clip();
+      x.fillText(ch, cx, Y + (1 - pin) * rise - pout * rise); x.restore();
     }
     cx += w;
   }
-  return cx;
 }
-function typed(str, X, Y, f0, f, perChar = 0.8, color = C.light) {
-  const n = Math.floor(clamp((f - f0) / perChar, 0, str.length));
-  x.fillStyle = color; x.fillText(str.slice(0, n), X, Y);
-  if (n < str.length && n > 0 && Math.floor(f) % 4 < 2) { const w = x.measureText(str.slice(0, n)).width; x.fillStyle = C.maroon; x.fillRect(X + w + 4, Y - 30, 16, 36); }
-}
+function grain(f) { x.save(); x.globalAlpha = 0.055; x.globalCompositeOperation = "overlay"; x.drawImage(GRAIN[f % 4], 0, 0, W, H); x.restore(); }
 
-// ---- scene 1: a line becomes a floor plan, the plan becomes the logo (beats 0-4)
-const PLAN = (() => { // unit square plan with rooms, a door gap and a door swing
-  const s = [
-    [[0,0],[0.56,0]], [[0.76,0],[1,0],[1,1],[0,1],[0,0]],
-    [[0,0.58],[0.38,0.58]], [[0.54,0.58],[1,0.58]], [[0.46,0],[0.46,0.3]], [[0.72,0.58],[0.72,1]], [[0.46,0.3],[0.3,0.3]],
-  ];
-  return s;
-})();
-function scenePlan(f) {
-  const cx = 540, cy = 900, S = 720, ox = cx - S / 2, oy = cy - S / 2;
-  // camera: slow push with a rotation settle
-  const cam = 1 + 0.12 * outCubic(P(f, 0, 60)), rot = (1 - outCubic(P(f, 0, 40))) * -0.06;
-  backdrop(f, outCubic(P(f, 20, 25)));
-  // maroon line shoots across, then retracts into the plan's first wall
-  const shoot = outExpo(P(f, 0, 9)), retract = inOutCubic(P(f, 9, 10));
-  x.save(); x.strokeStyle = C.maroon; x.lineWidth = 6;
-  const lx0 = lerp(-40, ox, retract), lx1 = lerp(-40, W + 40, shoot) - (W + 40 - (ox + S * 0.56)) * retract;
-  if (retract < 1) { x.beginPath(); x.moveTo(lx0, lerp(cy, oy, retract)); x.lineTo(lx1, lerp(cy, oy, retract)); x.stroke(); }
-  x.restore();
-  const morph = inOutCubic(P(f, 40, 16)); // plan collapses into the logo
-  x.save(); x.translate(cx, cy); x.rotate(rot); x.scale(cam * lerp(1, 0.62, morph), cam * lerp(1, 0.62, morph)); x.translate(-cx, -cy);
-  x.globalAlpha = 1 - P(f, 46, 10); x.strokeStyle = C.white; x.lineWidth = 5; x.lineCap = "square";
-  PLAN.forEach((seg, i) => {
-    const a = outCubic(P(f, 12 + i * 3, 14));
-    if (a > 0) partialPath(seg.map(([u, v]) => [ox + u * S, oy + v * S]), a);
-  });
-  // dashed door swing (like the logo)
-  const d = outCubic(P(f, 26, 12));
-  if (d > 0) { x.setLineDash([14, 12]); x.beginPath(); x.arc(ox + 0.56 * S, oy, 0.2 * S, 0, Math.PI / 2 * d); x.stroke(); x.setLineDash([]); }
-  // dimension lines
-  const dm = P(f, 24, 10);
-  if (dm > 0) {
-    x.globalAlpha *= dm; x.lineWidth = 2; x.strokeStyle = C.mid;
-    x.beginPath(); x.moveTo(ox, oy + S + 50); x.lineTo(ox + S * dm, oy + S + 50); x.moveTo(ox, oy + S + 36); x.lineTo(ox, oy + S + 64); x.moveTo(ox + S, oy + S + 36); x.lineTo(ox + S, oy + S + 64); x.stroke();
-    font(500, 30, "Plex"); x.fillStyle = C.light; x.textAlign = "center"; x.fillText("12.40 m", ox + S / 2, oy + S + 100); x.textAlign = "left";
-    x.beginPath(); x.moveTo(ox - 50, oy); x.lineTo(ox - 50, oy + S * dm); x.stroke();
+// ---- logo geometry (unit square, measured from the official PNG)
+const LC = 0.017, LR = 0.981, LB = 0.983, LT = 0.031;
+const LOGO_PATHS = [
+  [[0.397, LC], [LC, LC], [LC, 0.51]],
+  [[LC, 0.63], [LC, LB], [0.436, LB]],
+  [[0.549, LB], [LR, LB], [LR, LC], [0.595, LC]],
+  [[0.61, LC], [0.61, 0.246]],
+  [[LR, 0.448], [0.712, 0.448]],
+  [[0.261, 0.031], [0.038, 0.28]],
+];
+const PLAN_EXTRA = [ // extra walls that make it read as a floor plan, then retract
+  [[LC, 0.30], [0.36, 0.30]], [[0.36, 0.30], [0.36, 0.51]], [[0.712, 0.448], [0.712, 0.80]], [[0.30, 0.80], [0.712, 0.80]],
+];
+const ROOMS = [["RECEPTION", 0.22, 0.43], ["OFFICE", 0.80, 0.25], ["SHOWROOM", 0.40, 0.68], ["STORE", 0.86, 0.66]];
+function logoVector(cx, cy, S, amt, width, extra, ctx = x) {
+  const o = [cx - S / 2, cy - S / 2], m = ([u, v]) => [o[0] + u * S, o[1] + v * S];
+  ctx.strokeStyle = C.white; ctx.lineCap = "butt"; ctx.lineJoin = "miter"; ctx.lineWidth = width;
+  LOGO_PATHS.forEach((p, i) => { const a = outCubic(clamp(amt * 1.6 - i * 0.12)); if (a > 0) strokePath(ctx, p.map(m), a); });
+  const arcA = outCubic(clamp(amt * 1.6 - 0.75));
+  if (arcA > 0) { ctx.save(); ctx.lineWidth = Math.max(3, width * 0.32); ctx.setLineDash([S * 0.024, S * 0.018]);
+    ctx.beginPath(); ctx.arc(o[0] + 0.595 * S, o[1] + 0.025 * S, 0.209 * S, Math.PI, Math.PI - Math.PI / 2 * arcA, true); ctx.stroke(); ctx.restore(); }
+  if (extra > 0) {
+    ctx.save(); ctx.globalAlpha *= extra; ctx.lineWidth = 3; ctx.strokeStyle = C.mid;
+    PLAN_EXTRA.forEach((p, i) => { const a = outCubic(clamp(amt * 1.4 - 0.3 - i * 0.08)); if (a > 0) strokePath(ctx, p.map(m), a); });
+    font(500, 22, "Plex", ctx); ctx.fillStyle = C.mid; ctx.textAlign = "center";
+    ROOMS.forEach(([n, u, v], i) => { if (amt > 0.55 + i * 0.05) { const [X, Y] = m([u, v]); ctx.fillText(n, X, Y); } });
+    // dimension line
+    const d = clamp(amt * 1.5 - 0.5);
+    if (d > 0) { const y = o[1] + S + 46; ctx.beginPath(); ctx.moveTo(o[0], y); ctx.lineTo(o[0] + S * d, y);
+      ctx.moveTo(o[0], y - 14); ctx.lineTo(o[0], y + 14); if (d >= 1) { ctx.moveTo(o[0] + S, y - 14); ctx.lineTo(o[0] + S, y + 14); } ctx.stroke();
+      ctx.fillStyle = C.light; font(500, 28, "Plex", ctx); ctx.fillText("12.40 m", o[0] + S / 2, y + 50); }
+    ctx.textAlign = "left"; ctx.restore();
   }
-  x.restore();
-  // logo resolves out of the plan
-  const lg = P(f, 42, 16);
-  if (lg > 0) logo(cx, cy, lerp(620, 470, outCubic(lg)), outCubic(lg), (1 - lg) * 18);
+}
+function logoRaster(cx, cy, S, alpha = 1, blur = 0) {
+  x.save(); x.globalAlpha = alpha; if (blur > 0.3) x.filter = `blur(${blur}px)`;
+  x.drawImage(IMG.logo, cx - S / 2, cy - S / 2, S, S); x.restore();
+}
+function logoTextReveal(cx, cy, S, wipe, blur) { // the lettering appears through a left-to-right wipe, bars stay vector
+  ox.clearRect(0, 0, W, H); ox.save(); if (blur > 0.3) ox.filter = `blur(${blur}px)`;
+  ox.drawImage(IMG.logo, cx - S / 2, cy - S / 2, S, S); ox.restore();
+  ox.save(); ox.globalCompositeOperation = "destination-in"; ox.fillStyle = "#fff";
+  ox.fillRect(cx - S * 0.42, cy - S * 0.2, S * 0.84 * wipe, S * 0.62); ox.restore();
+  x.drawImage(off, 0, 0);
 }
 
-// ---- scene 2: DESIGN. BUILD. FURNISH. ONE TEAM. (beats 4-8)
+// ---- scene 1: a line becomes a plan, the plan tightens into the logo (0-75)
+function sceneLogo(f) {
+  const cx = 540, cy = 860;
+  const shoot = outExpo(P(f, 0, 8)), land = inOutExpo(P(f, 7, 9));
+  if (land < 1) { // maroon line flies across, then snaps onto the plan's top wall
+    const S = 780, y = lerp(cy, cy - S / 2 + LC * S, land), x0 = lerp(-60, cx - S / 2 + LC * S, land), x1 = lerp(lerp(-60, W + 60, shoot), cx - S / 2 + 0.397 * S, land);
+    x.strokeStyle = C.maroon; x.lineWidth = 6; x.beginPath(); x.moveTo(x0, y); x.lineTo(x1, y); x.stroke();
+  }
+  const draw = P(f, 10, 26), tighten = inOutExpo(P(f, 38, 16));
+  const S = lerp(780, 500, tighten), width = lerp(4, LT * 500, inOutCubic(P(f, 40, 14)));
+  const rot = (1 - outCubic(P(f, 8, 34))) * -0.05, push = 1 + 0.06 * outCubic(P(f, 8, 30)) * (1 - tighten);
+  x.save(); x.translate(cx, cy); x.rotate(rot * (1 - tighten)); x.scale(push, push); x.translate(-cx, -cy);
+  logoVector(cx, cy, S, draw, width, 1 - P(f, 36, 8));
+  x.restore();
+  // lettering resolves inside the finished frame
+  const w = outExpo(P(f, 50, 12));
+  if (w > 0) logoTextReveal(cx, cy, S, w, (1 - w) * 10);
+}
+
+// ---- scene 2: DESIGN. BUILD. FURNISH. ONE TEAM. (75-135); logo docks into the header
+function headerLogo(f) { // logo position shared by scenes 2-4
+  const d = inOutExpo(P(f, T.words, 8));
+  return { cx: lerp(540, 140, d), cy: lerp(860, 225, d), S: lerp(500, 140, d) };
+}
+function drawLogoAt(L, f) {
+  if (L.S > 300) { logoVector(L.cx, L.cy, L.S, 1, LT * L.S, 0); logoTextReveal(L.cx, L.cy, L.S, 1, 0); }
+  else logoRaster(L.cx, L.cy, L.S);
+}
 function sceneWords(f) {
   const t = f - T.words;
-  backdrop(f);
-  // logo flies through the camera
-  const fly = P(t, 0, 8);
-  if (fly < 1) logo(540, 900, 470 * lerp(1, 4, inCubic(fly)), 1 - fly, fly * 20);
-  const exit = inCubic(P(t, 52, 8)) * -H * 0.6; // whole stack leaves upward into the projects
+  const exit = inOutExpo(P(t, 52, 10)) * -1500;
   x.save(); x.translate(0, exit);
   font(700, 250, "Barlow");
   CONFIG.words.forEach((w, i) => {
-    const f0 = 2 + i * BEAT, p = P(t, f0, 10); if (p <= 0) return;
-    const y = 700 + i * 235, k = outBack(p, 2.2), off = (1 - k) * 260;
-    const sc = lerp(1.25, 1, outCubic(p));
-    smear(5, 0, p < 0.5 ? -60 * (1 - p * 2) : 0, () => {
-      x.save(); x.translate(80, y + off); x.scale(sc, sc);
-      x.fillStyle = C.white; x.fillText(w, 0, 0);
-      x.fillStyle = C.maroon; x.fillText(".", x.measureText(w).width, 0); x.restore();
-    });
+    const f0 = 8 + i * BEAT, p = P(t, f0, 10); if (p <= 0) return;
+    const y = 760 + i * 235, k = outBack(p, 2.2), sc = lerp(1.3, 1, outCubic(p));
+    const blur = p < 0.35 ? (1 - p / 0.35) * 14 : 0;
+    x.save(); if (blur > 0.3) x.filter = `blur(${blur}px)`; x.translate(80, y + (1 - k) * 280); x.scale(sc, sc);
+    x.fillStyle = C.white; x.fillText(w, 0, 0); x.fillStyle = C.maroon; x.fillText(".", x.measureText(w).width, 0); x.restore();
   });
-  // ONE TEAM. on a maroon bar, on beat 7
-  const b = outExpo(P(t, 3 * BEAT, 8));
+  const b = outExpo(P(t, 3 * BEAT + 4, 8));
   if (b > 0) {
-    font(700, 120, "Barlow"); const tw = x.measureText("ONE TEAM.").width + 56;
-    x.fillStyle = C.maroon; x.fillRect(60, 1335, tw * b, 150);
-    x.save(); x.beginPath(); x.rect(60, 1335, tw * b, 150); x.clip();
-    lettersUp("ONE TEAM.", 88, 1450, 3 * BEAT + 3, t, 0.9, 8); x.restore();
+    font(700, 130, "Barlow"); const tw = x.measureText("ONE TEAM.").width + 60;
+    x.fillStyle = C.maroon; x.fillRect(60, 1390, tw * b, 160);
+    x.save(); x.beginPath(); x.rect(60, 1390, tw * b, 160); x.clip(); x.fillStyle = C.white;
+    lettersIn("ONE TEAM.", 90, 1515, t, 3 * BEAT + 7, 0.8, 8, 130); x.restore();
   }
   x.restore();
 }
 
-// ---- scene 3: projects, each drawn as a line frame then revealed (beats 8-20)
-function project(i, t) { // t local frames; may be < 0 (not started) or > per (exiting)
-  const pr = CONFIG.projects[i], img = IMG["p" + i];
-  const X = 60, Y = 330, w = 960, h = 1040;
-  const out = P(t, T.per - 4, 8); // zoom-through exit
-  const e = inCubic(out);
-  x.save(); x.globalAlpha = 1 - e;
-  x.translate(540, Y + h / 2); x.scale(1 + e * 0.5, 1 + e * 0.5); x.translate(-540, -(Y + h / 2));
-  // frame lines race around the rectangle
-  const L = outExpo(P(t, 0, 9));
-  x.strokeStyle = C.white; x.lineWidth = 4;
-  partialPath([[X, Y], [X + w, Y], [X + w, Y + h], [X, Y + h], [X, Y]], L);
-  // photo opens from the centre line
-  const op = outExpo(P(t, 1, 10));
-  if (op > 0) {
-    const hh = h * op;
-    x.save(); x.beginPath(); x.rect(X, Y + (h - hh) / 2, w, hh); x.clip();
-    cover(img, X, Y, w, h, 1.06 + 0.12 * (t / T.per), -30 * (t / T.per) + (i % 2 ? 20 : -20));
-    x.restore();
-  }
-  // crop marks
-  const cm = outCubic(P(t, 6, 8)); x.strokeStyle = C.maroon; x.lineWidth = 6;
-  if (cm > 0) [[X, Y, 1, 1], [X + w, Y, -1, 1], [X, Y + h, 1, -1], [X + w, Y + h, -1, -1]].forEach(([a, b, sx, sy]) => {
-    x.beginPath(); x.moveTo(a - sx * 18, b + sy * 46 * cm); x.lineTo(a - sx * 18, b - sy * 18); x.lineTo(a + sx * 46 * cm, b - sy * 18); x.stroke();
+// ---- scene 3: projects as a full-width film strip with whip transitions (135-315)
+const FH = 760, GAP = 28, FOCUS = 820;
+function stripPos(f) { // continuous index of the photo in focus: whip between slots, slow drift while holding
+  const t = f - T.strip, n = CONFIG.projects.length, DRIFT = 0.06;
+  if (t < 0) return -1.9 + 1.9 * inOutExpo(P(t, -8, 8));
+  const k = Math.floor(t / T.per), lt = t - k * T.per;
+  if (k >= n) return n - 1 + DRIFT + 0.004 * (t - n * T.per);
+  if (k === 0) return DRIFT * lt / T.per;
+  const move = inOutExpo(P(lt, 0, 9));
+  return lerp(k - 1 + DRIFT, k, move) + DRIFT * (lt / T.per) * move;
+}
+function drawStrip(f, dimAll = 0) {
+  const p = stripPos(f), v = (stripPos(f) - stripPos(f - 1)) * (FH + GAP);
+  CONFIG.projects.forEach((pr, k) => {
+    const cy = FOCUS + (k - p) * (FH + GAP); if (cy < -FH || cy > H + FH) return;
+    const Y = cy - FH / 2, d = Math.abs(k - p);
+    x.save(); x.beginPath(); x.rect(0, Y, W, FH); x.clip();
+    const zoom = 1.08 - 0.06 * clamp(1 - d), pan = (k - p) * -90; // parallax inside the frame
+    const ghosts = Math.min(6, Math.floor(Math.abs(v) / 18));
+    if (ghosts > 0) { for (let g = ghosts; g >= 0; g--) { x.globalAlpha = g === 0 ? 1 : 0.22; cover(IMG[pr[0]], 0, Y, W, FH, zoom, pan - v * g / ghosts * 0.9); } x.globalAlpha = 1; }
+    else cover(IMG[pr[0]], 0, Y, W, FH, zoom, pan);
+    x.fillStyle = C.black; x.globalAlpha = clamp(0.12 + d * 0.8, 0, 0.78) + dimAll * (1 - clamp(0.12 + d * 0.8, 0, 0.78));
+    x.fillRect(0, Y, W, FH); x.restore();
   });
-  x.restore();
-  // text (slides out left on exit)
-  x.save(); x.translate(-e * 300, 0); x.globalAlpha = 1 - e;
-  font(500, 32, "Plex"); typed(pr[1], 80, Y + h + 78, 6, t, 0.7);
-  font(700, 132, "Barlow"); lettersUp(pr[2], 76, Y + h + 222, 9, t, 1.1, 9);
-  font(400, 42, "Sans"); x.globalAlpha *= outCubic(P(t, 18, 10)); x.fillStyle = C.light; x.fillText(pr[3], 80, Y + h + 290);
-  x.restore();
 }
-function sceneProjects(f) {
-  const t = f - T.proj;
-  backdrop(f);
-  const n = CONFIG.projects.length;
-  for (let i = 0; i < n; i++) {
-    const lt = t - i * T.per;
-    if (lt >= -2 && lt < T.per + 6) project(i, lt);
-  }
-  // header: small logo + ticking counter
-  logo(140, 230, 130, 1);
-  const i = clamp(Math.floor(t / T.per), 0, n - 1), tick = outExpo(P(t - i * T.per, 0, 8));
-  font(700, 64, "Barlow"); x.textAlign = "right";
-  x.save(); x.beginPath(); x.rect(700, 170, 320, 90); x.clip();
-  x.fillStyle = C.white; x.fillText(String(i + 1).padStart(2, "0"), 900, 255 + (1 - tick) * 70);
+function sceneStrip(f) {
+  const t = f - T.strip, n = CONFIG.projects.length;
+  drawStrip(f);
+  // readability band under the type
+  const g = x.createLinearGradient(0, 1180, 0, H); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(0.22, "rgba(0,0,0,.82)"); g.addColorStop(1, "rgba(0,0,0,.92)");
+  x.fillStyle = g; x.fillRect(0, 1180, W, H - 1180);
+  const k = clamp(Math.floor(t / T.per), 0, n - 1), lt = t - k * T.per, pr = CONFIG.projects[k];
+  const last = k === n - 1;
+  // meta (types on), name (letters rise), caption
+  font(500, 32, "Plex"); x.fillStyle = C.light;
+  const nm = Math.floor(clamp((lt - 4) / 0.6, 0, pr[1].length)); x.fillText(pr[1].slice(0, nm), 72, 1300);
+  x.fillStyle = C.maroon; x.fillRect(72, 1318, 64 * outExpo(P(lt, 4, 10)), 6);
+  font(700, 196, "Barlow"); x.fillStyle = C.white;
+  lettersIn(pr[2], 64, 1500, lt, 5, 1.0, 9, 180, last ? 1e9 : T.per - 6);
+  font(400, 44, "Sans"); x.fillStyle = C.light; x.globalAlpha = outCubic(P(lt, 12, 8)) * (last ? 1 : 1 - P(lt, T.per - 5, 4));
+  x.fillText(pr[3], 72, 1575); x.globalAlpha = 1;
+  // giant outlined index rolls like an odometer
+  font(700, 230, "Barlow"); x.textAlign = "right"; x.lineWidth = 2.5; x.strokeStyle = C.light;
+  const nw = x.measureText("00").width;
+  x.save(); x.beginPath(); x.rect(600, 150, 440, 240); x.clip();
+  const roll = k > 0 ? outExpo(P(lt, 0, 10)) : 1;
+  if (k > 0 && roll < 1) x.strokeText(String(k).padStart(2, "0"), 1020, 370 - roll * 240);
+  x.strokeText(String(k + 1).padStart(2, "0"), 1020, 370 + (1 - roll) * 240);
   x.restore();
-  font(500, 30, "Plex"); x.fillStyle = C.mid; x.fillText("/ " + String(n).padStart(2, "0"), 1010, 252); x.textAlign = "left";
-  // progress line
-  x.fillStyle = C.maroon; x.fillRect(60, 300, 960 * clamp(t / (T.per * n)), 4);
+  font(500, 28, "Plex"); x.fillStyle = C.mid; x.fillText("/ " + String(n).padStart(2, "0"), 1020 - nw - 14, 366); x.textAlign = "left";
 }
 
-// ---- scene 4: the numbers rise as columns (beats 20-25)
+// ---- scene 4: odometer numbers over the dimmed strip (315-375)
 function sceneStats(f) {
-  const t = f - T.stats; backdrop(f);
-  const cols = [200, 540, 880], hs = [560, 760, 660], base = 1500;
-  CONFIG.stats.forEach(([num, label], i) => {
-    const f0 = 2 + i * 10, g = outExpo(P(t, f0, 14)), top = base - hs[i] * g;
-    x.fillStyle = C.white; x.fillRect(cols[i] - 5, top, 10, base - top);
-    x.fillStyle = C.maroon; x.fillRect(cols[i] - 22, top - 6, 44, 10);
-    const n = parseInt(num), suf = num.replace(/\d+/, "");
-    font(700, 190, "Barlow"); x.textAlign = "center";
-    const shown = g < 1 ? Math.round(n * g) + suf : num;
-    if (g > 0.02) smear(3, 0, g < 0.6 ? -40 : 0, () => { x.fillStyle = C.white; x.fillText(shown, cols[i], top - 40); });
-    font(400, 36, "Sans"); x.fillStyle = C.light; x.globalAlpha = outCubic(P(t, f0 + 8, 10));
-    wrap(label, 280).forEach((ln, k) => x.fillText(ln, cols[i], base + 60 + k * 44));
-    x.globalAlpha = 1; x.textAlign = "left";
-  });
-  x.fillStyle = C.mid; x.fillRect(60, base, 960 * outExpo(P(t, 0, 12)), 2);
-  font(500, 32, "Plex"); x.textAlign = "center";
-  const iso = CONFIG.iso, n = Math.floor(clamp((t - 40) / 0.6, 0, iso.length));
-  x.fillStyle = C.light; x.fillText(iso.slice(0, n), 540, 1720); x.textAlign = "left";
-  // exit: columns collapse to the centre
+  const t = f - T.stats;
+  drawStrip(f, 0.75 + 0.2 * P(t, 0, 10));
+  const seg = 20, i = clamp(Math.floor(t / seg), 0, 2), lt = t - i * seg;
+  const roll = i > 0 ? outExpo(P(lt, 0, 9)) : outExpo(P(t, 0, 10));
+  font(700, 520, "Barlow"); x.textAlign = "center"; x.fillStyle = C.white;
+  x.save(); x.beginPath(); x.rect(0, 460, W, 560); x.clip();
+  if (i > 0 && roll < 1) x.fillText(CONFIG.stats[i - 1][0], 540, 940 - roll * 560);
+  x.fillText(CONFIG.stats[i][0], 540, 940 + (1 - roll) * 560);
+  x.restore();
+  x.fillStyle = C.maroon; x.fillRect(540 - 90 * roll, 1000, 180 * roll, 10);
+  font(600, 56, "Barlow"); x.fillStyle = C.light; x.globalAlpha = outCubic(P(lt, 3, 8));
+  x.fillText(CONFIG.stats[i][1], 540, 1110); x.globalAlpha = 1;
+  font(500, 32, "Plex"); const n = Math.floor(clamp((t - 28) / 0.6, 0, CONFIG.iso.length));
+  x.fillStyle = C.light; x.fillText(CONFIG.iso.slice(0, n), 540, 1560); x.textAlign = "left";
 }
-function wrap(s, maxW) { const out = [""]; s.split(" ").forEach(w => { const t = (out[out.length - 1] + " " + w).trim(); if (x.measureText(t).width <= maxW) out[out.length - 1] = t; else out.push(w); }); return out; }
 
-// ---- scene 5: end card (beats 25-30)
+// ---- scene 5: logo returns to centre, contact, CTA (375-450)
 function sceneEnd(f) {
-  const t = f - T.end; backdrop(f);
-  // collapsing columns become the logo
-  const c = inOutCubic(P(t, 0, 10));
-  if (c < 1) { x.globalAlpha = 1 - c; x.fillStyle = C.white; [200, 540, 880].forEach(cx => x.fillRect(lerp(cx, 540, c) - 5, lerp(900, 800, c), 10, 600 * (1 - c))); x.globalAlpha = 1; }
-  const s = P(t, 6, 14);
-  if (s > 0) logo(540, 720, 480 * outBack(s, 1.6), clamp(s * 2), (1 - s) * 10);
-  font(600, 48, "Barlow"); x.textAlign = "center"; x.fillStyle = C.white; x.globalAlpha = outCubic(P(t, 18, 10));
-  x.fillText("DESIGNED, BUILT AND FURNISHED BY ONE TEAM.", 540, 1060); x.globalAlpha = 1;
+  const t = f - T.end;
+  const fade = P(t, 0, 10); if (fade < 1) { drawStrip(f, 0.95); x.fillStyle = C.black; x.globalAlpha = fade; x.fillRect(0, 0, W, H); x.globalAlpha = 1; }
+  const d = inOutExpo(P(t, 0, 14));
+  const L = { cx: lerp(140, 540, d), cy: lerp(225, 700, d), S: lerp(140, 470, d) };
+  if (d < 1) logoRaster(L.cx, L.cy, L.S); else { logoVector(L.cx, L.cy, L.S, 1, LT * L.S, 0); logoTextReveal(L.cx, L.cy, L.S, 1, 0); }
+  font(600, 50, "Barlow"); x.textAlign = "center"; x.fillStyle = C.white;
+  lettersCenter("DESIGNED, BUILT AND FURNISHED BY ONE TEAM.", 540, 1040, t, 14);
   font(500, 40, "Plex");
-  CONFIG.contact.forEach((ln, k) => {
-    const p = outExpo(P(t, 22 + k * 3, 10)); x.globalAlpha = p; x.fillStyle = C.light;
-    x.fillText(ln, 540 + (1 - p) * 120, 1170 + k * 66);
-  });
+  CONFIG.contact.forEach((ln, k) => { const p = outExpo(P(t, 22 + k * 3, 10)); x.globalAlpha = p; x.fillStyle = C.light; x.fillText(ln, 540, 1150 + k * 66 + (1 - p) * 30); });
   x.globalAlpha = 1;
-  // CTA: outline draws, then fills
-  const bw = 640, bh = 116, bx = 540 - bw / 2, by = 1400;
-  const o = outCubic(P(t, 32, 8)), fl = outExpo(P(t, 39, 8));
-  x.strokeStyle = C.white; x.lineWidth = 3; if (o > 0) partialPath([[bx, by], [bx + bw, by], [bx + bw, by + bh], [bx, by + bh], [bx, by]], o);
+  const bw = 640, bh = 116, bx = 540 - bw / 2, by = 1390, o = outCubic(P(t, 32, 8)), fl = outExpo(P(t, 39, 8));
+  x.strokeStyle = C.white; x.lineWidth = 3; if (o > 0) strokePath(x, [[bx, by], [bx + bw, by], [bx + bw, by + bh], [bx, by + bh], [bx, by]], o);
   if (fl > 0) { x.fillStyle = C.maroon; x.fillRect(bx, by, bw * fl, bh); font(700, 58, "Barlow"); x.fillStyle = C.white; x.globalAlpha = fl; x.fillText("REQUEST A SITE VISIT", 540, by + 80); x.globalAlpha = 1; }
   x.textAlign = "left";
 }
+function lettersCenter(s, cx, y, t, start) { // whole line rises through a mask
+  const p = outExpo(P(t, start, 10)); x.save(); x.beginPath(); x.rect(0, y - 60, W, 80); x.clip(); x.fillText(s, cx, y + (1 - p) * 70); x.restore();
+}
 
 function draw(f) {
-  x.setTransform(1, 0, 0, 1, 0, 0); x.filter = "none"; x.globalAlpha = 1;
-  x.fillStyle = C.black; x.fillRect(0, 0, W, H); x.textBaseline = "alphabetic";
-  if (f < T.words) scenePlan(f);
-  else if (f < T.proj) sceneWords(f);
-  else if (f < T.stats) sceneProjects(f);
+  x.setTransform(1, 0, 0, 1, 0, 0); x.filter = "none"; x.globalAlpha = 1; x.globalCompositeOperation = "source-over";
+  x.fillStyle = C.black; x.fillRect(0, 0, W, H); x.textBaseline = "alphabetic"; x.textAlign = "left";
+  if (f < T.words) sceneLogo(f);
+  else if (f < T.strip - 8) sceneWords(f);
+  else if (f < T.stats) { if (f < T.strip) { drawStrip(f); sceneWords(f); } else sceneStrip(f); }
   else if (f < T.end) sceneStats(f);
   else sceneEnd(f);
-  // hard cuts get a 2-frame maroon flash line on the beat
-  for (const cut of [T.words, T.proj, T.stats, T.end]) {
-    const k = f - cut; if (k >= 0 && k < 3) { x.fillStyle = C.maroon; x.fillRect(0, H / 2 - 3 + (k - 1) * 600, W, 6); }
-  }
+  if (f >= T.words && f < T.end) drawLogoAt(headerLogo(f), f);
+  grain(f);
 }
 window.draw = draw; window.TOTAL = T.total;
 </script></body></html>
