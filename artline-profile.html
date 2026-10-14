@@ -302,6 +302,17 @@ footer img { height: 48px; width: auto; display: block; }
 .shots .dots button[aria-current="true"] { background: #fff; }
 .shots .dots button:focus-visible { outline: 2px solid #D9D9D9; outline-offset: 2px; }
 .shots .count { position: absolute; top: 8px; right: 8px; font: 500 .68rem var(--f-mono); color: #fff; background: rgba(0,0,0,.55); padding: 2px 6px; }
+.hero .promise { font: 600 1.15rem var(--f-display); letter-spacing: .14em; text-transform: uppercase; color: #FFFFFF; border-left: 3px solid #800000; padding-left: 12px; }
+.process { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--mist); counter-reset: none; }
+.process li { position: relative; padding: 22px 20px 4px 0; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.process li:not(:last-child)::after { content: ""; position: absolute; top: -2px; right: 12px; width: 10px; height: 3px; background: #800000; }
+.process .step { font: 700 2rem/1 var(--f-display); color: #FFFFFF; }
+.process .step::after { content: ""; display: block; width: 28px; height: 3px; background: #800000; margin-top: 10px; }
+.process h3 { font-size: 1.2rem; font-weight: 600; }
+.process p { color: var(--graphite); font-size: .92rem; }
+#services .sub { margin-top: 48px; color: #FFFFFF; }
+@media (max-width: 960px) { .process { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; } .process li::after { display: none; } }
+@media (max-width: 600px) { .process { grid-template-columns: 1fr; } .process li { padding: 18px 0 14px; border-bottom: 1px solid var(--mist); } }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -342,6 +353,7 @@ footer img { height: 48px; width: auto; display: block; }
     <div class="hero-text">
     <div class="eyebrow">Fujairah · Dubai · United Arab Emirates · Since 2009</div>
     <h1>Fit-out &amp; construction for the UAE's <em>leading brands</em></h1>
+    <p class="promise">Designed, built and furnished by one team.</p>
     <p class="lead">For global brands, government and private clients, we design, build and furnish interiors with our own engineers, architects and carpentry workshop.</p>
     <div class="ctas">
       <a class="btn btn-primary" href="#contact">Request a site visit</a>
@@ -398,6 +410,14 @@ footer img { height: 48px; width: auto; display: block; }
       <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M4 28h26M6 28V8h14v20M10 12h6M10 16h6M10 20h6M24 28V14l4 3v11"/></svg><h3>Design &amp; approvals</h3><p>Design development, shop drawings and authority approvals by our technical office.</p></div>
       <div class="svc"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M20 6a7 7 0 0 0-8 9L5 22l3 3 4 4 7-7a7 7 0 0 0 9-8l-4 4-4-1-1-4z"/></svg><h3>Maintenance &amp; renovation</h3><p>Re-partitioning, unit merges and refurbishment of occupied commercial spaces.</p></div>
     </div>
+    <h3 class="sub">How we deliver</h3>
+    <ol class="process">
+      <li><span class="step">01</span><h3>Brief &amp; site survey</h3><p>We walk the site with you, confirm the scope, budget and programme, and measure up.</p></li>
+      <li><span class="step">02</span><h3>Design &amp; approvals</h3><p>Our technical office develops the design and shop drawings and secures authority and landlord approvals.</p></li>
+      <li><span class="step">03</span><h3>Workshop production</h3><p>Joinery, counters and furniture are built in our own carpentry workshop while the site is prepared.</p></li>
+      <li><span class="step">04</span><h3>Site works</h3><p>Our site team runs civil, MEP coordination, finishes and installation under one programme.</p></li>
+      <li><span class="step">05</span><h3>Handover &amp; aftercare</h3><p>Snagging, completion certificate, and support through the defects liability period.</p></li>
+    </ol>
   </section>
 
   <section class="block" id="projects">
