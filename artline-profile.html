@@ -314,13 +314,9 @@ footer img { height: 48px; width: auto; display: block; }
 @media (max-width: 960px) { .process { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; } .process li::after { display: none; } }
 @media (max-width: 600px) { .process { grid-template-columns: 1fr; } .process li { padding: 18px 0 14px; border-bottom: 1px solid var(--mist); } }
 .logos.corp { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-.logo-pair { display: grid; grid-template-columns: 1fr; }
-.logo-pair > div { min-width: 0; }
-.logos.health, .logos.edu { --tile: calc((min(100vw, 1120px) - 40px) / 6); width: max-content; max-width: 100%; }
-.logos.health { grid-template-columns: repeat(4, var(--tile)); }
-.logos.edu { grid-template-columns: repeat(5, var(--tile)); }
-@media (max-width: 960px) { .logos.corp { grid-template-columns: repeat(4, minmax(0, 1fr)); } .logos.health, .logos.edu { --tile: calc((100vw - 40px) / 4); } .logos.edu { grid-template-columns: repeat(4, var(--tile)); } }
-@media (max-width: 600px) { .logos.corp, .logos.health, .logos.edu { grid-template-columns: repeat(3, minmax(0, 1fr)); width: auto; } }
+.logos.hedu { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+@media (max-width: 960px) { .logos.corp { grid-template-columns: repeat(4, minmax(0, 1fr)); } .logos.hedu { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .logos.corp, .logos.hedu { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>
 
 <nav class="nav" aria-label="Main">
@@ -520,10 +516,8 @@ footer img { height: 48px; width: auto; display: block; }
     <ul class="logos gov" id="logos-gov"></ul>
     <h3 class="sub">Developers &amp; corporate</h3>
     <ul class="logos corp" id="logos-corp"></ul>
-    <div class="logo-pair">
-      <div><h3 class="sub">Healthcare</h3><ul class="logos health" id="logos-health"></ul></div>
-      <div><h3 class="sub">Education &amp; culture</h3><ul class="logos edu" id="logos-edu"></ul></div>
-    </div>
+    <h3 class="sub">Healthcare &amp; education</h3>
+    <ul class="logos hedu" id="logos-hedu"></ul>
     <h3 class="sub">Brands we've built spaces for</h3>
     <ul class="logos brandrow" id="logos-brand">
       <li><img src="artline-img/brands/ikea.svg" alt="IKEA" title="IKEA" loading="lazy"></li>
@@ -647,8 +641,7 @@ const EDU = ["ajman-university","gems-winchester","diyar-school","philosophy-hou
 const partnerLi = ([f, n]) => `<li><img src="artline-img/${f}" alt="${esc(n)}" title="${esc(n)}" loading="lazy"></li>`;
 document.getElementById("logos-corp").innerHTML = CLIENTS_ALL.filter(c => ![...GOV, ...BRANDS, ...HEALTH, ...EDU].includes(c[0])).map(logoLi).join("")
   + [["partners/lead.svg","LEAD Development"],["partners/raibal.png","Raibal Holding"],["partners/bond.png","Bond Interiors"],["partners/pms.png","Premier Marine Solutions"]].map(partnerLi).join("");
-document.getElementById("logos-health").innerHTML = HEALTH.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("");
-document.getElementById("logos-edu").innerHTML = EDU.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("")
+document.getElementById("logos-hedu").innerHTML = [...HEALTH, ...EDU].map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join("")
   + partnerLi(["partners/soco.png","School of Calligraphy & Ornamentation"]);
 document.getElementById("logos-brand").insertAdjacentHTML("beforeend", BRANDS.map(f => CLIENTS_ALL.find(c => c[0] === f)).map(logoLi).join(""));
 
