@@ -246,7 +246,7 @@ for (let i = 0; i < D.register.length; i += i === 0 ? 54 : 62) {
 
 // certifications
 page("dark", `${lines("left:-20%;top:0;width:150%;height:35%")}<div class="in"><div class="kicker">Credentials</div><h1 class="title">ISO certified, EIAC accredited</h1>
-  <div class="certs">${D.certs.map(([s, n, no]) => `<div class="cert"><div><b>${esc(s)}</b><span>${esc(n)}</span></div><em>${esc(no)}</em></div>`).join("")}</div>
+  <div class="certs">${D.certs.map(([s, n, no]) => `<div class="cert"><div><b>${esc(s)}</b><span>${esc(n)}</span></div>${no ? `<em>${esc(no)}</em>` : ""}</div>`).join("")}</div>
   <div class="plate"><img src="${IMG}artline-img/iso-vsqc-eiac.png" alt="EIAC accreditation mark"></div>
   <p class="cert-text">${esc(D.certText)}</p></div>`);
 

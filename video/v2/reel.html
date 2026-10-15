@@ -24,7 +24,7 @@ const CONFIG = {
     ["RESIDENTIAL & MARINE", "offset2", [["lanai", "LANAI ISLAND · RENDER"], ["jubail", "JUBAIL ISLAND · RENDER"]]],
   ],
   stats: [["15+", "YEARS OF FIT-OUT & CONSTRUCTION"], ["50", "PROJECTS DELIVERED SINCE 2021"], ["33", "GOVERNMENT & CORPORATE CLIENTS"]],
-  certs: [["ISO 9001:2015", "QUALITY MANAGEMENT", "VSQC099-421264353"], ["ISO 14001:2015", "ENVIRONMENTAL MANAGEMENT", "VSQC099-421264354"], ["ISO 45001:2018", "OCCUPATIONAL HEALTH & SAFETY", "VSQC099-421264355"]],
+  certs: [["ISO 9001:2015", "QUALITY MANAGEMENT", ""], ["ISO 14001:2015", "ENVIRONMENTAL MANAGEMENT", ""], ["ISO 45001:2018", "OCCUPATIONAL HEALTH & SAFETY", ""]],
   contact: ["+971 50 299 0358", "info@artline-uae.com", "artline-uae.com"],
   words: ["DESIGN", "BUILD", "FURNISH"],
 };
@@ -290,7 +290,7 @@ function sceneCert(f) {
     x.save(); x.beginPath(); x.rect(X, Y, w, h); x.clip(); x.globalAlpha = c;
     font(700, 92, "Barlow"); x.fillStyle = C.white; x.fillText(std, X + 44, Y + 100 + (1 - c) * 60);
     font(600, 40, "Barlow"); x.fillStyle = C.light; x.fillText(name, X + 46, Y + 150 + (1 - c) * 60);
-    font(500, 24, "Plex"); x.fillStyle = C.mid; x.textAlign = "right"; x.fillText("CERT. " + no, X + w - 30, Y + 150 + (1 - c) * 60); x.textAlign = "left";
+    if (no) { font(500, 24, "Plex"); x.fillStyle = C.mid; x.textAlign = "right"; x.fillText("CERT. " + no, X + w - 30, Y + 150 + (1 - c) * 60); x.textAlign = "left"; }
     x.restore();
   });
   // EIAC accreditation plate stamps in
